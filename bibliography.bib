@@ -1,0 +1,169 @@
+% Bibliografia - Algoritmi di Navigazione per Robot Mobili
+
+% Path Planning
+@article{hart1968astar,
+  author  = {Hart, Peter E. and Nilsson, Nils J. and Raphael, Bertram},
+  title   = {A Formal Basis for the Heuristic Determination of Minimum Cost Paths},
+  journal = {IEEE Transactions on Systems Science and Cybernetics},
+  volume  = {4},
+  number  = {2},
+  pages   = {100--107},
+  year    = {1968},
+  doi     = {10.1109/TSSC.1968.300136}
+}
+
+@article{dijkstra1959note,
+  author  = {Dijkstra, Edsger W.},
+  title   = {A Note on Two Problems in Connexion with Graphs},
+  journal = {Numerische Mathematik},
+  volume  = {1},
+  number  = {1},
+  pages   = {269--271},
+  year    = {1959},
+  doi     = {10.1007/BF01386390}
+}
+
+@inproceedings{lavalle1998rrt,
+  author    = {LaValle, Steven M.},
+  title     = {Rapidly-Exploring Random Trees: A New Tool for Path Planning},
+  booktitle = {Technical Report, Computer Science Department, Iowa State University},
+  year      = {1998}
+}
+
+% Obstacle Avoidance
+@article{borenstein1991vfh,
+  author  = {Borenstein, Johann and Koren, Yoram},
+  title   = {The Vector Field Histogram—Fast Obstacle Avoidance for Mobile Robots},
+  journal = {IEEE Transactions on Robotics and Automation},
+  volume  = {7},
+  number  = {3},
+  pages   = {278--288},
+  year    = {1991},
+  doi     = {10.1109/70.88137}
+}
+
+@inproceedings{fox1997dwa,
+  author    = {Fox, Dieter and Burgard, Wolfram and Thrun, Sebastian},
+  title     = {The Dynamic Window Approach to Collision Avoidance},
+  booktitle = {IEEE Robotics \& Automation Magazine},
+  volume    = {4},
+  number    = {1},
+  pages     = {23--33},
+  year      = {1997},
+  doi       = {10.1109/100.580977}
+}
+
+@article{khatib1986potential,
+  author  = {Khatib, Oussama},
+  title   = {Real-Time Obstacle Avoidance for Manipulators and Mobile Robots},
+  journal = {The International Journal of Robotics Research},
+  volume  = {5},
+  number  = {1},
+  pages   = {90--98},
+  year    = {1986},
+  doi     = {10.1177/027836498600500106}
+}
+
+% SLAM
+@article{durrantwhyte2006slam,
+  author  = {Durrant-Whyte, Hugh and Bailey, Tim},
+  title   = {Simultaneous Localization and Mapping: Part I},
+  journal = {IEEE Robotics \& Automation Magazine},
+  volume  = {13},
+  number  = {2},
+  pages   = {99--110},
+  year    = {2006},
+  doi     = {10.1109/MRA.2006.1638022}
+}
+
+@article{grisetti2010graphslam,
+  author  = {Grisetti, Giorgio and Kümmerle, Rainer and Stachniss, Cyrill and Burgard, Wolfram},
+  title   = {A Tutorial on Graph-Based SLAM},
+  journal = {IEEE Intelligent Transportation Systems Magazine},
+  volume  = {2},
+  number  = {4},
+  pages   = {31--43},
+  year    = {2010},
+  doi     = {10.1109/MITS.2010.939925}
+}
+
+@article{thrun2002particleslam,
+  author  = {Thrun, Sebastian and Fox, Dieter and Burgard, Wolfram and Dellaert, Frank},
+  title   = {Robust Monte Carlo Localization for Mobile Robots},
+  journal = {Artificial Intelligence},
+  volume  = {128},
+  number  = {1-2},
+  pages   = {99--141},
+  year    = {2001},
+  doi     = {10.1016/S0004-3702(01)00069-8}
+}
+
+% LiDAR-Inertial Odometry
+@article{xu2022fastlio2,
+  author   = {Xu, Wei and Cai, Yixi and He, Dongjiao and Lin, Jiarong and Zhang, Fu},
+  journal  = {IEEE Transactions on Robotics},
+  title    = {FAST-LIO2: Fast Direct LiDAR-Inertial Odometry},
+  year     = {2022},
+  volume   = {38},
+  number   = {4},
+  pages    = {2053-2073},
+  keywords = {Laser radar;Robots;Real-time systems;Feature extraction;Data structures;Point cloud compression;Kalman filters;Aerial systems;sensor fusion;simultaneous localization and mapping (SLAM)},
+  doi      = {10.1109/TRO.2022.3141876}
+}
+
+% Protocolli di Comunicazione Industriali
+@techreport{iso11898_1,
+  title       = {Road vehicles — Controller area network (CAN) — Part 1: Data link layer and physical signalling},
+  institution = {International Organization for Standardization},
+  type        = {Standard},
+  number      = {ISO 11898-1:2015},
+  year        = {2015},
+  url         = {https://www.iso.org/standard/63648.html}
+}
+
+@manual{cia301,
+  title        = {CANopen Application Layer and Communication Profile},
+  organization = {CAN in Automation (CiA)},
+  number       = {CiA 301},
+  year         = {2011},
+  note         = {Version 4.2.0},
+  url          = {https://www.can-cia.org/can-knowledge/canopen/cia301/}
+}
+
+@manual{cia402,
+  title        = {CANopen Device Profile for Drives and Motion Control},
+  organization = {CAN in Automation (CiA)},
+  number       = {CiA 402},
+  year         = {2002},
+  url          = {https://www.can-cia.org/can-knowledge/canopen/cia402/}
+}
+
+@techreport{iec61158ethercat,
+  title       = {Industrial communication networks — Fieldbus specifications — Part 3-12: Data-link layer service definition — Type 12 elements (EtherCAT)},
+  institution = {International Electrotechnical Commission},
+  type        = {Standard},
+  number      = {IEC 61158-3-12},
+  year        = {2019}
+}
+
+@techreport{iec61158profinet,
+  title       = {Industrial communication networks — Fieldbus specifications — Part 6-10: Application layer protocol specification — Type 10 elements (PROFINET)},
+  institution = {International Electrotechnical Commission},
+  type        = {Standard},
+  number      = {IEC 61158-6-10},
+  year        = {2019}
+}
+
+@manual{modbus_spec,
+  title        = {Modbus Application Protocol Specification V1.1b3},
+  organization = {Modbus Organization},
+  year         = {2012},
+  url          = {https://modbus.org/specs.php}
+}
+
+@manual{modbustcp_spec,
+  title        = {Modbus Messaging on TCP/IP Implementation Guide V1.0b},
+  organization = {Modbus Organization},
+  year         = {2006},
+  url          = {https://modbus.org/specs.php}
+}

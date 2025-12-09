@@ -1,0 +1,83 @@
+\documentclass[a4paper,twoside]{book}
+%% Fonts
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{tgadventor}
+\usepackage{arevmath}  % Matematica sans-serif (Arev/Vera)
+\renewcommand{\familydefault}{\sfdefault}  % Usa sans-serif come default
+%% Italian Typesetting
+\usepackage[T1]{fontenc}
+% Dichiara che slanted usa italic per Adventor (elimina warning)
+\DeclareFontShape{T1}{qag}{m}{sl}{<->ssub*qag/m/it}{}
+\DeclareFontShape{T1}{qag}{b}{sl}{<->ssub*qag/b/it}{}
+\DeclareFontShape{T1}{qag}{bx}{sl}{<->ssub*qag/bx/it}{}
+\usepackage[italian]{babel}
+
+%% Utils
+\usepackage{hyphenat}
+\usepackage{graphicx}
+\usepackage{multirow}
+\graphicspath{{img/}}           % Percorso immagini
+\makeatletter
+\def\input@path{{chapters/}}    % Percorso file .tex
+\makeatother
+
+%% Ambienti personalizzati (teoremi, note, etc.)
+\usepackage{thesisenvs}
+
+\usepackage{datetime}
+\newdateformat{yeardate}{\THEYEAR}
+\newdateformat{nextyeardate}{\THEYEAR+1}
+\newdateformat{monthyeardate}{\monthname[\THEMONTH] \THEYEAR}
+%% Page Layout
+\usepackage{geometry}
+\geometry{a4paper,top=4cm,bottom=4cm,left=4cm,right=4cm,heightrounded}  % showframe mostra i margini
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\chaptermark}[1]{%
+\markboth{\chaptername
+\ \thechapter.\ #1}{}}
+\fancyhead[LE,RO]{\thepage}
+\renewcommand{\headrulewidth}{0.8pt}
+\usepackage{indentfirst}
+% \usepackage{lipsum}
+
+%% Stile titoli capitoli
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{10pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{0pt}{25pt}  % {indent}{prima}{dopo}
+
+%% Link cliccabili (indice, riferimenti, URL)
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,      % colore link interni (indice, ref)
+    citecolor=blue,       % colore citazioni
+    urlcolor=blue,        % colore URL
+    pdfauthor={Andrea Efficace},
+    pdftitle={Progettazione e Realizzazione di un Veicolo Autonomo Teleoperato in CANOpen},
+}
+
+
+\begin{document}
+
+\input{frontespizio}
+
+
+
+\tableofcontents
+
+\cleardoublepage
+
+\markboth{Prefazione}{Prefazione}
+
+\input{1-introduzione}
+\input{2-robot-mobili}
+\input{3-requirements.tex}
+
+\bibliographystyle{plain}
+\bibliography{bibliography}
+
+\end{document}

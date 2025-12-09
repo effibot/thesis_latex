@@ -1,0 +1,125 @@
+\chapter{Robot Mobili e Autonomi}
+In questo capitolo verranno analizzate le principali tecnologie e metodologie utilizzate nei robot mobili autonomi, con particolare attenzione ai sistemi di navigazione e localizzazione.
+
+
+\section{Classificazione dei Robot Mobili}
+I robot mobili autonomi (AMR - Autonomous Mobile Robots) sono veicoli in grado di muoversi e operare in ambienti complessi senza la necessità di un controllo umano diretto. Questi robot sono dotati di sensori, attuatori e algoritmi di controllo e localizzazione che consentono loro di percepire l'ambiente circostante, prendere decisioni e navigare in modo sicurezza per se stessi e gli elementi presenti nell'ambiente (es operatori, ostacoli, ecc.).\\
+Alcuni esempi di robot mobili autonomi includono:
+\begin{itemize}
+    \item \textbf{Robot a ruote}: Utilizzano ruote per la locomozione e sono adatti per superfici piane e lisce. Esempi includono carrelli elevatori autonomi e robot di consegna.
+    \item \textbf{Robot a cingoli}: Utilizzano cingoli per la locomozione e sono adatti per terreni irregolari e accidentati. Sono utili per lavori di esplorazione e soccorso in ambienti difficili.
+    \item \textbf{Robot a gambe}: Utilizzano sistemi che ricordano arti umani o animali e sono in grado di affrontare terreni complessi e ostacoli. Di particolare interesse negli ultimi anni sono i robot quadrupedi, come quelli sviluppati da Boston Dynamics.
+    \item \textbf{Robot volanti}: Utilizzano eliche o ali per la locomozione e sono in grado di volare. Esempi includono droni e veicoli aerei senza pilota (UAV).
+\end{itemize}
+
+Una categoria analoga ai robot mobili autonomi sono i veicoli a guida autonoma (AGV - Automated Guided Vehicles), che sono progettati per operare in ambienti industriali e di magazzino, seguendo percorsi predefiniti e ben strutturati che consentono di evitare logiche di navigazione complesse. Un esempio comune sono carrelli detti \textit{segui-linea}, che seguono linee tracciate sul pavimento o nastri magnetici per spostarsi all'interno di un magazzino o di una fabbrica.
+
+\section{Sistemi di Navigazione e Localizzazione}
+I robot mobili autonomi utilizzano una combinazione di sensori, algoritmi di localizzazione e tecniche di mappatura per navigare in ambienti complessi. Alcuni dei principali sistemi e tecnologie utilizzati includono:
+\begin{itemize}
+    \item \textbf{Sensori di Prossimità}: Utilizzati per rilevare ostacoli e misurare distanze. Esempi comuni includono sensori a ultrasuoni, sensori infrarossi e LIDAR (Light Detection and Ranging).
+    \item \textbf{Sistemi di Localizzazione}: Tecnologie come GPS, SLAM (Simultaneous Localization and Mapping) e sistemi di localizzazione basati su visione vengono utilizzati per determinare la posizione del robot nell'ambiente.
+    \item \textbf{Sistemi di Visione}: Telecamere, sensori di profondità e marker (es. QR-code) vengono utilizzati per acquisire informazioni visive sull'ambiente circostante, consentendo al robot di riconoscere oggetti e ostacoli.
+    \item \textbf{Mappe Ambientali}: I robot possono utilizzare mappe predefinite o creare mappe in tempo reale dell'ambiente circostante per facilitare la navigazione.
+\end{itemize}
+
+\section{Algoritmi di Navigazione}
+Gli algoritmi di navigazione sono fondamentali per consentire ai robot mobili autonomi di pianificare e seguire traiettorie sicure ed efficienti. Di seguito vengono presentati i principali approcci utilizzati.
+
+\subsection{Pianificazione del Percorso (Path Planning)}
+La pianificazione del percorso consiste nel determinare una traiettoria che colleghi un punto di partenza a una destinazione, evitando gli ostacoli presenti nell'ambiente. I principali algoritmi includono:
+\begin{itemize}
+    \item \textbf{A* (A-star)} \cite{hart1968astar}: Algoritmo di ricerca su grafi che trova il percorso ottimale combinando il costo effettivo del tragitto con una stima euristica della distanza rimanente. È ampiamente utilizzato per la sua efficienza e garanzia di ottimalità.
+    \item \textbf{Dijkstra} \cite{dijkstra1959note}: Algoritmo classico che esplora sistematicamente tutti i nodi di un grafo per trovare il percorso più breve. Garantisce la soluzione ottimale ma può risultare computazionalmente oneroso in ambienti ampi.
+    \item \textbf{RRT (Rapidly-exploring Random Trees)} \cite{lavalle1998rrt}: Algoritmo probabilistico che costruisce un albero di esplorazione espandendosi casualmente nello spazio. È particolarmente adatto per spazi ad alta dimensionalità e ambienti complessi.
+\end{itemize}
+
+\subsection{Evitamento degli Ostacoli (Obstacle Avoidance)}
+Una volta pianificato il percorso, il robot deve essere in grado di reagire a ostacoli imprevisti o dinamici. Le tecniche più comuni sono:
+\begin{itemize}
+    \item \textbf{VFH (Vector Field Histogram)} \cite{borenstein1991vfh}: Crea un istogramma polare delle distanze dagli ostacoli e seleziona la direzione di movimento più sicura e vicina all'obiettivo.
+    \item \textbf{DWA (Dynamic Window Approach)} \cite{fox1997dwa}: Valuta un insieme di velocità ammissibili considerando i vincoli cinematici del robot e seleziona quella che massimizza il progresso verso l'obiettivo minimizzando il rischio di collisione.
+    \item \textbf{Potential Fields} \cite{khatib1986potential}: Modella l'obiettivo come un attrattore e gli ostacoli come repulsori, generando un campo di forze che guida il movimento del robot.
+\end{itemize}
+
+\subsection{SLAM (Simultaneous Localization and Mapping)}
+Lo SLAM è una tecnica che permette al robot di costruire una mappa dell'ambiente circostante mentre simultaneamente si localizza al suo interno \cite{durrantwhyte2006slam}. Questo approccio è fondamentale quando non è disponibile una mappa predefinita. Gli algoritmi SLAM più diffusi includono:
+\begin{itemize}
+    \item \textbf{EKF-SLAM}: Basato sul filtro di Kalman esteso, adatto per ambienti di dimensioni limitate.
+    \item \textbf{Particle Filter SLAM} \cite{thrun2002particleslam}: Utilizza un insieme di particelle per rappresentare le possibili posizioni del robot, robusto in presenza di incertezze elevate.
+    \item \textbf{Graph-based SLAM} \cite{grisetti2010graphslam}: Rappresenta il problema come un grafo di vincoli tra pose successive, ottimizzando globalmente la traiettoria stimata.
+\end{itemize}
+
+La scelta dell'algoritmo dipende dalle caratteristiche specifiche dell'applicazione, come la complessità dell'ambiente, i requisiti di tempo reale, la sensoristica e le risorse computazionali disponibili.
+
+\subsubsection{FAST-LIO 2}
+Come spiegheremo nei capitoli successivi, si è scelto di equipaggiare il robot con un sensore LiDAR 3D dotato di IMU (Inertial Measurement Unit).
+Conseguentemente, si è scelto di adottare un algoritmo di SLAM che permettesse di integrare efficacemente i dati provenienti da questi sensori.
+
+La scelta è ricaduta su \textbf{FAST-LIO 2} \cite{xu2022fastlio2}, un algoritmo di odometria LiDAR-inerziale (LIO) ad alte prestazioni sviluppato presso l'Università di Hong Kong. FAST-LIO 2 è progettato per fornire stima dello stato in tempo reale con elevata accuratezza, anche in ambienti complessi e con risorse computazionali limitate.
+
+L'algoritmo si basa su un filtro di Kalman esteso iterato (\textit{iterated Extended Kalman Filter}, iEKF) strettamente accoppiato (\textit{tightly-coupled}), che fonde direttamente le misure grezze del LiDAR con i dati dell'IMU. A differenza degli approcci tradizionali basati sull'estrazione di feature, FAST-LIO 2 utilizza un approccio \textit{direct} che registra direttamente i punti della nuvola LiDAR sulla mappa, eliminando la necessità di estrarre caratteristiche geometriche come spigoli e superfici planari.
+
+Le principali innovazioni di FAST-LIO 2 includono:
+\begin{itemize}
+    \item \textbf{Registrazione diretta dei punti}: L'algoritmo registra ogni punto della scansione LiDAR direttamente sulla mappa globale, senza passare per l'estrazione di feature. Questo approccio migliora la robustezza in ambienti con poche caratteristiche geometriche distintive.
+    \item \textbf{ikd-Tree}: Una struttura dati incrementale basata su k-d tree che permette l'inserimento, la cancellazione e la ricerca dei punti più vicini in modo efficiente. Questa struttura consente di mantenere e aggiornare la mappa in tempo reale con un overhead computazionale minimo.
+    \item \textbf{Compensazione del moto}: I dati dell'IMU vengono utilizzati per compensare la distorsione della nuvola di punti causata dal movimento del sensore durante la scansione, garantendo una ricostruzione accurata dell'ambiente.
+    \item \textbf{Calcolo efficiente del guadagno di Kalman}: L'algoritmo sfrutta la struttura sparsa del problema per calcolare il guadagno di Kalman in modo efficiente, riducendo la complessità computazionale.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{2/fastlio2_block_diagram.png}
+    \caption{Diagramma a blocchi dell'algoritmo FAST-LIO 2. Adattato da \cite{xu2022fastlio2}.}
+    \label{fig:fastlio2_diagram}
+\end{figure}
+
+Grazie a queste caratteristiche, FAST-LIO 2 è in grado di operare a frequenze elevate (superiori a 100 Hz su hardware embedded) mantenendo un'accuratezza paragonabile o superiore agli algoritmi stato dell'arte, rendendolo particolarmente adatto per applicazioni robotiche che richiedono localizzazione in tempo reale.
+
+\section{Protocolli di Comunicazione Industriali}
+Nei sistemi robotici mobili, la comunicazione tra i diversi componenti (sensori, attuatori, controllori) riveste un ruolo fondamentale. In ambito industriale e automotive, sono stati sviluppati diversi protocolli di comunicazione che garantiscono affidabilità, determinismo temporale e robustezza in ambienti operativi critici.
+
+\subsection{CAN Bus}
+Il \textbf{CAN} (Controller Area Network) \cite{iso11898_1} è un protocollo di comunicazione seriale sviluppato da Bosch negli anni '80, originariamente per applicazioni automotive. Si tratta di un bus multi-master che permette a più nodi di comunicare senza la necessità di un controllore centrale. Le caratteristiche principali includono:
+\begin{itemize}
+    \item \textbf{Arbitraggio non distruttivo}: In caso di trasmissioni simultanee, il messaggio con priorità più alta prevale senza corrompere i dati.
+    \item \textbf{Rilevamento e gestione degli errori}: Il protocollo include meccanismi robusti di error detection (CRC, bit stuffing, frame check) e gestione automatica degli errori.
+    \item \textbf{Velocità}: Fino a 1 Mbit/s per CAN classico, con estensioni come CAN-FD che raggiungono velocità superiori.
+    \item \textbf{Affidabilità}: Progettato per ambienti con elevate interferenze elettromagnetiche, tipici del settore automotive e industriale.
+\end{itemize}
+
+\subsection{CANopen}
+\textbf{CANopen} \cite{cia301} è un protocollo di alto livello basato su CAN, standardizzato dalla CiA (CAN in Automation) e ampiamente utilizzato in automazione industriale, robotica e veicoli elettrici. Mentre CAN definisce solo il livello fisico e di collegamento dati, CANopen aggiunge un livello applicativo che standardizza la comunicazione tra dispositivi eterogenei.
+
+Le caratteristiche fondamentali di CANopen includono:
+\begin{itemize}
+    \item \textbf{Object Dictionary (OD)}: Ogni dispositivo CANopen espone un dizionario di oggetti che descrive tutte le sue funzionalità, parametri e dati. Questo approccio permette una configurazione standardizzata e l'interoperabilità tra dispositivi di produttori diversi.
+    \item \textbf{PDO (Process Data Objects)}: Messaggi ad alta priorità per lo scambio di dati di processo in tempo reale, come comandi di velocità o letture di encoder. I PDO sono configurabili e permettono di ottimizzare la larghezza di banda.
+    \item \textbf{SDO (Service Data Objects)}: Messaggi per la configurazione e la lettura/scrittura di parametri nel dizionario oggetti. Utilizzano un protocollo client-server con conferma.
+    \item \textbf{NMT (Network Management)}: Servizi per la gestione dello stato dei nodi (pre-operational, operational, stopped) e il monitoraggio della rete tramite heartbeat e node guarding.
+    \item \textbf{SYNC e EMCY}: Messaggi di sincronizzazione per coordinare le operazioni dei nodi e messaggi di emergenza per segnalare condizioni di errore.
+\end{itemize}
+
+Nel contesto del veicolo autonomo oggetto di questa tesi, CANopen è stato scelto come protocollo di comunicazione principale per il controllo degli attuatori (motori di trazione e sterzo). Questa scelta è motivata da diversi fattori:
+\begin{itemize}
+    \item \textbf{Standardizzazione dei profili dispositivo}: CANopen definisce profili standard per diverse classi di dispositivi (CiA 402 per azionamenti, CiA 401 per I/O). Il profilo CiA 402 \cite{cia402}, in particolare, specifica una macchina a stati e modalità operative standard per il controllo di motori elettrici.
+    \item \textbf{Determinismo temporale}: La comunicazione basata su PDO sincronizzati garantisce latenze predicibili, essenziali per il controllo in tempo reale del veicolo.
+    \item \textbf{Diagnostica integrata}: I meccanismi di heartbeat ed emergency permettono di rilevare rapidamente guasti o disconnessioni dei nodi, aumentando la sicurezza del sistema.
+    \item \textbf{Scalabilità}: È possibile aggiungere nuovi dispositivi alla rete senza modificare l'architettura esistente.
+\end{itemize}
+
+\subsection{Altri Protocolli}
+Oltre a CAN e CANopen, esistono altri protocolli utilizzati in contesti simili, ciascuno con caratteristiche e ambiti di applicazione specifici.
+
+\begin{itemize}
+    \item \textbf{EtherCAT} \cite{iec61158ethercat}: Protocollo Ethernet industriale ad alte prestazioni sviluppato da Beckhoff, con latenze nell'ordine dei microsecondi. A differenza di CANopen, EtherCAT utilizza Ethernet come mezzo fisico e sfrutta un'architettura master-slave con elaborazione ``al volo'' dei frame. Offre prestazioni superiori in termini di velocità e sincronizzazione, ma richiede hardware dedicato e risulta più complesso da implementare. È la scelta preferita per applicazioni di motion control ad alta dinamica.
+
+    \item \textbf{PROFINET} \cite{iec61158profinet}: Standard Ethernet industriale promosso da Siemens, diffuso nell'automazione di fabbrica. Rispetto a CANopen, PROFINET offre maggiore larghezza di banda e integrazione nativa con i sistemi Siemens, ma è meno diffuso nel settore della robotica mobile e dei veicoli elettrici. La versione PROFINET IRT (Isochronous Real-Time) garantisce determinismo paragonabile a EtherCAT.
+
+    \item \textbf{Modbus} \cite{modbus_spec}: Protocollo seriale sviluppato da Modicon nel 1979, uno dei più semplici e diffusi nell'automazione industriale. Utilizza un'architettura master-slave con comunicazione request-response. Rispetto a CANopen, Modbus è più semplice da implementare ma offre funzionalità limitate: non prevede meccanismi nativi di sincronizzazione, gestione degli errori avanzata o profili dispositivo standardizzati. È adatto per applicazioni con requisiti di tempo reale meno stringenti.
+
+    \item \textbf{Modbus TCP} \cite{modbustcp_spec}: Estensione di Modbus su rete Ethernet/TCP-IP. Mantiene la semplicità del protocollo originale aggiungendo i vantaggi dell'infrastruttura Ethernet (maggiore velocità, distanze più lunghe, integrazione con reti IT). Tuttavia, l'utilizzo di TCP introduce latenze non deterministiche, rendendolo meno adatto rispetto a CANopen per il controllo in tempo reale di attuatori critici.
+\end{itemize}
+
+La scelta del protocollo dipende dai requisiti specifici dell'applicazione in termini di latenza, throughput, numero di nodi e compatibilità con i dispositivi disponibili. Nel caso del veicolo oggetto di questa tesi, CANopen rappresenta il miglior compromesso tra prestazioni real-time, standardizzazione dei profili per azionamenti elettrici e disponibilità di componenti compatibili.

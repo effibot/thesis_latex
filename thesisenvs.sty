@@ -1,0 +1,215 @@
+% thesisenvs.sty - Ambienti personalizzati per tesi
+% Ispirato a kao-book e elegantbook
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{thesisenvs}[2024/12/02 Ambienti tcolorbox per tesi]
+
+% Pacchetti necessari
+\RequirePackage{tcolorbox}
+\tcbuselibrary{theorems, skins, breakable}
+\RequirePackage{fontawesome5}  % Icone (opzionale)
+
+%% ============================================
+%% DEFINIZIONE COLORI
+%% ============================================
+\definecolor{theoremcolor}{RGB}{0, 83, 156}      % Blu scuro
+\definecolor{definitioncolor}{RGB}{0, 128, 0}    % Verde
+\definecolor{propositioncolor}{RGB}{128, 0, 128} % Viola
+\definecolor{remarkcolor}{RGB}{255, 140, 0}      % Arancione
+\definecolor{examplecolor}{RGB}{70, 130, 180}    % Steel blue
+\definecolor{notecolor}{RGB}{100, 100, 100}      % Grigio
+\definecolor{warningcolor}{RGB}{200, 50, 50}     % Rosso
+\definecolor{tipcolor}{RGB}{34, 139, 34}         % Verde foresta
+
+%% ============================================
+%% STILI BASE TCOLORBOX
+%% ============================================
+
+% Stile base per teoremi numerati
+\tcbset{
+    theoremstyle/.style={
+            enhanced,
+            breakable,
+            sharp corners,
+            boxrule=0pt,
+            frame hidden,
+            borderline west={3pt}{0pt}{#1},
+            colback=#1!5,
+            colframe=#1,
+            coltitle=white,
+            fonttitle=\bfseries,
+            attach boxed title to top left={yshift=-2mm, xshift=5mm},
+            boxed title style={
+                    sharp corners,
+                    colback=#1,
+                    boxrule=0pt,
+                },
+            before skip=10pt,
+            after skip=10pt,
+            left=10pt,
+            right=10pt,
+            top=8pt,
+            bottom=8pt,
+        },
+}
+
+% Stile per box semplici (note, tip, warning)
+\tcbset{
+    simplestyle/.style={
+            enhanced,
+            breakable,
+            sharp corners,
+            boxrule=0pt,
+            frame hidden,
+            borderline west={3pt}{0pt}{#1},
+            colback=#1!8,
+            before skip=10pt,
+            after skip=10pt,
+            left=10pt,
+            right=10pt,
+            top=8pt,
+            bottom=8pt,
+        },
+}
+
+%% ============================================
+%% AMBIENTI NUMERATI (Teoremi, Definizioni, etc.)
+%% ============================================
+
+% Contatori
+\newcounter{theorem}[chapter]
+\renewcommand{\thetheorem}{\thechapter.\arabic{theorem}}
+
+\newcounter{definition}[chapter]
+\renewcommand{\thedefinition}{\thechapter.\arabic{definition}}
+
+\newcounter{proposition}[chapter]
+\renewcommand{\theproposition}{\thechapter.\arabic{proposition}}
+
+\newcounter{example}[chapter]
+\renewcommand{\theexample}{\thechapter.\arabic{example}}
+
+% Teorema
+\newtcolorbox[use counter=theorem]{theorem}[1][]{
+    theoremstyle=theoremcolor,
+    title={Teorema~\thetheorem\ifx&#1&\else: #1\fi},
+}
+
+% Definizione
+\newtcolorbox[use counter=definition]{definition}[1][]{
+    theoremstyle=definitioncolor,
+    title={Definizione~\thedefinition\ifx&#1&\else: #1\fi},
+}
+
+% Proposizione
+\newtcolorbox[use counter=proposition]{proposition}[1][]{
+    theoremstyle=propositioncolor,
+    title={Proposizione~\theproposition\ifx&#1&\else: #1\fi},
+}
+
+% Lemma (usa contatore theorem)
+\newtcolorbox[use counter=theorem]{lemma}[1][]{
+    theoremstyle=theoremcolor,
+    title={Lemma~\thetheorem\ifx&#1&\else: #1\fi},
+}
+
+% Corollario (usa contatore theorem)
+\newtcolorbox[use counter=theorem]{corollary}[1][]{
+    theoremstyle=theoremcolor,
+    title={Corollario~\thetheorem\ifx&#1&\else: #1\fi},
+}
+
+% Esempio
+\newtcolorbox[use counter=example]{example}[1][]{
+    theoremstyle=examplecolor,
+    title={Esempio~\theexample\ifx&#1&\else: #1\fi},
+}
+
+%% ============================================
+%% AMBIENTI NON NUMERATI (Note, Warning, Tip)
+%% ============================================
+
+% Nota
+\newtcolorbox{note}[1][Nota]{
+    simplestyle=notecolor,
+    fontupper=\itshape,
+    before upper={\textbf{#1:}\quad},
+}
+
+% Osservazione
+\newtcolorbox{remark}[1][Osservazione]{
+    simplestyle=remarkcolor,
+    before upper={\textbf{#1:}\quad},
+}
+
+% Attenzione / Warning
+\newtcolorbox{warningbox}[1][Attenzione]{
+    simplestyle=warningcolor,
+    before upper={\textbf{#1:}\quad},
+}
+
+% Suggerimento / Tip
+\newtcolorbox{tip}[1][Suggerimento]{
+    simplestyle=tipcolor,
+    before upper={\textbf{#1:}\quad},
+}
+
+% Importante
+\newtcolorbox{important}[1][Importante]{
+    enhanced,
+    breakable,
+    sharp corners,
+    boxrule=1pt,
+    colback=warningcolor!10,
+    colframe=warningcolor,
+    before skip=10pt,
+    after skip=10pt,
+    left=10pt,
+    right=10pt,
+    before upper={\textbf{#1:}\quad},
+}
+
+%% ============================================
+%% AMBIENTE DIMOSTRAZIONE
+%% ============================================
+
+\newtcolorbox{proofbox}[1][Dimostrazione]{
+    enhanced,
+    breakable,
+    blanker,
+    borderline west={2pt}{0pt}{gray},
+    left=10pt,
+    before skip=10pt,
+    after skip=10pt,
+    before upper={\textit{#1.}\quad},
+    after upper={\hfill$\square$},
+}
+
+%% ============================================
+%% BOX GENERICI COLORATI
+%% ============================================
+
+% Box generico con titolo
+\newtcolorbox{titlebox}[2][theoremcolor]{
+    enhanced,
+    breakable,
+    sharp corners,
+    colback=#1!5,
+    colframe=#1,
+    coltitle=white,
+    fonttitle=\bfseries,
+    title=#2,
+    attach boxed title to top left={yshift=-2mm, xshift=5mm},
+    boxed title style={
+            sharp corners,
+            colback=#1,
+        },
+    before skip=10pt,
+    after skip=10pt,
+}
+
+% Box semplice senza titolo
+\newtcolorbox{simplebox}[1][theoremcolor]{
+    simplestyle=#1,
+}
+
+\endinput

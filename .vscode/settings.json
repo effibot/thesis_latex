@@ -1,0 +1,12 @@
+{
+    "latex-workshop.docker.enabled": false,
+
+    "latex-workshop.docker.image.latex": "latex-thesis-env",
+    "latex-workshop.latex.outDir": "%DIR%/build",
+    "latex-workshop.texcount.command": "${workspaceFolder}/scripts/texcount.sh",
+    "latex-workshop.texcount.args": [
+        "-merge",
+        "-brief",
+        "%DOC%"
+    ]
+}

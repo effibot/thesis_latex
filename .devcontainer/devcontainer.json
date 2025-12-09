@@ -1,0 +1,37 @@
+{
+	"name": "LaTeX Thesis Environment",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"James-Yu.latex-workshop"
+			],
+			"settings": {
+				"latex-workshop.latex.tools": [
+					{
+						"name": "latexmk",
+						"command": "latexmk",
+						"args": [
+							"-synctex=1",
+							"-interaction=nonstopmode",
+							"-file-line-error",
+							"-pdf",
+							"-outdir=%OUTDIR%",
+							"%DOC%"
+						],
+						"env": {}
+					}
+				],
+				"latex-workshop.latex.outDir": "%DIR%/build",
+				"latex-workshop.view.pdf.viewer": "tab",
+				"latex-workshop.docker.enabled": false
+			}
+		}
+	},
+	"remoteUser": "vscode",
+	"remoteEnv": {
+		"SSH_AUTH_SOCK": "${localEnv:SSH_AUTH_SOCK}"
+	}
+}

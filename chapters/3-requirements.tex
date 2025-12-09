@@ -1,0 +1,195 @@
+\chapter{Requisiti e Specifiche}
+\section{Selezione del Payload}
+L'idea iniziale del progetto è stata quella di movimentare le sezioni ventilanti (\textit{SV}) che compongono il sottoassieme superiore dei chiller prodotti nello stabilimento. La ragione di questo obiettivo risiede nel fatto che le SV sono componenti di grandi dimensioni, che vengono prodotte all'interno di uno dei capannoni dello stabilimento e successivamente poste negli spazi esterni in piazzole sparse in diversi punti, in attesa di essere assemblate sul prodotto finito.
+
+\begin{note}
+    Attualmente, una volta che una SV è pronta per passare alla fase di assemblaggio successiva, viene calettata su appositi supporti con ruote caster e trasportate tramite dei muletti elettrici. Questo richiede l'intervento di personale specializzato all'uso di carroponti e muletti, con conseguente dispendio di tempo e risorse.
+\end{note}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{2/sv_chiller.png}
+    \caption{Modello 3D di una Sezione Ventilante di un Chiller, formata da 8 \textbf{\textit{Moduli a V}}. Ogni modulo, ha dimensioni $(L \times W \times H)m=(2 \times 1 \times 1.5)m$. L'intero sottoassieme ha quindi dimensioni complessive di circa $(8 \times 2 \times 1.5)m$.\\Si possono apprezzare in giallo i supporti con ruote caster su cui viene calettata la SV.}
+\end{figure}
+
+Data la difficoltà di dover gestire delle strutture così ingombranti in un ambiente produttivo già di per sé complesso, si è deciso di ridefinire l'obiettivo del progetto, orientandolo la movimentazione dei compressori \textit{a vite}, componenti di taglia standard dal peso contenuto. Questi sono componenti fondamentali per il funzionamento dei chiller, in quanto sono responsabili della compressione del refrigerante e del suo trasferimento attraverso il sistema di climatizzazione per attuare il ciclo termico e pertanto è di interesse primario una gestione logistica efficiente di questi componenti all'interno dello stabilimento.
+\begin{note}
+    I compressori a vite vengono prodotti in un capannone dedicato e distaccato rispetto a quello dove vengono prodotti i chiller. Una volta prodotti, questi vengono posti in una piazzola di stoccaggio esterna in attesa di essere prelevati e trasportati al reparto di assemblaggio dei chiller. Il trasporto avviene tramite muletti elettrici che inforcano delle pedane in ferro su cui sono posizionati i compressori.
+\end{note}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{2/compressore_screw.png}
+    \caption{Compressore a vite Daikin, modello SM100. Peso: 70 kg. Dimensioni: $(L \times W \times H)m=(0.9 \times 0.4 \times 0.6)m$.}
+\end{figure}
+
+La scelta di questo payload ha permesso di definire requisiti più gestibili in termini di capacità di carico e dimensioni del veicolo. Si è comunque mantenuta l'idea di dimensionare i motori e la struttura del veicolo in modo da poter essere scalabile in futuro, qualora si volesse aumentare la capacità di carico per movimentare componenti più grandi come le SV.
+
+\section{Requisiti del Veicolo}
+In base alla scelta del payload e all'ambiente operativo, sono stati definiti i seguenti requisiti funzionali e prestazionali per il veicolo autonomo:
+\begin{itemize}
+    \item \textbf{Limitare i costi:} Il progetto deve mirare a contenere i costi, usando il minimo numero di componenti necessari per raggiungere gli obiettivi prefissati e privilegiando soluzioni economiche ma affidabili.
+    \item \textbf{Capacità di carico:} Il veicolo deve essere in grado di trasportare un carico utile minimo di $1000$ kg, per garantire la movimentazione sicura del compressore a vite e di eventuali accessori o attrezzature aggiuntive.
+    \item \textbf{Velocità massima:} La velocità massima del veicolo deve essere al massimo di $1$ m/s, per garantire la sicurezza degli operatori e la stabilità del carico durante il trasporto.
+    \item \textbf{Tipologia di motori:} Tutti i motori (trazione e sterzo) devono essere elettrici, per ridurre l'impatto ambientale e facilitare la manutenzione.
+    \item \textbf{Alimentazione:} Il veicolo deve essere alimentato a batteria, per garantire l'autonomia operativa e la flessibilità di movimento all'interno dello stabilimento.
+    \item \textbf{Autonomia operativa:} Il veicolo deve essere in grado di operare almeno per $4$ ore prima di ricaricarsi.
+    \item \textbf{Navigazione e localizzazione:} Il veicolo deve essere in grado di navigare autonomamente all'interno dello stabilimento, evitando ostacoli statici e dinamici.
+    \item \textbf{Manovrabilità:} Il veicolo deve essere in grado di effettuare manovre semplici come: traiettorie rettilinee, curve morbide, rotazioni sul posto e traslazioni laterali.
+    \item \textbf{Interfaccia di controllo:} Il veicolo deve essere dotato di un'interfaccia di controllo che permetta la programmazione delle rotte, il monitoraggio dello stato del veicolo e l'intervento manuale in caso di emergenza.
+    \item \textbf{Spazio Operativo:} Il veicolo deve essere in grado di operare in esterna, su asfalto e cemento, e in interna, su pavimentazioni industriali.
+\end{itemize}
+
+\section{Specifiche Tecniche}
+Considerando i requisiti funzionali e prestazionali, calcoliamo le specifiche tecniche che deve avere il veicolo. Consideriamo, spesso sovradimensionado, i seguenti parametri:
+\begin{itemize}
+    \item \textbf{Carico utile:} (robot + payload) $1000$ kg
+    \item \textbf{Velocità massima:} $1$ m/s
+    \item \textbf{Autonomia operativa:} $4$ h
+    \item \textbf{Raggio delle ruote:} $0.1$ m
+    \item \textbf{Pendenza massima affrontabile:} $10\%$, presa rispetto a una rampa di $0.3$m di altezza per $3$m di lunghezza. Corrispondente a circa $5.7^\circ$.
+    \item \textbf{Attrito Statico:} Coefficiente di attrito statico tra ruota e asfalto $\mu_s = 0.5$.
+    \item \textbf{Attrito Volvente:} Coefficiente di attrito volvente tra ruota e asfalto $\mu_r = 0.03$.
+    \item \textbf{Vel. \& Acc. max}: Supponendo di voler raggiungere una velocità massima di $1$ m/s in $3$ s, si ha un'accelerazione di $\sim0.333$ m/s$^2$.
+\end{itemize}
+Da questi dati, calcoliamo le seguenti specifiche tecniche affinché avvenga il primo distacco:
+\begin{itemize}
+    \item In piano, dobbiamo vincere:
+          \begin{equation}
+              \begin{aligned}
+                  F_{r}   & = \mu_r \cdot m \cdot g = 0.03 \cdot 1000 \cdot 9.81 = 294.3 \text{ N} \\
+                  F_{a}   & = m \cdot a = 1000 \cdot 0.333 = 333 \text{ N}                         \\
+                  F_{tot} & = F_{r} + F_{a} = 294.3 + 333 = 627.3 \text{ N}
+              \end{aligned}
+          \end{equation}
+          Quindi, la coppia totale richiesta è:
+          \begin{equation}
+              \tau_{tot} = F_{tot} \cdot r = 627.3 \cdot 0.1 = 62.73 \text{ Nm}
+          \end{equation}
+          Che corrisponde a una potenza totale di:
+          \begin{equation}
+              P_{tot} = F_{tot} \cdot v = 627.3 \cdot 1 = 627.3 \text{ W}
+          \end{equation}
+    \item Su una pendenza del $10\%$, dobbiamo vincere:
+          \begin{equation}
+              \begin{aligned}
+                  F_{\parallel} & = m \cdot g \cdot \sin(\theta) = 1000 \cdot 9.81 \cdot \sin(5.7^\circ) = 973.6 \text{ N}                        \\
+                  F_{r}         & = \mu_r \cdot m \cdot g \cdot \cos(\theta) = 0.03 \cdot 1000 \cdot 9.81 \cdot \cos(5.7^\circ) = 293.1 \text{ N} \\
+                  F_{a}         & = m \cdot a = 1000 \cdot 0.333 = 333 \text{ N}                                                                  \\
+                  F_{tot}       & = F_{\parallel} + F_{r} + F_{a} = 973.6 + 293.1 + 333 = 1599.7 \text{ N}
+              \end{aligned}
+          \end{equation}
+          Quindi, la coppia totale richiesta a ciascuna ruota è:
+          \begin{equation}
+              \tau_{tot} = F_{tot} \cdot r = 1599.7 \cdot 0.1 = 159.97 \text{ Nm}
+          \end{equation}
+          Che corrisponde a una potenza totale di:
+          \begin{equation}
+              P_{tot} = F_{tot} \cdot v = 1599.7 \cdot 1 = 1599.7 \text{ W}
+          \end{equation}
+\end{itemize}
+Approssimando la potenza totale necessaria a $1$ kW, si è deciso di richiedere per la batteria una capacità energetica di almeno $4$ kWh per garantire l'autonomia operativa di $4$ ore.
+
+\begin{note}
+    In questa trattazione preliminare, non è stato calcolato l'effetto inerziale delle masse in rotazione né tantonmeno le coppie necessarie ad eventuali motori di sterzo per orientare le ruote una volta messe sotto carico e/o in movimento. Questi aspetti più complessi sono stati demandati ai fornitori.
+\end{note}
+
+\section{Sistemi di bordo e Sensoristica}
+Al fine di ottenere un sistema in grado di navigare autonomamente e di poter controllare i motori, si è deciso di dotare il veicolo di un sistema di bordo composto da:
+\begin{itemize}
+    \item \textbf{Computer di bordo:} Un \textit{Single Board Computer} (SBC) con capacità di calcolo sufficiente per eseguire gli algoritmi di navigazione e controllo in tempo reale. Si è optato per una soluzione basata su architettura $x86$ per garantire compatibilità con una vasta gamma di software e librerie, data anche la necessità di utilizzare ROS2 e Linux come sistema operativo e framework di sviluppo.
+    \item \textbf{Inverter per motori PMAC:} Per il controllo dei motori di trazione e sterzo, si è scelto di utilizzare inverter compatibili con motori brushless a magneti permanenti (PMAC), in grado di fornire la potenza richiesta e di supportare protocolli di comunicazione industriali come CANOpen.
+    \item \textbf{Batteria LiFePO4:} Per l'alimentazione del veicolo, si è optato per una batteria al litio-ferro-fosfato (LiFePO4) da almeno $4$ kWh, in grado di garantire l'autonomia operativa richiesta e di supportare cicli di carica/scarica profondi senza degradazione significativa.
+    \item \textbf{Sistema di comunicazione CAN:} Per l'integrazione e il controllo dei vari componenti del veicolo, si è scelto di utilizzare un adattatore USB-CAN, che permetta la comunicazione tra il computer di bordo e gli inverter dei motori in CAN bus.
+\end{itemize}
+Per la sensoristica, si è cercato di contenere il numero di sensori al minimo per ridurre i costi, selezionando solo quelli strettamente necessari per la navigazione autonoma e il controllo del veicolo:
+\begin{itemize}
+    \item \textbf{LIDAR 3D:} Per la mappatura tridimensionale dell'ambiente circostante e l'individuazione di ostacoli. Il cono di visione del sensore scelto deve coprire almeno $180^\circ$ in orizzontale e $30^\circ$ in verticale, con una portata minima di $10$ m.
+    \item \textbf{Encoder sui motori:} Per la misurazione della velocità, della posizione degli sterzi e del numero di giri dei motori di trazione per un calcolo a valle della stima della posizione del veicolo tramite odometria.
+\end{itemize}
+\begin{note}
+    La scelta di non utilizzare telecamere è stata dettata dalla volontà di non dover gestire eventuali problemi legati alla privacy degli operatori nelle prossimità del robot e tantomeno alla complessità della gestione della sicurezza informatica legata alla trasmissione di immagini video per evitare possibili attacchi di spionaggio industriale.
+\end{note}
+\section{Sistema di Movimentazione}
+Per soddisfare i requisiti di manovrabilità, è risultata da subito ovvia la necessità di prevedere meccanismi di sterzo al fine di garantire la riuscita di manovre come rotazioni sul posto e traslazioni laterali. Tuttavia, introdurre meccanismi di sterzo avrebbe comportato un aumento della complessità meccanica andando a incidere sui costi complessivi del progetto. Si è quindi proceduto ad analizzare diverse configurazioni di ruote motrici e sterzanti per trovare un compromesso tra le richieste esplicitate. Le configurazioni prese in considerazione sono state:
+\begin{enumerate}
+    \item \textbf{4 ruote motrici e sterzanti:} Offre la massima trazione e manovrabilità, ma comporta costi elevati e complessità meccanica.
+    \item \textbf{2 ruote motrici + 2 ruote fisse:} Compromesso tra trazione e semplicità, ma con limitata capacità di sterzata tramite guida differenziale.
+    \item \textbf{2 ruote motrici e sterzanti + 2 ruote fisse:} Buona manovrabilità e trazione, con costi e complessità moderate. Simile ad una configurazione di veicolo tradizionale.
+    \item \textbf{2 ruote motrici e sterzanti + 2 ruote caster:} Migliore manovrabilità se le attuazioni sono posizionate opportunamente, con riduzione dei costi e della complessità meccanica.
+\end{enumerate}
+Dopo un'attenta valutazione, si è deciso di adottare la configurazione a 2 ruote motrici e sterzanti più 2 ruote caster, in quanto offre un buon equilibrio tra manovrabilità, trazione, costi e semplicità meccanica. Le ruote motrici e sterzanti sono state posizionate su una diagonale del veicolo, per massimizzare l'efficacia della sterzata e permettere manovre come rotazioni sul posto e traslazioni laterali. Le ruote caster, invece, sono state posizionate sull'altra diagonale per garantire stabilità e supporto al veicolo durante il movimento.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{3/2wd_steering.pdf}
+    \caption{Schema della configurazione a 2 ruote motrici e sterzanti (in verde) e 2 ruote caster (in viola).}
+\end{figure}
+\section{Selezione componenti}
+Sulla base delle specifiche tecniche calcolate, e della configurazione di ruote scelta, si è proceduto alla selezione dei componenti principali del veicolo.
+\subsection{Motori}
+Per gruppo motori, si è scelto di acquistare delle motoruote. Una motoruota integra in un unico componente il motore elettrico, la ruota stessa e il sistema di trasmissione, semplificando notevolmente la progettazione meccanica e riducendo i costi di assemblaggio. Infatti, possono essere montate direttamente sul telaio del veicolo, a patto di predisporre opportune staffe di supporto.
+
+Il prodotto acquistato è la MRT05 di CFR, che combina inoltre un motore di sterzo posizionato verticalmente rispetto al piano della ruota, permettendo di ottenere la sterzata mediante un accoppiamento ad ingranaggi. Questo consente di ottenere un sistema di sterzo compatto e integrato, riducendo ulteriormente la complessità meccanica.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{3/MRT05_render.png}
+    \caption{Render della motoruota MRT05 di CFR.}
+\end{figure}
+
+\begin{table}[h]
+    \centering
+    \caption{Specifiche tecniche dei motori di trazione e sterzo}
+    \label{tab:motors_data}
+    \begin{tabular}{|l|c|c|c|}
+        \hline
+        \textbf{Parametro} & \textbf{Trazione} & \textbf{Sterzo} & \textbf{Unità} \\
+        \hline
+        Tipo & BR Brushless & BR Brushless & - \\
+        Potenza (S2 - 60 min) & 500 & 300 & W \\
+        Tensione batteria & 48 & 48 & V \\
+        Velocità motore & 2300 & 2800 & RPM \\
+        Frequenza & 76 & 93 & Hz \\
+        Coppia motore & 2 & 1 & Nm \\
+        Rapporto di riduzione & 1:21 & 1:45.56 & - \\
+        Coppia in uscita & 37 & 34 & Nm \\
+        Coppia max (acc./frenata) & 180 & - & Nm \\
+        Grado di protezione & IP65 & IP65 & - \\
+        Lubrificazione & Grasso & Grasso & - \\
+        Codice motore PMAC & BD 090 - 50 - 4 & BD 090 - 25 - 4 & - \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \caption{Peso complessivo del gruppo ruota motrice}
+    \label{tab:drive_unit_weight}
+    \begin{tabular}{|l|c|c|}
+        \hline
+        \textbf{Componente} & \textbf{Valore} & \textbf{Unità} \\
+        \hline
+        Peso totale gruppo ruota & 42 & kg \\
+        \hline
+    \end{tabular}
+\end{table}
+La coppia totale disponibile alle ruote motrici risulta:
+\begin{equation}
+    \tau_{disponibile} = 2 \times \tau_{nominale} = 2 \times 37 = 74 \, Nm
+\end{equation}
+
+La forza di trazione massima erogabile in condizioni nominali:
+\begin{equation}
+    F_{trazione} = \frac{\tau_{disponibile}}{r} = \frac{74}{0.099} \approx 747 \, N
+\end{equation}
+
+Nel caso peggiore (salita 10\% con accelerazione $a = 0.33 \, m/s^2$), la forza richiesta è:
+\begin{equation}
+    F_{richiesta} = m \cdot g \cdot \sin(\theta) + \mu_r \cdot m \cdot g \cdot \cos(\theta) + m \cdot a = 976 + 293 + 333 = 1602 \, N
+\end{equation}
+
+Questa condizione richiede l'utilizzo della coppia di picco ($2 \times 180 = 360 \, Nm$), sostenibile per la breve durata della rampa:
+\begin{equation}
+    t_{rampa} = \frac{L}{v} = \frac{3}{1} = 3 \, s \ll t_{picco,max}
+\end{equation}
+Pertanto, i motori scelti risultano adeguati alle specifiche richieste.

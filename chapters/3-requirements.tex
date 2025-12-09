@@ -243,7 +243,7 @@ Per l'alimentazione del veicolo, si è scelto di utilizzare una batteria con tec
 Su queste basi, la ricerca del fornitore per tale componente si è concentrata su aziende che operassero nel campo dei veicoli elettrici. Dopo un'attenta valutazione, si è deciso di affidarsi a \textit{FlashBattery}, un'azienda italiana specializzata nel settore, che offre soluzioni dotate di sistemi di gestione della batteria (BMS) avanzati con comunicazione in CANOpen.
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\textwidth]{batteria/front_view.jpeg}
+    \includegraphics[width=0.4\textwidth]{batteria/front_view.jpeg}
     \caption{Foto del pacco batteria (rosso) e del caricabatterie (nero) forniti da FlashBattery, alloggiate su un carrello di prova.}
 \end{figure}
 Sulle base delle specifiche tecniche calcolate in precedenza, il fornitore ha proposto una batteria con le seguenti caratteristiche:
@@ -330,4 +330,330 @@ La batteria fornisce:
 
 \textbf{Conclusione:} La batteria selezionata è adeguata ai requisiti del veicolo, offrendo capacità energetica sufficiente per l'autonomia richiesta e correnti di scarica ampiamente superiori alle necessità operative, garantendo così un margine di sicurezza per eventuali picchi di potenza o inefficienze del sistema.
 
-\subsection{}
+\subsection{Driver per Motori Elettrici}
+Per il controllo di basso livello dei motori PMAC integrati nelle motoruote, si è deciso di utilizzare degli inverter compatibili con le specifiche dei motori stessi, ovvero:
+\begin{itemize}
+    \item Tensione di alimentazione: 48V
+    \item Potenza nominale: almeno 500W per i motori di trazione e 300W per i motori di sterzo
+    \item Supporto per protocollo di comunicazione CANOpen.
+\end{itemize}
+Dopo una ricerca tra i possibili fornitori\footnote{Tale ricerca è stata necessaria in quanto CFR \textbf{non produce} inverter.}, si è scelto di accettare la proposta offerta da \textbf{MicroPhase}, un'azienda italiana specializzata in azionamenti per motori elettrici.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{3/mini-traction-power.png}
+    \caption{Inverter Mini-Traction Power di MicroPhase, utilizzato per il controllo dei motori PMAC delle motoruote.}
+\end{figure}
+Il modello da loro selezionato è il \textit{Mini-Traction Power} che soddisfa tutti i requisiti richiesti. Difatti, tali driver \textbf{implementano completamente} i protocolli CiA 301 e 402 per la definizione degli oggetti e della macchina a stati finiti per il controllo dei motori.
+
+Inoltre, l'azienda ha offerto supporto tecnico per:
+\begin{itemize}
+    \item Configurazione dei driver per l'uso specifico con i motori CFR e gli encoder \textit{SIN/COS} da loro integrati.
+    \item Taratura dei PID per il controllo di basso livello delle fasi di corrente dei motori.
+\end{itemize}
+
+\begin{table}[h]
+    \centering
+    \caption{Specifiche tecniche dell'inverter Mini-Traction Power (Modello 48V)}
+    \label{tab:inverter_specs}
+    \begin{tabular}{|l|c|c|}
+        \hline
+        \textbf{Parametro}         & \textbf{Valore}      & \textbf{Unità} \\
+        \hline
+        Tensione nominale          & 48                   & V              \\
+        Tensione minima            & 20                   & V              \\
+        Tensione massima ammessa   & 80                   & V              \\
+        Corrente di boost (5s)     & 120 @ 5s             & A              \\
+        Corrente di picco (2 min)  & 100 @ 2min           & A              \\
+        Corrente nominale          & 75                   & A              \\
+        Potenza nominale di uscita & 3.6                  & kW             \\
+        Frequenza PWM              & 20                   & kHz            \\
+        Temperatura di esercizio   & 0 / +40              & °C             \\
+        Temperatura di stoccaggio  & -10 / +70            & °C             \\
+        Uscita ausiliaria 5V       & 5 (max 200 mA)       & V              \\
+        Banda di corrente          & 2                    & kHz            \\
+        Banda di velocità          & 150                  & Hz             \\
+        Induttanza minima motore   & 200                  & $\mu$H         \\
+        Peso                       & 0.5                  & kg             \\
+        Grado di contaminazione    & 2° o superiore       & -              \\
+        Altitudine                 & 0-1000m / 1000-2000m & m              \\
+        Infiammabilità 94V-0       & Conforme             & -              \\
+        \hline
+    \end{tabular}
+\end{table}
+\subsection{Computer di Bordo}
+Per il computer di bordo, si è scelto il \textit{LattePanda Sigma}, un Single Board Computer (SBC) basato su architettura x86 che offre prestazioni eccezionali in un formato compatto. Questo dispositivo è equipaggiato con un processore Intel® Core™ i5-1340P di 13ª generazione (Raptor Lake), caratterizzato da 12 core (4 Performance-core + 8 Efficient-core) e 16 thread, con frequenza turbo fino a 4.6 GHz per i core ad alte prestazioni e 3.4 GHz per quelli efficienti.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{3/lattepanda_sigma2.png}
+    \caption{LattePanda Sigma Single Board Computer con processore Intel Core i5-1340P.}
+\end{figure}
+
+La scelta di questo SBC è stata motivata da diversi fattori chiave:
+\begin{itemize}
+    \item \textbf{Architettura x86:} Garantisce compatibilità nativa con ROS2 e una vasta gamma di software e librerie di robotica, semplificando lo sviluppo e il debug.
+    \item \textbf{Potenza di calcolo:} Il processore i5-1340P offre prestazioni elevate per eseguire algoritmi di navigazione, localizzazione e controllo in tempo reale, con una potenza base di 28W (configurabile fino a 45W).
+    \item \textbf{Memoria veloce:} Dotato di 16GB di RAM LPDDR5-6400 dual-channel, con una banda passante di 102.4 GB/s, permette l'elaborazione simultanea di dati provenienti dai sensori e l'esecuzione di algoritmi complessi.
+    \item \textbf{GPU integrata:} Intel® Iris® Xe Graphics con 80 unità di esecuzione, utile per eventuali elaborazioni grafiche o visualizzazioni.
+    \item \textbf{Connettività industriale:} Include interfacce essenziali per applicazioni robotiche:
+          \begin{itemize}
+              \item 2 porte Ethernet 2.5GbE (Intel® i225-V) per comunicazioni di rete affidabili
+              \item Porte USB (2x USB2.0, 2x USB3.2 Gen2, 2x Thunderbolt™ 4) per collegare adattatori CAN-USB e altri dispositivi
+              \item Porta COM con supporto nativo per protocolli industriali RS232/RS485
+              \item Header GPIO a 34 pin con co-processore ATmega32U4 per interfacciamento I/O
+          \end{itemize}
+    \item \textbf{Espandibilità:} Slot M.2 per storage NVMe ad alte prestazioni e moduli wireless, permettendo l'installazione di SSD per logging dei dati e moduli WiFi/4G per comunicazioni remote.
+    \item \textbf{Supporto multi-OS:} Compatibile con Windows, Ubuntu e altre distribuzioni Linux, Proxmox VE, permettendo la scelta del sistema operativo più adatto. Per il progetto è stato scelto Ubuntu 24.04 LTS con ROS2 Jazzy Jalisco.
+    \item \textbf{Formato compatto:} Form factor 3.5" (146 $\times$ 102 mm), facilmente integrabile nel telaio del robot.
+    \item \textbf{Gestione energetica:} Alimentazione flessibile tramite DC Jack (12-20V) o USB Type-C PD (20V), con funzioni BIOS avanzate tra cui Auto Power-on e Watchdog Timer, essenziali per applicazioni autonome.
+\end{itemize}
+
+\begin{table}[h]
+    \centering
+    \caption{Specifiche tecniche principali del LattePanda Sigma}
+    \label{tab:sbc_specs}
+    \begin{tabular}{|l|c|c|}
+        \hline
+        \textbf{Parametro}     & \textbf{Valore}                                & \textbf{Unità} \\
+        \hline
+        Processore             & Intel Core i5-1340P                            & -              \\
+        Core / Thread          & 12C (4P+8E) / 16T                              & -              \\
+        Frequenza massima      & 4.6 (P-core), 3.4 (E-core)                     & GHz            \\
+        Cache L2               & 12                                             & MB             \\
+        Potenza base (TDP)     & 28 (default: 45W)                              & W              \\
+        GPU                    & Intel Iris Xe Graphics (80 EU)                 & -              \\
+        Frequenza GPU          & 1.45                                           & GHz            \\
+        RAM                    & 16 GB LPDDR5-6400 Dual-Channel                 & GB             \\
+        Banda passante memoria & 102.4                                          & GB/s           \\
+        Ethernet               & 2 $\times$ 2.5GbE (Intel i225-V)               & -              \\
+        USB                    & 2$\times$USB2.0, 2$\times$USB3.2, 2$\times$TB4 & -              \\
+        Storage                & M.2 NVMe PCIe 4.0 x4                           & -              \\
+        Display                & HDMI 2.1, 2$\times$USB-C DP, eDP               & -              \\
+        Dimensioni             & 146 $\times$ 102                               & mm             \\
+        Temperatura operativa  & 0 / +45                                        & °C             \\
+        \hline
+    \end{tabular}
+\end{table}
+
+Questa piattaforma hardware fornisce le risorse computazionali necessarie per eseguire l'intero stack software del robot, includendo la gestione dei sensori, la localizzazione, la pianificazione del percorso e il controllo dei motori, mantenendo al contempo un profilo energetico compatibile con l'alimentazione a batteria del veicolo.
+
+\section{Sensoristica}
+
+Analizziamo ora l'insieme della sensoristica a disposizione e/o scelta per il veicolo.
+
+\subsection{LiDAR}
+
+Il sensore LiDAR scelto per il progetto è il \textit{Livox Mid-360}, un dispositivo di scansione 3D prodotto da Livox Technology che offre un eccellente compromesso tra prestazioni, costo e facilità di integrazione. Questo sensore utilizza un pattern di scansione non ripetitivo proprietario di Livox, che garantisce una copertura più uniforme dell'ambiente rispetto ai LiDAR tradizionali a scansione meccanica.
+
+La scelta di questo sensore è stata motivata da diverse caratteristiche chiave:
+\begin{itemize}
+    \item \textbf{Campo visivo esteso:} $360^\circ$ in orizzontale e $59^\circ$ in verticale ($-7^\circ$ a $+52^\circ$), permettendo una copertura quasi completa dell'ambiente circostante il veicolo, essenziale per la navigazione autonoma e il rilevamento di ostacoli.
+    \item \textbf{Portata adeguata:} Fino a 70 m per superfici con riflettività dell'80\%, ampiamente sufficiente per l'ambiente industriale interno ed esterno dello stabilimento.
+    \item \textbf{Alta frequenza di acquisizione:} 200,000 punti/secondo con frame rate di 10 Hz, fornendo una densità di punti adeguata per algoritmi di SLAM e mappatura in tempo reale.
+    \item \textbf{IMU integrata:} Dotato di IMU a 6 assi (modello ICM40609) che fornisce dati di accelerazione e velocità angolare, fondamentali per la fusione sensoriale con gli algoritmi di localizzazione come FAST-LIO2.
+    \item \textbf{Sincronizzazione precisa:} Supporto per IEEE 1588-2008 (PTPv2) e GPS per la sincronizzazione temporale, utile per la fusione multi-sensoriale.
+    \item \textbf{Interfaccia Ethernet:} Comunicazione tramite Ethernet 100BASE-TX, facilmente integrabile con il computer di bordo e compatibile con ROS2.
+    \item \textbf{Compattezza e leggerezza:} Dimensioni ridotte (65×65×60 mm) e peso contenuto (265 g) facilitano l'integrazione meccanica sul veicolo.
+    \item \textbf{Robustezza:} Grado di protezione IP67, adatto per operazioni in ambiente industriale e all'aperto.
+    \item \textbf{Basso consumo:} Potenza media di 6.5 W, compatibile con l'alimentazione a batteria del veicolo.
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{3/livox_mid360.png}
+    \caption{Sensore LiDAR Livox Mid-360.}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{3/livox_mid360_fov.png}
+    \caption{Campo visivo del LiDAR Livox Mid-360: $360^\circ$ orizzontale e $59^\circ$ verticale ($-7^\circ$ a $+52^\circ$).}
+\end{figure}
+
+\begin{table}[h]
+    \centering
+    \caption{Specifiche tecniche del LiDAR Livox Mid-360}
+    \label{tab:lidar_specs}
+    \begin{tabular}{|l|c|c|}
+        \hline
+        \textbf{Parametro}                           & \textbf{Valore}                  & \textbf{Unità} \\
+        \hline
+        Modello                                      & Mid-360                          & -              \\
+        Lunghezza d'onda laser                       & 905                              & nm             \\
+        Classe di sicurezza laser                    & Class 1 (IEC60825-1:2014)        & -              \\
+        Portata di rilevamento (@ 100 klx)           & 40 @ 10\% rifl., 70 @ 80\% rifl. & m              \\
+        Zona cieca prossimale                        & 0.1                              & m              \\
+        Campo visivo orizzontale                     & 360                              & °              \\
+        Campo visivo verticale                       & -7 a +52 (59° totale)            & °              \\
+        Precisione della distanza (1$\sigma$ @ 10m)  & $\leq$ 2                         & cm             \\
+        Precisione della distanza (1$\sigma$ @ 0.2m) & $\leq$ 3                         & cm             \\
+        Precisione angolare (1$\sigma$)              & $<$ 0.15                         & °              \\
+        Frequenza punti                              & 200,000 (first return)           & pts/s          \\
+        Frame rate                                   & 10 (tipico)                      & Hz             \\
+        Porta dati                                   & Ethernet 100BASE-TX              & -              \\
+        Sincronizzazione                             & IEEE 1588-2008, GPS              & -              \\
+        Tasso falsi allarmi (@ 100 klx)              & $<$ 0.01                         & \%             \\
+        IMU integrata                                & ICM40609 (6 assi)                & -              \\
+        Temperatura operativa                        & -20 / +55                        & °C             \\
+        Grado di protezione                          & IP67                             & -              \\
+        Potenza media                                & 6.5                              & W              \\
+        Tensione di alimentazione                    & 9 - 27                           & V DC           \\
+        Dimensioni                                   & 65 × 65 × 60                     & mm             \\
+        Peso                                         & 265                              & g              \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsubsection{Supporto Software}
+Il Livox Mid-360 dispone di un ecosistema software completo sviluppato e mantenuto da Livox Technology, che facilita l'integrazione del sensore in applicazioni robotiche:
+
+\textbf{Livox SDK2:} È la libreria di base scritta in C/C++ che implementa il protocollo di comunicazione proprietario di Livox. L'SDK fornisce:
+\begin{itemize}
+    \item API C-style per il controllo del LiDAR e la ricezione dei dati
+    \item Supporto multi-piattaforma (Linux e Windows)
+    \item Gestione di configurazioni multi-sensore e multi-host
+    \item Sincronizzazione temporale tramite IEEE 1588 (PTP) e GPS
+    \item Logging dei dati del firmware per diagnostica
+    \item Modalità master/slave per scenari multi-casting
+\end{itemize}
+
+\textbf{Livox ROS Driver 2:} È il driver ufficiale per l'integrazione con ROS e ROS2, sviluppato sopra l'SDK2. Supporta:
+\begin{itemize}
+    \item ROS Melodic e Noetic (ROS1)
+    \item ROS2 Foxy e Humble. Jazzy non è ancora ufficialmente supportato, ma il driver per Humble funziona correttamente anche su questa versione.
+    \item Pubblicazione dati in formati multipli:
+          \begin{itemize}
+              \item PointCloud2 standard (sensor\_msgs/PointCloud2)
+              \item Formato personalizzato Livox con timestamp per punto
+              \item Formato PCL (pcl::PointXYZI)
+          \end{itemize}
+    \item Configurazione tramite file JSON per parametri di rete, modalità di scansione e calibrazione estrinseca
+    \item Pubblicazione separata di dati IMU integrati
+    \item Supporto per topic multipli (un topic per LiDAR o topic condiviso)
+    \item Frequenza di pubblicazione configurabile (fino a 100 Hz)
+\end{itemize}
+
+Per il progetto è stata utilizzata la versione ROS2 Humble del driver, che permette l'integrazione diretta con l'architettura software del robot. Il sensore è inoltre supportato nativamente da FAST-LIO2, l'algoritmo di SLAM scelto per il progetto, garantendo prestazioni ottimali per la localizzazione e la mappatura in tempo reale. La compatibilità nativa con FAST-LIO2 deriva dal fatto che il formato dati personalizzato di Livox, che fornisce un timestamp per ogni singolo punto anziché per frame, è particolarmente adatto agli algoritmi di SLAM basati su odometria LiDAR-inerziale.
+
+\begin{note}
+    Il cono cieco del sensore implica che ci sono dei limiti nella copertura verticale che il sensore può offrire. Questo implica che è importante il punto di montaggio del sensore sul veicolo per massimizzare l'area coperta e minimizzare le zone non visibili in funzione delle operazioni previste.
+
+    Nel progetto, il sensore è stato montato frontalmente e rivolto verso il basso, in modo da coprire efficacemente l'area immediatamente davanti e circostante il veicolo.
+\end{note}
+
+\subsection{Encoder}
+
+Gli encoder per il controllo della velocità e della posizione angolare sono componenti integrati di fabbrica nelle motoruote MRT05 fornite da CFR. Si tratta di encoder magnetici angolari di tipo \textit{SIN/COS} modello \textbf{FTS1} prodotti da COBO Spa, progettati specificamente per applicazioni "through-shaft" (albero passante).
+
+Questa tecnologia utilizza un anello magnetico permanente polarizzato diametralmente montato sull'albero rotante del motore. Il sensore FTS1 rileva la distribuzione del campo magnetico attraverso una combinazione brevettata di sensori Hall allo stato solido e algoritmi di elaborazione digitale del segnale. Le uscite sinusoidali (SIN) e cosinusoidali (COS) variano in funzione della posizione angolare del magnete, fornendo informazioni precise sulla rotazione.
+
+\textbf{Caratteristiche principali:}
+\begin{itemize}
+    \item \textbf{Tecnologia contactless:} Assenza di usura meccanica e manutenzione, ideale per ambienti industriali severi
+    \item \textbf{Uscite multiple programmabili:}
+          \begin{itemize}
+              \item Segnali analogici SIN/COS con ampiezze configurabili (1.0, 1.1, 2.2 o 4 Vpp)
+              \item Uscita analogica 0.5-4.5 Vdc per posizione assoluta
+              \item Encoder incrementale ABZ con 1024 conteggi per giro
+              \item Uscite UVW per motori brushless
+              \item Interfaccia SPI per dati digitali a 12 bit
+          \end{itemize}
+    \item \textbf{Risoluzione:} 10-bit assoluta, 12-bit tramite SPI, interpolabile fino a 1024 PPR in modalità incrementale
+    \item \textbf{Latenza ridotta:} Tipicamente 12 $\mu$s (high bandwidth) o 75 $\mu$s (low bandwidth)
+    \item \textbf{Non linearità integrale:} ±0.6° con magnete ideale e calibrazione
+    \item \textbf{Velocità rotazionale:} Fino a 25000 rpm (prestazioni ottimali fino a 10000 rpm)
+    \item \textbf{Funzioni avanzate:}
+          \begin{itemize}
+              \item Auto-calibrazione per compensazione offset e gain
+              \item Funzione ZERO programmabile
+              \item Emulazione fino a 16 poli per uscite SIN/COS
+          \end{itemize}
+    \item \textbf{Robustezza:} Resistenza a vibrazioni (20g, 10-2000 Hz) e shock (50g, 11ms), grado di protezione IP67
+    \item \textbf{Range di temperatura:} -40°C a +125°C (uscite SIN/COS, SPI, ABZ, UVW @ 5V)
+    \item \textbf{Alimentazione flessibile:} 5 Vdc o 9-36 Vdc
+\end{itemize}
+
+\begin{table}[h]
+    \centering
+    \caption{Specifiche tecniche dell'encoder magnetico FTS1}
+    \label{tab:encoder_specs}
+    \begin{tabular}{|l|c|c|}
+        \hline
+        \textbf{Parametro}       & \textbf{Valore}                  & \textbf{Unità} \\
+        \hline
+        Modello                  & FTS1 (COBO Spa)                  & -              \\
+        Tipo                     & Magnetico angolare through-shaft & -              \\
+        Tecnologia sensori       & Hall allo stato solido           & -              \\
+        Risoluzione assoluta     & 10 bit                           & -              \\
+        Risoluzione SPI          & 12 bit                           & -              \\
+        Risoluzione incrementale & 1024                             & PPR            \\
+        Uscite SIN/COS           & 1.0, 1.1, 2.2, 4 (prog.)         & Vpp            \\
+        Uscita analogica         & 0.5 - 4.5                        & Vdc            \\
+        Non linearità integrale  & $\pm$ 0.6 (calibrato)            & °              \\
+        Latenza (high bandwidth) & 12                               & $\mu$s         \\
+        Latenza (low bandwidth)  & 75                               & $\mu$s         \\
+        Velocità massima         & 25000                            & rpm            \\
+        Velocità ottimale        & $<$ 10000                        & rpm            \\
+        Tensione alimentazione   & 5 o 9-36                         & Vdc            \\
+        Temperatura operativa    & -40 / +125                       & °C             \\
+        Resistenza vibrazioni    & 20g (10-2000 Hz)                 & -              \\
+        Resistenza shock         & 50g (11 ms)                      & -              \\
+        Grado di protezione      & IP67                             & -              \\
+        Materiale involucro      & PBT                              & -              \\
+        \hline
+    \end{tabular}
+\end{table}
+
+Nel sistema del robot, gli encoder FTS1 sono collegati direttamente ai driver Mini-Traction Power, ai quali forniscono feedback di posizione angolare e velocità tramite i segnali SIN/COS analogici. I driver eseguono l'interpolazione dei segnali per implementare il controllo in anello chiuso della posizione e della velocità dei motori, garantendo precisione e reattività nella risposta ai comandi. I dati di encoder sono inoltre accessibili dal computer di bordo tramite il bus CAN per il calcolo dell'odometria delle ruote, contribuendo alla stima della posizione del veicolo insieme ai dati del LiDAR e dell'IMU.
+
+\subsection{Sonda di Temperatura}
+
+Le sonde di temperatura integrate nelle motoruote MRT05 sono sensori resistivi (RTD) modello \textbf{STS1} prodotti da Microtherm GmbH, forniti di serie da CFR per il monitoraggio termico dei motori. Si tratta di sensori con caratteristiche simili al classico KTY84, ma con prestazioni migliorate.
+
+Il principio di funzionamento si basa sulla variazione della resistenza elettrica di un elemento sensibile in funzione della temperatura. Il sensore fornisce una curva resistenza-temperatura ben definita e ripetibile, permettendo una misurazione precisa attraverso la lettura della resistenza con un circuito di condizionamento appropriato.
+
+\textbf{Caratteristiche principali:}
+\begin{itemize}
+    \item \textbf{Range di temperatura esteso:} Da -40°C a +170°C (fino a +190°C con possibile perdita di linearità)
+    \item \textbf{Resistenza nominale:} 1000 $\Omega$ a 100°C (±3\%)
+    \item \textbf{Eccellente stabilità termica a lungo termine:} Garantisce misurazioni affidabili nel tempo
+    \item \textbf{Alta precisione:} Curve resistenza-temperatura con tolleranze ben definite
+    \item \textbf{Nessuna polarità:} Non richiede attenzione alla connessione (+/-)
+    \item \textbf{Isolamento elevato:} Resistenza di isolamento minima di 100 M$\Omega$ a 100 Vdc
+    \item \textbf{Basso assorbimento:} Corrente nominale 5 mA, massima 8 mA
+    \item \textbf{Potenza dissipata ridotta:} Massimo 50 mW
+    \item \textbf{Robustezza meccanica:} Disponibile con involucro in PPS o guaina termorestringente in Kynar®
+    \item \textbf{Compatibilità RoHS:} Conformità alle normative ambientali
+\end{itemize}
+
+\begin{table}[h]
+    \centering
+    \caption{Specifiche tecniche della sonda di temperatura STS1}
+    \label{tab:temp_sensor_specs}
+    \begin{tabular}{|l|c|c|}
+        \hline
+        \textbf{Parametro}           & \textbf{Valore}   & \textbf{Unità} \\
+        \hline
+        Modello                      & STS1 (Microtherm) & -              \\
+        Tipo                         & RTD (resistivo)   & -              \\
+        Resistenza tipica @ 100°C    & 1000              & $\Omega$       \\
+        Tolleranza resistenza        & $\pm$ 3           & \%             \\
+        Range temperatura operativa  & -40 / +170        & °C             \\
+        Range esteso                 & -40 / +190        & °C             \\
+        Resistenza @ -40°C (tip.)    & 359               & $\Omega$       \\
+        Resistenza @ 0°C (tip.)      & 498               & $\Omega$       \\
+        Resistenza @ +25°C (tip.)    & 626               & $\Omega$       \\
+        Resistenza @ +100°C (tip.)   & 1000              & $\Omega$       \\
+        Resistenza @ +170°C (tip.)   & 1482              & $\Omega$       \\
+        Resistenza isolamento (min.) & 100 @ 100 Vdc     & M$\Omega$      \\
+        Corrente nominale            & 5                 & mA             \\
+        Corrente massima             & 8                 & mA             \\
+        Potenza dissipata massima    & 50                & mW             \\
+        Materiale involucro          & PPS / Kynar®      & -              \\
+        Tipo cavi                    & ETFE, AWG24       & -              \\
+        Conformità                   & RoHS              & -              \\
+        \hline
+    \end{tabular}
+\end{table}
+
+Nel sistema del robot, le sonde STS1 sono collegate ai driver Mini-Traction Power, che monitorano costantemente la temperatura dei motori per prevenire danni da surriscaldamento. I driver implementano protezioni termiche automatiche, riducendo la potenza erogata o arrestando il motore qualora la temperatura superi soglie critiche. I dati di temperatura sono accessibili anche dal computer di bordo tramite il bus CAN, permettendo la supervisione termica in tempo reale dell'intero sistema e l'implementazione di strategie di gestione termica a livello di veicolo (ad esempio, limitazione della velocità massima in condizioni di alta temperatura ambiente).

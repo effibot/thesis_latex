@@ -1,1 +1,0 @@
-controller_joint_names: ['', 'steer_f_joint', 'traction_f_joint', 'castor_f_joint', 'castor_f_w_joint', 'steer_b_joint', 'traction_b_joint', 'castor_b_joint', 'castor_b_w_joint', ]

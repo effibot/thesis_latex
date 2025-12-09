@@ -143,20 +143,20 @@ Il prodotto acquistato è la MRT05 di CFR, che combina inoltre un motore di ster
     \label{tab:motors_data}
     \begin{tabular}{|l|c|c|c|}
         \hline
-        \textbf{Parametro} & \textbf{Trazione} & \textbf{Sterzo} & \textbf{Unità} \\
+        \textbf{Parametro}        & \textbf{Trazione} & \textbf{Sterzo} & \textbf{Unità} \\
         \hline
-        Tipo & BR Brushless & BR Brushless & - \\
-        Potenza (S2 - 60 min) & 500 & 300 & W \\
-        Tensione batteria & 48 & 48 & V \\
-        Velocità motore & 2300 & 2800 & RPM \\
-        Frequenza & 76 & 93 & Hz \\
-        Coppia motore & 2 & 1 & Nm \\
-        Rapporto di riduzione & 1:21 & 1:45.56 & - \\
-        Coppia in uscita & 37 & 34 & Nm \\
-        Coppia max (acc./frenata) & 180 & - & Nm \\
-        Grado di protezione & IP65 & IP65 & - \\
-        Lubrificazione & Grasso & Grasso & - \\
-        Codice motore PMAC & BD 090 - 50 - 4 & BD 090 - 25 - 4 & - \\
+        Tipo                      & BR Brushless      & BR Brushless    & -              \\
+        Potenza (S2 - 60 min)     & 500               & 300             & W              \\
+        Tensione batteria         & 48                & 48              & V              \\
+        Velocità motore           & 2300              & 2800            & RPM            \\
+        Frequenza                 & 76                & 93              & Hz             \\
+        Coppia motore             & 2                 & 1               & Nm             \\
+        Rapporto di riduzione     & 1:21              & 1:45.56         & -              \\
+        Coppia in uscita          & 37                & 34              & Nm             \\
+        Coppia max (acc./frenata) & 180               & -               & Nm             \\
+        Grado di protezione       & IP65              & IP65            & -              \\
+        Lubrificazione            & Grasso            & Grasso          & -              \\
+        Codice motore PMAC        & BD 090 - 50 - 4   & BD 090 - 25 - 4 & -              \\
         \hline
     \end{tabular}
 \end{table}
@@ -167,29 +167,167 @@ Il prodotto acquistato è la MRT05 di CFR, che combina inoltre un motore di ster
     \label{tab:drive_unit_weight}
     \begin{tabular}{|l|c|c|}
         \hline
-        \textbf{Componente} & \textbf{Valore} & \textbf{Unità} \\
+        \textbf{Componente}      & \textbf{Valore} & \textbf{Unità} \\
         \hline
-        Peso totale gruppo ruota & 42 & kg \\
+        Peso totale gruppo ruota & 42              & kg             \\
         \hline
     \end{tabular}
 \end{table}
-La coppia totale disponibile alle ruote motrici risulta:
+
+\subsection{Verifica dei Requisiti di Trazione}
+Verifichiamo ora che i motori selezionati soddisfino i requisiti di coppia e potenza calcolati in precedenza.
+
+\textbf{Requisiti di trazione:}
+\begin{itemize}
+    \item In piano: coppia totale richiesta $\tau_{richiesta} = 62.73$ Nm, potenza $P_{richiesta} = 627.3$ W
+    \item Su rampa 10\%: coppia totale richiesta $\tau_{richiesta} = 159.97$ Nm, potenza $P_{richiesta} = 1599.7$ W
+\end{itemize}
+
+\textbf{Caratteristiche dei motori:}
+\begin{itemize}
+    \item Coppia nominale per ruota: $37$ Nm
+    \item Coppia di picco per ruota: $180$ Nm
+    \item Potenza nominale per ruota (S2 - 60 min): $500$ W
+\end{itemize}
+
+\textbf{Verifica in piano:}
+La coppia totale disponibile con 2 motoruote è:
 \begin{equation}
-    \tau_{disponibile} = 2 \times \tau_{nominale} = 2 \times 37 = 74 \, Nm
+    \tau_{disponibile} = 2 \times \tau_{nominale} = 2 \times 37 = 74 \, \text{Nm} \geq \tau_{richiesta} = 62.73 \, \text{Nm} \quad \checkmark
 \end{equation}
 
 La forza di trazione massima erogabile in condizioni nominali:
 \begin{equation}
-    F_{trazione} = \frac{\tau_{disponibile}}{r} = \frac{74}{0.099} \approx 747 \, N
+    F_{trazione} = \frac{\tau_{disponibile}}{r} = \frac{74}{0.099} \approx 747 \, \text{N} \geq F_{richiesta} = 627.3 \, \text{N} \quad \checkmark
 \end{equation}
 
+Margine di sicurezza in piano:
+\begin{equation}
+    \text{Margine}_{\tau} = \frac{74 - 62.73}{62.73} \times 100 \approx 18\%
+\end{equation}
+
+\textbf{Verifica su rampa 10\%:}
 Nel caso peggiore (salita 10\% con accelerazione $a = 0.33 \, m/s^2$), la forza richiesta è:
 \begin{equation}
-    F_{richiesta} = m \cdot g \cdot \sin(\theta) + \mu_r \cdot m \cdot g \cdot \cos(\theta) + m \cdot a = 976 + 293 + 333 = 1602 \, N
+    F_{richiesta} = m \cdot g \cdot \sin(\theta) + \mu_r \cdot m \cdot g \cdot \cos(\theta) + m \cdot a = 976 + 293 + 333 = 1602 \, \text{N}
 \end{equation}
 
-Questa condizione richiede l'utilizzo della coppia di picco ($2 \times 180 = 360 \, Nm$), sostenibile per la breve durata della rampa:
+La coppia corrispondente:
 \begin{equation}
-    t_{rampa} = \frac{L}{v} = \frac{3}{1} = 3 \, s \ll t_{picco,max}
+    \tau_{richiesta} = F_{richiesta} \cdot r = 1602 \times 0.099 \approx 159 \, \text{Nm}
 \end{equation}
-Pertanto, i motori scelti risultano adeguati alle specifiche richieste.
+
+Questa condizione supera la coppia nominale ma rientra ampiamente nella coppia di picco disponibile:
+\begin{equation}
+    \tau_{picco} = 2 \times 180 = 360 \, \text{Nm} \gg \tau_{richiesta} = 159 \, \text{Nm} \quad \checkmark
+\end{equation}
+
+La durata della rampa è:
+\begin{equation}
+    t_{rampa} = \frac{L}{v} = \frac{3}{1} = 3 \, \text{s} \ll t_{picco,max}
+\end{equation}
+
+\textbf{Conclusione:} I motori selezionati sono adeguati per operazioni in piano con un margine di sicurezza del 18\%, e possono gestire rampe fino al 10\% utilizzando la coppia di picco per brevi periodi (3 secondi), ben al di sotto del limite temporale consentito.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{motore/side_view_2.jpeg}
+    \caption{Foto reale della motoruota MRT05 di CFR su un banco di prova. Si possono notare i due motori e la piastra di supporto.}
+\end{figure}
+\subsection{Batteria}
+Per l'alimentazione del veicolo, si è scelto di utilizzare una batteria con tecnoligia LiFePO4 (Litio-Ferro-Fosfato). Questa tecnologia offre numerosi vantaggi, tra cui:
+\begin{itemize}
+    \item \textbf{Sicurezza:} Le batterie LiFePO4 sono più stabili termicamente e chimicamente rispetto ad altre tecnologie al litio, riducendo il rischio di incendi o esplosioni.
+    \item \textbf{Durata:} Le batterie LiFePO4 hanno una vita utile più lunga, con un numero maggiore di cicli di carica/scarica rispetto ad altre tecnologie.
+    \item \textbf{Prestazioni:} Le batterie LiFePO4 offrono buone prestazioni in termini di capacità di scarica ad alta corrente, rendendole adatte per applicazioni che richiedono picchi di potenza.
+\end{itemize}
+Su queste basi, la ricerca del fornitore per tale componente si è concentrata su aziende che operassero nel campo dei veicoli elettrici. Dopo un'attenta valutazione, si è deciso di affidarsi a \textit{FlashBattery}, un'azienda italiana specializzata nel settore, che offre soluzioni dotate di sistemi di gestione della batteria (BMS) avanzati con comunicazione in CANOpen.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{batteria/front_view.jpeg}
+    \caption{Foto del pacco batteria (rosso) e del caricabatterie (nero) forniti da FlashBattery, alloggiate su un carrello di prova.}
+\end{figure}
+Sulle base delle specifiche tecniche calcolate in precedenza, il fornitore ha proposto una batteria con le seguenti caratteristiche:
+
+\begin{table}[h]
+    \centering
+    \caption{Specifiche tecniche della batteria LiFePO4}
+    \label{tab:battery_specs}
+    \begin{tabular}{|l|c|c|}
+        \hline
+        \textbf{Parametro}                       & \textbf{Valore} & \textbf{Unità} \\
+        \hline
+        Tensione nominale                        & 51.2            & V              \\
+        Capacità nominale                        & 105             & Ah             \\
+        Chimica                                  & LiFePO4         & -              \\
+        Tensione massima                         & 59.2            & V              \\
+        Tensione minima                          & 44              & V              \\
+        Corrente di scarica                      & 105 (continua)  & A              \\
+        Corrente di scarica picco (t $\leq$ 60s) & 210             & A              \\
+        Corrente di carica massima               & 50              & A              \\
+        Profondità di scarica (DOD)              & 80              & \%             \\
+        Tensione di rigenerazione massima        & 56              & V              \\
+        Corrente di rigenerazione massima        & 210             & A              \\
+        Energia totale                           & 5.38            & kWh            \\
+        Energia disponibile (80\% DOD)           & 4.30            & kWh            \\
+        Temperatura operativa                    & -10 / +45       & °C             \\
+        Auto-scarica (@25°C)                     & 3 / mese        & \%             \\
+        Auto-scarica (@50°C)                     & 18 / mese       & \%             \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \caption{Specifiche meccaniche della batteria}
+    \label{tab:battery_mechanical}
+    \begin{tabular}{|l|c|c|}
+        \hline
+        \textbf{Parametro}  & \textbf{Valore}     & \textbf{Unità} \\
+        \hline
+        Lunghezza           & 510                 & mm             \\
+        Larghezza           & 320                 & mm             \\
+        Altezza             & 275                 & mm             \\
+        Peso stimato        & 55                  & kg             \\
+        Materiale           & Acciaio al carbonio & -              \\
+        Finitura esterna    & RAL 3002 (rosso)    & -              \\
+        Grado di protezione & IP65                & -              \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\subsection{Verifica dei Requisiti Energetici}
+Confrontiamo ora i requisiti energetici calcolati in precedenza con le caratteristiche della batteria selezionata.
+
+\textbf{Requisito energetico:} Era stato calcolato un fabbisogno di almeno $4$ kWh per garantire $4$ ore di autonomia operativa con una potenza media stimata di $1$ kW.
+
+\textbf{Caratteristiche della batteria:}
+\begin{itemize}
+    \item Energia totale: $5.38$ kWh
+    \item Energia disponibile (80\% DOD): $4.30$ kWh
+\end{itemize}
+
+\textbf{Verifica della capacità energetica:}
+\begin{equation}
+    E_{disponibile} = 4.30 \, \text{kWh} \geq E_{richiesta} = 4 \, \text{kWh} \quad \checkmark
+\end{equation}
+
+La batteria soddisfa il requisito minimo con un margine di sicurezza del:
+\begin{equation}
+    \text{Margine} = \frac{E_{disponibile} - E_{richiesta}}{E_{richiesta}} \times 100 = \frac{4.30 - 4}{4} \times 100 = 7.5\%
+\end{equation}
+
+\textbf{Verifica della corrente di scarica:}
+La potenza massima richiesta in condizioni critiche (rampa 10\%) è $P_{max} = 1.6$ kW. La corrente corrispondente alla tensione nominale è:
+\begin{equation}
+    I_{richiesta} = \frac{P_{max}}{V_{nominale}} = \frac{1600}{51.2} \approx 31.25 \, \text{A}
+\end{equation}
+
+La batteria fornisce:
+\begin{itemize}
+    \item Corrente continua: $105$ A $\gg 31.25$ A $\checkmark$
+    \item Corrente di picco (t $\leq$ 60s): $210$ A $\checkmark$
+\end{itemize}
+
+\textbf{Conclusione:} La batteria selezionata è adeguata ai requisiti del veicolo, offrendo capacità energetica sufficiente per l'autonomia richiesta e correnti di scarica ampiamente superiori alle necessità operative, garantendo così un margine di sicurezza per eventuali picchi di potenza o inefficienze del sistema.
+
+\subsection{}

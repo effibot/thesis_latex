@@ -6,7 +6,7 @@ L'idea iniziale del progetto è stata quella di movimentare le sezioni ventilant
     Attualmente, una volta che una SV è pronta per passare alla fase di assemblaggio successiva, viene calettata su appositi supporti con ruote caster e trasportate tramite dei muletti elettrici. Questo richiede l'intervento di personale specializzato all'uso di carroponti e muletti, con conseguente dispendio di tempo e risorse.
 \end{note}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\textwidth]{2/sv_chiller.png}
     \caption{Modello 3D di una Sezione Ventilante di un Chiller, formata da 8 \textbf{\textit{Moduli a V}}. Ogni modulo, ha dimensioni $(L \times W \times H)m=(2 \times 1 \times 1.5)m$. L'intero sottoassieme ha quindi dimensioni complessive di circa $(8 \times 2 \times 1.5)m$.\\Si possono apprezzare in giallo i supporti con ruote caster su cui viene calettata la SV.}
@@ -17,7 +17,7 @@ Data la difficoltà di dover gestire delle strutture così ingombranti in un amb
     I compressori a vite vengono prodotti in un capannone dedicato e distaccato rispetto a quello dove vengono prodotti i chiller. Una volta prodotti, questi vengono posti in una piazzola di stoccaggio esterna in attesa di essere prelevati e trasportati al reparto di assemblaggio dei chiller. Il trasporto avviene tramite muletti elettrici che inforcano delle pedane in ferro su cui sono posizionati i compressori.
 \end{note}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{2/compressore_screw.png}
     \caption{Compressore a vite Daikin, modello SM100. Peso: 70 kg. Dimensioni: $(L \times W \times H)m=(0.9 \times 0.4 \times 0.6)m$.}
@@ -119,7 +119,7 @@ Per soddisfare i requisiti di manovrabilità, è risultata da subito ovvia la ne
     \item \textbf{2 ruote motrici e sterzanti + 2 ruote caster:} Migliore manovrabilità se le attuazioni sono posizionate opportunamente, con riduzione dei costi e della complessità meccanica.
 \end{enumerate}
 Dopo un'attenta valutazione, si è deciso di adottare la configurazione a 2 ruote motrici e sterzanti più 2 ruote caster, in quanto offre un buon equilibrio tra manovrabilità, trazione, costi e semplicità meccanica. Le ruote motrici e sterzanti sono state posizionate su una diagonale del veicolo, per massimizzare l'efficacia della sterzata e permettere manovre come rotazioni sul posto e traslazioni laterali. Le ruote caster, invece, sono state posizionate sull'altra diagonale per garantire stabilità e supporto al veicolo durante il movimento.
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.6\textwidth]{3/2wd_steering.pdf}
     \caption{Schema della configurazione a 2 ruote motrici e sterzanti (in verde) e 2 ruote caster (in viola).}
@@ -131,7 +131,7 @@ Per gruppo motori, si è scelto di acquistare delle motoruote. Una motoruota int
 
 Il prodotto acquistato è la MRT05 di CFR, che combina inoltre un motore di sterzo posizionato verticalmente rispetto al piano della ruota, permettendo di ottenere la sterzata mediante un accoppiamento ad ingranaggi. Questo consente di ottenere un sistema di sterzo compatto e integrato, riducendo ulteriormente la complessità meccanica.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\textwidth]{3/MRT05_render.png}
     \caption{Render della motoruota MRT05 di CFR.}
@@ -228,7 +228,7 @@ La durata della rampa è:
 \end{equation}
 
 \textbf{Conclusione:} I motori selezionati sono adeguati per operazioni in piano con un margine di sicurezza del 18\%, e possono gestire rampe fino al 10\% utilizzando la coppia di picco per brevi periodi (3 secondi), ben al di sotto del limite temporale consentito.
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\textwidth]{motore/side_view_2.jpeg}
     \caption{Foto reale della motoruota MRT05 di CFR su un banco di prova. Si possono notare i due motori e la piastra di supporto.}
@@ -241,10 +241,10 @@ Per l'alimentazione del veicolo, si è scelto di utilizzare una batteria con tec
     \item \textbf{Prestazioni:} Le batterie LiFePO4 offrono buone prestazioni in termini di capacità di scarica ad alta corrente, rendendole adatte per applicazioni che richiedono picchi di potenza.
 \end{itemize}
 Su queste basi, la ricerca del fornitore per tale componente si è concentrata su aziende che operassero nel campo dei veicoli elettrici. Dopo un'attenta valutazione, si è deciso di affidarsi a \textit{FlashBattery}, un'azienda italiana specializzata nel settore, che offre soluzioni dotate di sistemi di gestione della batteria (BMS) avanzati con comunicazione in CANOpen.
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.4\textwidth]{batteria/front_view.jpeg}
-    \caption{Foto del pacco batteria (rosso) e del caricabatterie (nero) forniti da FlashBattery, alloggiate su un carrello di prova.}
+    \includegraphics[width=0.6\textwidth]{batteria/front_view.jpeg}
+    \caption{Foto del pacco batteria (rosso) e del caricabatterie (nero) forniti da FlashBattery, alloggiate su un carrello di prova. Si possono notare in rosso/nero e in giallo i cavi di alimentazione e comunicazione.}
 \end{figure}
 Sulle base delle specifiche tecniche calcolate in precedenza, il fornitore ha proposto una batteria con le seguenti caratteristiche:
 
@@ -330,6 +330,34 @@ La batteria fornisce:
 
 \textbf{Conclusione:} La batteria selezionata è adeguata ai requisiti del veicolo, offrendo capacità energetica sufficiente per l'autonomia richiesta e correnti di scarica ampiamente superiori alle necessità operative, garantendo così un margine di sicurezza per eventuali picchi di potenza o inefficienze del sistema.
 
+\subsection{Caricabatterie}
+Insieme al pacco batteria, FlashBattery ha fornito un caricabatterie dedicato progettato specificamente per batterie al litio-ferro-fosfato (LiFePO4). Il modello fornito è lo \textit{Zivan NG3} configurato per batterie 48V con corrente di carica massima di 60A, un caricabatterie industriale di alta qualità prodotto da Zivan, azienda leader nel settore dei sistemi di ricarica per veicoli elettrici e applicazioni industriali.
+
+Il caricabatterie implementa un algoritmo di carica ottimizzato per la chimica LiFePO4, garantendo cicli di carica completi e sicuri che massimizzano la vita utile della batteria.
+
+\textbf{Caratteristiche principali del caricabatterie Zivan NG3:}
+\begin{itemize}
+    \item \textbf{Modello:} Zivan NG3 48V 60A
+    \item \textbf{Tensione di ingresso:} Alimentazione da rete elettrica monofase 230V AC (50-60 Hz)
+    \item \textbf{Tensione di uscita:} Configurata per batterie LiFePO4 a 48V nominali (16 celle in serie)
+    \item \textbf{Corrente di carica:} Programmabile fino a 60A, configurata a 50A per rispettare le specifiche della batteria
+    \item \textbf{Potenza massima:} Circa 3 kW
+    \item \textbf{Profilo di carica:} CC-CV (Constant Current - Constant Voltage) ottimizzato per LiFePO4, con fase di bilanciamento delle celle
+    \item \textbf{Protezioni integrate:}
+          \begin{itemize}
+              \item Protezione da sovratensione e sovracorrente
+              \item Protezione termica con ventilazione forzata
+              \item Protezione da inversione di polarità
+              \item Protezione da cortocircuito
+          \end{itemize}
+    \item \textbf{Comunicazione:} Interfaccia CAN integrata per monitoraggio stato di carica e parametri in tempo reale
+    \item \textbf{Indicatori:} LED di stato per visualizzazione fasi di carica (carica in corso, bilanciamento, carica completata)
+    \item \textbf{Efficienza:} Superiore al 90\% a pieno carico
+    \item \textbf{Grado di protezione:} IP20 (per uso in ambiente interno protetto)
+\end{itemize}
+
+Il caricabatterie è dotato di sistema di gestione intelligente che comunica con il BMS della batteria tramite bus CAN per ottimizzare il processo di carica, garantendo il bilanciamento delle celle e prevenendo situazioni di sovraccarica o sottocarica che potrebbero danneggiare il pacco batteria. Il tempo di ricarica tipico da 20\% a 100\% di capacità è di circa 2-3 ore, compatibile con le esigenze operative del veicolo.
+
 \subsection{Driver per Motori Elettrici}
 Per il controllo di basso livello dei motori PMAC integrati nelle motoruote, si è deciso di utilizzare degli inverter compatibili con le specifiche dei motori stessi, ovvero:
 \begin{itemize}
@@ -338,7 +366,7 @@ Per il controllo di basso livello dei motori PMAC integrati nelle motoruote, si 
     \item Supporto per protocollo di comunicazione CANOpen.
 \end{itemize}
 Dopo una ricerca tra i possibili fornitori\footnote{Tale ricerca è stata necessaria in quanto CFR \textbf{non produce} inverter.}, si è scelto di accettare la proposta offerta da \textbf{MicroPhase}, un'azienda italiana specializzata in azionamenti per motori elettrici.
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.5\textwidth]{3/mini-traction-power.png}
     \caption{Inverter Mini-Traction Power di MicroPhase, utilizzato per il controllo dei motori PMAC delle motoruote.}
@@ -383,7 +411,7 @@ Inoltre, l'azienda ha offerto supporto tecnico per:
 \subsection{Computer di Bordo}
 Per il computer di bordo, si è scelto il \textit{LattePanda Sigma}, un Single Board Computer (SBC) basato su architettura x86 che offre prestazioni eccezionali in un formato compatto. Questo dispositivo è equipaggiato con un processore Intel® Core™ i5-1340P di 13ª generazione (Raptor Lake), caratterizzato da 12 core (4 Performance-core + 8 Efficient-core) e 16 thread, con frequenza turbo fino a 4.6 GHz per i core ad alte prestazioni e 3.4 GHz per quelli efficienti.
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\textwidth]{3/lattepanda_sigma2.png}
     \caption{LattePanda Sigma Single Board Computer con processore Intel Core i5-1340P.}
@@ -393,7 +421,7 @@ La scelta di questo SBC è stata motivata da diversi fattori chiave:
 \begin{itemize}
     \item \textbf{Architettura x86:} Garantisce compatibilità nativa con ROS2 e una vasta gamma di software e librerie di robotica, semplificando lo sviluppo e il debug.
     \item \textbf{Potenza di calcolo:} Il processore i5-1340P offre prestazioni elevate per eseguire algoritmi di navigazione, localizzazione e controllo in tempo reale, con una potenza base di 28W (configurabile fino a 45W).
-    \item \textbf{Memoria veloce:} Dotato di 16GB di RAM LPDDR5-6400 dual-channel, con una banda passante di 102.4 GB/s, permette l'elaborazione simultanea di dati provenienti dai sensori e l'esecuzione di algoritmi complessi.
+    \item \textbf{Memoria veloce:} Dotato di 32GB di RAM LPDDR5-6400 dual-channel, con una banda passante di 102.4 GB/s, permette l'elaborazione simultanea di dati provenienti dai sensori e l'esecuzione di algoritmi complessi.
     \item \textbf{GPU integrata:} Intel® Iris® Xe Graphics con 80 unità di esecuzione, utile per eventuali elaborazioni grafiche o visualizzazioni.
     \item \textbf{Connettività industriale:} Include interfacce essenziali per applicazioni robotiche:
           \begin{itemize}
@@ -423,7 +451,7 @@ La scelta di questo SBC è stata motivata da diversi fattori chiave:
         Potenza base (TDP)     & 28 (default: 45W)                              & W              \\
         GPU                    & Intel Iris Xe Graphics (80 EU)                 & -              \\
         Frequenza GPU          & 1.45                                           & GHz            \\
-        RAM                    & 16 GB LPDDR5-6400 Dual-Channel                 & GB             \\
+        RAM                    & 32 GB LPDDR5-6400 Dual-Channel                 & GB             \\
         Banda passante memoria & 102.4                                          & GB/s           \\
         Ethernet               & 2 $\times$ 2.5GbE (Intel i225-V)               & -              \\
         USB                    & 2$\times$USB2.0, 2$\times$USB3.2, 2$\times$TB4 & -              \\
@@ -436,6 +464,96 @@ La scelta di questo SBC è stata motivata da diversi fattori chiave:
 \end{table}
 
 Questa piattaforma hardware fornisce le risorse computazionali necessarie per eseguire l'intero stack software del robot, includendo la gestione dei sensori, la localizzazione, la pianificazione del percorso e il controllo dei motori, mantenendo al contempo un profilo energetico compatibile con l'alimentazione a batteria del veicolo.
+
+\subsection{Adattatore USB-CAN}
+Per l'integrazione e il controllo dei vari componenti del veicolo tramite bus CAN, si è scelto di utilizzare il convertitore \textit{USB-CAN-A} di Waveshare. Questo dispositivo permette la comunicazione tra il computer di bordo (LattePanda Sigma), gli inverter Mini-Traction Power e la batteria FlashBattery.
+
+Il \textit{USB-CAN-A} è un convertitore USB-Seriale-CAN economico e versatile, basato su una soluzione con chip STM32 che garantisce stabilità e affidabilità della comunicazione. La scelta di questo dispositivo è stata motivata principalmente da:
+\begin{itemize}
+    \item \textbf{Convenienza economica:} Disponibile a basso prezzo rispetto ad alternative industriali più costose, mantenendo comunque funzionalità adeguate per l'applicazione.
+    \item \textbf{Facilità di reperibilità:} Acquistabile facilmente tramite Amazon e altri marketplace online, riducendo i tempi di approvvigionamento.
+    \item \textbf{Compatibilità con i protocolli CAN:} Supporta completamente CAN 2.0A (frame standard, ID 11-bit) e CAN 2.0B (frame esteso, ID 29-bit).
+    \item \textbf{Velocità adeguata:} Range di velocità CAN configurabile da 5 kbps a 1 Mbps, compatibile con le specifiche CANOpen degli altri dispositivi.
+    \item \textbf{Supporto software per Linux:} automaticamente riconosciuto come porta seriale virtuale (ttyUSB) tramite driver CH341, con demo in C e Python fornite dal produttore.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth]{3/usb_can_a.jpg}
+    \caption{Convertitore USB-CAN-A di Waveshare con terminale CAN a vite e interruttore per resistenza di terminazione 120$\Omega$.}
+\end{figure}
+
+\textbf{Caratteristiche tecniche principali:}
+\begin{itemize}
+    \item \textbf{Protocolli CAN:} Supporto CAN 2.0A (standard frame) e CAN 2.0B (extended frame)
+    \item \textbf{Velocità CAN:} Configurabile da 5 kbps a 1 Mbps, con preset per le velocità comuni (1M, 500K, 250K, 125K, ecc.)
+    \item \textbf{Baud rate porta seriale:} Predefinito a 2 Mbps (compatibile con la maggior parte delle velocità CAN), configurabile da 9600 bps a 2 Mbps
+    \item \textbf{Modalità operative:} Normale, loopback (per self-test), silenziosa (solo ricezione), silenziosa-loopback
+    \item \textbf{Protezione hardware:} TVS (Transient Voltage Suppressor) integrato per protezione da sovratensioni e picchi transienti sul bus CAN
+    \item \textbf{Resistenza di terminazione:} Resistenza 120$\Omega$ commutabile tramite interruttore, essenziale per terminare correttamente il bus CAN
+    \item \textbf{Filtro ID:} Possibilità di configurare filtri per ricevere solo messaggi con ID specifici
+    \item \textbf{Buffer interno:} Capacità di buffering fino a 20 messaggi per gestire burst di dati
+    \item \textbf{Timestamp:} I messaggi ricevuti includono timestamp per sincronizzazione temporale
+\end{itemize}
+
+\begin{table}[h]
+    \centering
+    \caption{Specifiche tecniche del convertitore USB-CAN-A}
+    \label{tab:usb_can_specs}
+    \begin{tabular}{|l|c|c|}
+        \hline
+        \textbf{Parametro}              & \textbf{Valore}              & \textbf{Unità} \\
+        \hline
+        Modello                         & USB-CAN-A (Waveshare)        & -              \\
+        Chipset                         & STM32                        & -              \\
+        Protocolli CAN                  & CAN 2.0A, CAN 2.0B           & -              \\
+        Velocità CAN                    & 5 - 1000                     & kbps           \\
+        Baud rate seriale predefinito   & 2000                         & kbps           \\
+        Baud rate seriale configurabile & 9.6 - 2000                   & kbps           \\
+        Driver USB                      & CH341                        & -              \\
+        Interfaccia CAN                 & Terminale a vite (H, L, GND) & -              \\
+        Resistenza terminazione         & 120 (commutabile)            & $\Omega$       \\
+        Protezione TVS                  & Integrata                    & -              \\
+        Buffer messaggi                 & 20                           & msg            \\
+        Grado di protezione             & IP20                         & -              \\
+        Temperatura operativa           & -10 / +60                    & °C             \\
+        Alimentazione                   & 5 (via USB)                  & V              \\
+        Dimensioni                      & 70 $\times$ 35 $\times$ 12   & mm             \\
+        Peso                            & 25                           & g              \\
+        Sistema operativo supportato    & Windows, Linux               & -              \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\textbf{Software di configurazione:}
+Il dispositivo è supportato da un tool di configurazione gratuito per Windows (USB-CAN-A TOOL) che permette di:
+\begin{itemize}
+    \item Configurare la velocità del bus CAN e il baud rate della porta seriale
+    \item Selezionare la modalità operativa (normale, loopback, silent)
+    \item Impostare filtri ID per la ricezione selettiva di messaggi
+    \item Inviare e ricevere messaggi CAN in tempo reale con visualizzazione timestamp
+    \item Salvare log dei messaggi in formato TXT o Excel per analisi offline
+    \item Configurare risposte automatiche a messaggi con ID specifici
+\end{itemize}
+
+\textbf{Modalità di Trasmissione:}
+Il convertitore USB-CAN-A implementa una conversione USB $\rightarrow$ Seriale $\rightarrow$ CAN, a differenza di soluzioni più avanzate che utilizzano direttamente USB $\rightarrow$ CAN (come USB-CAN-B dello stesso produttore).
+\begin{note}
+    Questo comporta una latenza maggiore nella trasmissione dei messaggi, ma per l'applicazione in questione dovrebbe essere trascurabile contando che la lunghezza del bus CAN è limitata a pochi metri all'interno del veicolo. Studi futuri verranno condotti per quantificare questa latenza e valutarne l'impatto sulle prestazioni complessive del sistema di controllo.
+\end{note}
+Il problema di questa conversione si traduce a livello software con l'incompatibilità con librerie CANOpen più diffuse come \textit{SocketCAN} su Linux, che richiedono un'interfaccia CAN nativa o un driver specifico che si occupi di mostrare il bus come una interfaccia di rete virtuale. Difatti, l'adattatore usa un protocollo proprietario per l'invio e la ricezione dei messaggi tramite la porta seriale virtuale. Il funzionamento di tale protocollo è stato analizzato tramite reverse engineering delle demo fornite dal produttore, permettendo così di sviluppare una libreria in C++. Nel capitolo 5 verrà descritto in dettaglio il funzionamento di questa libreria e il suo utilizzo all'interno del software di controllo del veicolo.
+
+\subsection{Convertitori DC-DC}
+Per l'alimentazione del computer di bordo e dei sensori è stato necessario integrare convertitori DC-DC che adattano la tensione di batteria (48V nominali) alle tensioni richieste dai vari componenti. La scelta è ricaduta su convertitori switching della serie \textit{SD} di Meanwell, un produttore affermato nel settore dell'elettronica di potenza industriale, noti per affidabilità ed efficienza.
+
+Sono stati selezionati due modelli:
+\begin{itemize}
+    \item \textbf{SD-25B-12:} Convertitore DC-DC da 48V a 12V con potenza nominale di 25W. Questo modulo è utilizzato per l'alimentazione del sensore LiDAR Livox Mid-360, che richiede una tensione di alimentazione tra 9V e 27V. Il convertitore fornisce una tensione stabile di 12V con corrente massima di 2.1A, ampiamente sufficiente per il consumo medio del LiDAR di 6.5W. Il dispositivo è dotato di protezione da sovratensione, sovracorrente e cortocircuito, garantendo affidabilità operativa.
+
+    \item \textbf{SD-100D-12:} Convertitore DC-DC da 48V a 12V con potenza nominale di 102W. Questo modulo alimenta il computer di bordo LattePanda Sigma tramite l'ingresso DC Jack. Con una corrente massima di 8.5A a 12V, il convertitore è dimensionato per gestire il consumo del processore i5-1340P che, in configurazione TDP a 28W (estendibile fino a 45W), richiede una potenza significativa durante le fasi di calcolo intensivo. Il margine di potenza disponibile permette di alimentare anche eventuali periferiche USB collegate al computer.
+\end{itemize}
+
+Entrambi i convertitori operano con un'ampia gamma di tensione di ingresso (18-75V DC) compatibile con le variazioni di tensione della batteria LiFePO4 durante i cicli di carica e scarica (44V-59.2V). Presentano inoltre un'efficienza tipica superiore al 75\%, limitando le perdite energetiche e il surriscaldamento. Il grado di protezione e le certificazioni di sicurezza (IEC/EN 62368-1) li rendono adatti all'impiego in ambiente industriale.
 
 \section{Sensoristica}
 
@@ -458,19 +576,19 @@ La scelta di questo sensore è stata motivata da diverse caratteristiche chiave:
     \item \textbf{Basso consumo:} Potenza media di 6.5 W, compatibile con l'alimentazione a batteria del veicolo.
 \end{itemize}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.5\textwidth]{3/livox_mid360.png}
     \caption{Sensore LiDAR Livox Mid-360.}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\textwidth]{3/livox_mid360_fov.png}
     \caption{Campo visivo del LiDAR Livox Mid-360: $360^\circ$ orizzontale e $59^\circ$ verticale ($-7^\circ$ a $+52^\circ$).}
 \end{figure}
 
-\begin{table}[h]
+\begin{table}[htbp]
     \centering
     \caption{Specifiche tecniche del LiDAR Livox Mid-360}
     \label{tab:lidar_specs}
@@ -573,7 +691,7 @@ Questa tecnologia utilizza un anello magnetico permanente polarizzato diametralm
     \item \textbf{Alimentazione flessibile:} 5 Vdc o 9-36 Vdc
 \end{itemize}
 
-\begin{table}[h]
+\begin{table}[htbp]
     \centering
     \caption{Specifiche tecniche dell'encoder magnetico FTS1}
     \label{tab:encoder_specs}
@@ -626,7 +744,7 @@ Il principio di funzionamento si basa sulla variazione della resistenza elettric
     \item \textbf{Compatibilità RoHS:} Conformità alle normative ambientali
 \end{itemize}
 
-\begin{table}[h]
+\begin{table}[htbp]
     \centering
     \caption{Specifiche tecniche della sonda di temperatura STS1}
     \label{tab:temp_sensor_specs}
@@ -657,3 +775,145 @@ Il principio di funzionamento si basa sulla variazione della resistenza elettric
 \end{table}
 
 Nel sistema del robot, le sonde STS1 sono collegate ai driver Mini-Traction Power, che monitorano costantemente la temperatura dei motori per prevenire danni da surriscaldamento. I driver implementano protezioni termiche automatiche, riducendo la potenza erogata o arrestando il motore qualora la temperatura superi soglie critiche. I dati di temperatura sono accessibili anche dal computer di bordo tramite il bus CAN, permettendo la supervisione termica in tempo reale dell'intero sistema e l'implementazione di strategie di gestione termica a livello di veicolo (ad esempio, limitazione della velocità massima in condizioni di alta temperatura ambiente).
+
+\section{Telaio e Struttura Meccanica}
+Il telaio del veicolo è stato progettato tramite software CAD (Computer-Aided Design) SolidWorks, tenendo in considerazione i requisiti di robustezza, leggerezza e facilità di assemblaggio. Dopo diverse iterazioni di design, si è deciso di adottare una struttura composta da profili in acciaio ($30\times30\times2.6$ mm) saldati tra loro, con travi di rinforzo ($20\times20\times2$ mm) per garantire rigidità e resistenza alle sollecitazioni meccaniche causate dall'alto carico da trasportare.\\
+Piastre in acciaio da $5$ e $2$ mm sono state poi aggiunte per il montaggio rispettivamente di ruote alloggiamenti per i quadri elettrici contenenti l'elettronica di controllo e alimentazione.\\
+Telaio e lamiere sono stati infine realizzati tramite un fornitore qualificato che si è occupato del taglio dei profilati, della saldatura e di applicare un trattamento di zincatura per prevenire la corrosione.
+
+Seguono una parte di disegni tecnici estratti dal progetto CAD del telaio e immagini del veicolo assemblato.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{telaio/disegno_side.png}
+    \caption{Progetto CAD del telaio del veicolo - Disegno in Vista isometrica.}
+    \label{fig:telaio_side_view}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{telaio/disegno_front_horiz.png}
+    \caption{Progetto CAD del telaio del veicolo - Quote significative}
+    \label{fig:vista_quote}
+\end{figure}
+
+\twofigures{0.48}{3/piastra_supporto batteria.png}{Supporto Batteria}{fig:piastra_batteria}{0.48}{3/piastra_supporto_lidar.png}{Supporto LiDAR.}{fig:piastra_lidar}{Dettagli di piastre di supporto.}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{telaio/vista_esplosa.png}
+    \caption{Vista esplosa del telaio del veicolo.}
+    \label{fig:telaio_esploso}
+\end{figure}
+
+\begin{table}[htbp]
+    \centering
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \caption{Distinta componenti principali del telaio per \cref{fig:telaio_esploso}}
+        \label{tab:bom_telaio}
+        \begin{tabular}{|c|l|}
+            \hline
+            \textbf{Pos.} & \textbf{Descrizione}        \\
+            \hline
+            1             & Struttura AGV               \\
+            2             & Pannello posteriore         \\
+            3             & Pannello laterale           \\
+            4             & Pannello centrale batteria  \\
+            5             & Lamiera supporto batteria   \\
+            6             & Pannello anteriore laterale \\
+            7             & Staffa fissaggio batteria   \\
+            8             & Pianale lamiera posteriore  \\
+            9             & Pianale interno             \\
+            10            & Pianale lamiera anteriore   \\
+            11            & Pannello anteriore          \\
+            12            & Pianale interno anteriore   \\
+            13            & Lamiera fissaggio lidar     \\
+            14            & Lamiera componentistica     \\
+            \hline
+        \end{tabular}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \caption{Dimensioni principali del telaio da \cref{fig:vista_quote}}
+        \label{tab:dimensioni_telaio}
+        \begin{tabular}{|l|c|c|}
+            \hline
+            \textbf{Parametro}      & \textbf{Valore} & \textbf{Unità} \\
+            \hline
+            Lunghezza totale        & 1800            & mm             \\
+            Larghezza totale        & 1000            & mm             \\
+            Altezza totale          & 280             & mm             \\
+            Altezza interna         & 220             & mm             \\
+            Sezione profilato       & 30 $\times$ 30  & mm             \\
+            Spessore profilato      & 2.6             & mm             \\
+            Sezione rinforzi        & 20 $\times$ 20  & mm             \\
+            Spessore rinforzi       & 2               & mm             \\
+            Interasse sezioni       & 470             & mm             \\
+            Diametro fori montaggio & 11              & mm             \\
+            Diametro fori M13       & 13              & mm             \\
+            Spessore lamiere        & 5               & mm             \\
+            Passo fori laterali     & 147             & mm             \\
+            \hline
+        \end{tabular}
+    \end{minipage}
+\end{table}
+
+\section{Analisi dei Costi}
+
+Di seguito viene riportata una tabella riepilogativa dei costi sostenuti per l'acquisto dei componenti principali del veicolo.
+Si annoverano i seguenti extra, non inclusi nella trattazione dei singoli componenti:
+\begin{itemize}
+    \item Costi per accessori e cavi connettori. Es: cover di protezione per SBC, modulo Wi-Fi, antenne, SSD, cavo di collegamento LiDAR e interfaccia USB per configurazione driver.
+    \item Costi di cablaggio e messa in opera del veicolo, inclusi materiali di consumo (connettori, canaline, fascette, ecc.) e manodopera specializzata.
+    \item Costi di ricerca e acquisto delle ruote caster per la stabilizzazione del veicolo, inclusi materiali di montaggio.
+\end{itemize}
+I prezzi indicati sono quelli forniti nelle offerte ricevute dai fornitori al momento dell'acquisto, senza IVA.
+\begin{table}[htbp]
+    \centering
+    \caption{Analisi dei costi dei componenti principali del veicolo}
+    \label{tab:analisi_costi}
+    \begin{tabular}{|l|c|c|c|}
+        \hline
+        \textbf{Componente}        & \textbf{Quantità} & \textbf{Costo Unitario (€)} & \textbf{Costo Totale (€)} \\
+        \hline
+        Motoruote CFR MRT05        & 2                 & 2740                        & 5480                      \\
+        Driver Mini-Traction Power & 4                 & 410                         & 1640                      \\
+        Batteria FlashBattery      & 1                 & 3950                        & 3950                      \\
+        Caricabatterie Zivan NG3   & 1                 & 355                         & 355                       \\
+        LattePanda Sigma           & 1                 & 563                         & 563                       \\
+        USB-CAN-A Adapter          & 1                 & 25                          & 25                        \\
+        DC-DC SD-25C-12            & 1                 & 25                          & 25                        \\
+        DC-DC SD-100C-12           & 1                 & 65                          & 65                        \\
+        Livox Mid-360              & 1                 & 659                         & 1000                      \\
+        Telaio, Lamierati e Caster & -                 & -                           & 2356                      \\
+        Cablaggi e messa in opera  & -                 & -                           & 1800                      \\
+        Extra Accessori            & -                 & -                           & 314                       \\
+        \hline
+        \textbf{Totale}            &                   &                             & \textbf{17573}            \\
+        \hline
+    \end{tabular}
+\end{table}
+Il costo totale del veicolo ammonta a circa €17,573, che include tutti i componenti principali, l'elettronica di controllo, la sensoristica, il telaio e le spese di cablaggio e messa in opera. Questo budget, seppur non trascurabile, risulta contenuto rispetto a soluzioni commerciali di almeno un ordine di grandezza rispetto ad offerte ricevute all'azienda per veicoli con capacità similari.\\
+
+In \cref{fig:mockup_agv} è possibile vedere un render 3D del veicolo completo di tutti i componenti principali, dove sopra vi è posizionato un compressore. In \cref{fig:mockup_intern} si può vedere invece una disposizione ideale dei componenti.
+
+\begin{note}
+    Lo studio di questo prototipo non tiene minimamente conto di costi di sviluppo software, test e validazione, menché meno di ridondanze hardware o certificazioni di sicurezza necessarie per un prodotto che, anche se ad uso interno, deve operare in ambienti nei quali sono presenti operatori umani e altre macchine. Questi aspetti verranno discussi nel capitolo conclusivo, dove verranno proposte possibili evoluzioni del progetto per la realizzazione di un prototipo più avanzato e vicino ad un prodotto commerciale.
+\end{note}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{3/mockup_agv}
+    \caption{Render 3D del veicolo completo di componenti principali.}
+    \label{fig:mockup_agv}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{3/mockup_intern}
+    \caption{Disposizione ideale dei componenti interni del veicolo.}
+    \label{fig:mockup_intern}
+\end{figure}

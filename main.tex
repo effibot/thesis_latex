@@ -38,11 +38,11 @@
 \renewcommand{\chaptermark}[1]{%
 \markboth{\chaptername
 \ \thechapter.\ #1}{}}
-\fancyhead[LE,RO]{\thepage}
+\fancyhead[LE,RO]{}
+\fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.8pt}
 \usepackage{indentfirst}
 % \usepackage{lipsum}
-
 %% Stile titoli capitoli
 \usepackage{titlesec}
 \titleformat{\chapter}[display]
@@ -59,6 +59,7 @@
     pdfauthor={Andrea Efficace},
     pdftitle={Progettazione e Realizzazione di un Veicolo Autonomo Teleoperato in CANOpen},
 }
+\usepackage{cleveref}  % Riferimenti intelligenti (es. "Figura 1" invece di solo "1")
 
 
 \begin{document}

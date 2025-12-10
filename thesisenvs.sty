@@ -212,4 +212,65 @@
     simplestyle=#1,
 }
 
+%% ============================================
+%% COMANDO PER DUE FIGURE AFFIANCATE
+%% ============================================
+% Uso: \twofigures{larghezza1}{immagine1}{caption1}{label1}{larghezza2}{immagine2}{caption2}{label2}
+% Esempio: \twofigures{0.48}{img/fig1.png}{Prima figura}{fig:1}{0.48}{img/fig2.png}{Seconda figura}{fig:2}
+
+\RequirePackage{graphicx}
+\RequirePackage{caption}
+\RequirePackage{subcaption}
+
+\newcommand{\twofigures}[9]{%
+    \begin{figure}[htbp]
+        \centering
+        \begin{subfigure}[b]{#1\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{#2}
+            \caption{#3}
+            \label{#4}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{#5\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{#6}
+            \caption{#7}
+            \label{#8}
+        \end{subfigure}
+        \caption{#9}
+    \end{figure}
+}
+
+%% ============================================
+%% COMANDO PER FIGURA E TABELLA AFFIANCATE
+%% ============================================
+% Uso: \figuretable{larghezza_fig}{immagine}{caption_fig}{label_fig}{larghezza_tab}{contenuto_tabella}{caption_tab}{label_tab}{caption_generale}
+% La larghezza è in frazione di \textwidth (es. 0.48)
+% Il contenuto_tabella deve essere il corpo della tabella (senza \begin{table}...\end{table})
+
+\newcommand{\figuretable}[9]{%
+    \begin{figure}[htbp]
+        \centering
+        \begin{minipage}[t]{#1\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{#2}
+            \captionof{figure}{#3}
+            \label{#4}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[t]{#5\textwidth}
+            \centering
+            #6
+            \captionof{table}{#7}
+            \label{#8}
+        \end{minipage}
+        \ifx&#9&%
+        \else
+        \vspace{0.5cm}
+        \caption*{#9}
+        \fi
+    \end{figure}
+}
+
 \endinput

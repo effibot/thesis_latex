@@ -1,1 +1,113 @@
 \chapter{Modello cinematico del robot}
+
+Come accennato nella \cref{sec:sistema_movimentazione}, il veicolo è stato progettato per essere in grado di eseguire sia manovre comuni come avanzamenti in linea retta e curve con orientamento tangenziale all'arco di curva, sia manovre più complesse come rotazioni sul posto e traslazioni laterali. Per raggiungere questo obiettivo, il sistema di movimentazione del robot è stato progettato con due ruote motrici indipendenti e due ruote castor libere di girare attorno al proprio perno verticale, disposte diagonalmente rispetto al centro geometrico del veicolo.
+
+In \cref{fig:modello_cinematico} mostriamo una rappresentazione schematica del robot con le sole ruote attive, gli angoli di sterzo e le velocità lineari, dove il suo centro geometrico coincide con l'origine degli assi. In \cref{fig:modello_cinematico_2} riportiamo anche il caso generale in cui il veicolo è ad una certa distanza $x_c$ e $y_c$ dall'origine del sistema di riferimento globale.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{4/schema_modello.pdf}
+    \caption{Rappresentazione schematica del modello cinematico del robot.}
+    \label{fig:modello_cinematico}
+\end{figure}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{4/schema_modello_2.pdf}
+    \caption{Rappresentazione schematica del modello cinematico del robot in posizione generica.}
+    \label{fig:modello_cinematico_2}
+\end{figure}
+
+Per derivare le equazioni cinematiche del veicolo, facciamo le seguenti ipotesi semplificative:
+\begin{itemize}
+    \item Le ruote motrici sono in grado di ruotare attorno al proprio asse verticale per variare l'angolo di sterzo $\delta_i,\, i\in{f,r}$.
+    \item Le ruote motrici sono in grado di variare la propria velocità angolare $\omega_i,\, i\in{f,r}$ in modo indipendente.
+    \item Le ruote castor sono libere di ruotare attorno al proprio perno verticale senza attrito.
+    \item Le ruote sono perfettamente aderenti al terreno senza slittamenti laterali.
+    \item Il veicolo si muove su un piano orizzontale senza pendenze.
+    \item Le dimensioni del veicolo sono note e costanti pari ad $L$ e $W$, con le ruote motrici montate nei punti $ (L/2, W/2) $ e $ (-L/2, -W/2) $ rispetto al centro geometrico.
+    \item Il centro di massa del veicolo coincide con il centro geometrico.
+    \item Le forze esterne agenti sul veicolo (es. vento, urti, ecc.) sono trascurabili.
+    \item Le accelerazioni del veicolo sono moderate, permettendo di trascurare gli effetti dinamici complessi come l'inerzia delle ruote e le forze di Coriolis.
+    \item Il veicolo è simmetrico rispetto agli assi longitudinale e trasversale.
+    \item Le ruote motrici sono identiche tra loro, con lo stesso raggio $r$ e caratteristiche di attrito.
+    \item Il sistema di riferimento globale è inerziale e fisso, mentre il sistema di riferimento locale al robot si muove con esso.
+\end{itemize}
+
+Tali ipotesi sono comuni nella letteratura sui robot mobili e permettono di semplificare notevolmente l'analisi del modello cinematico. In particolare, per un robot dotato di quattro ruote indipendenti, tipicamente si considerano le ruote sullo stesso asse (quindi le due anteriori e le due posteriori) come un'unica ruota virtuale per asse, ognuna con un proprio angolo di sterzo e velocità~\cite{tourajizadeh2020fourwheel}. Questo approccio riduce il numero di variabili da considerare e semplifica le equazioni cinematiche del veicolo.
+
+Tuttavia, quando questa semplificazione viene applicata, è importante tenere conto delle possibili differenze di comportamento tra le ruote sullo stesso asse, specialmente durante manove di traslazione laterale (anche dette \textit{crab steering}) o delle rotazioni sul posto. In questi casi, i modelli spesso diventano singolari e richiedono di essere adattati per gestire correttamente tali situazioni.
+
+Per questo motivo, sebbene lo studio iniziale del problema sia stato condotto sul modello descritto in~\cite{tourajizadeh2020fourwheel}, si è deciso di verificare la validità di un modello più generale che invece è ottenuto tramite la trattazione classica delle equazioni di vincolo per i robot mobili~\cite{deluca1998feedback}.
+
+Vediamo quindi il modello a biciclo descritto da ~\cite{tourajizadeh2020fourwheel}, dove le equazioni cinematiche del veicolo sono date da:
+
+\begin{equation}
+    \label{eq:betamodel}
+    \begin{cases}
+        \dot{x}      & = v \cos(\theta+\beta)                                                   \\
+        \dot{y}      & = v \sin(\theta+\beta)                                                   \\
+        \dot{\theta} & = \frac{v\cos(\beta)}{l_f+l_r}\left(\tan(\delta_f)-\tan(\delta_r)\right)
+    \end{cases}
+\end{equation}
+
+dove:
+\begin{eqnarray}
+    v     & = & \frac{v_f \cos(\delta_f) + v_r \cos(\delta_r)}{2\cos(\beta)} \label{eq:v_betamodel}\\
+    \beta & = & \tan^{-1}\left(\frac{l_f \tan(\delta_r) + l_r \tan(\delta_f)}{l_f + l_r}\right) \label{eq:beta_betamodel}
+\end{eqnarray}
+
+Rappresentano rispettivamente velocità del centro del robot e angolo di \textit{side-slip}, ovvero, l'angolo tra la direzione di avanzamento del veicolo descritta dal vettore velocità e l'asse longitudinale del robot.
+
+In queste equazioni, $l_f$ e $l_r$ rappresentano rispettivamente la distanza tra il centro del veicolo e l'asse anteriore e posteriore delle ruote motrici, mentre $v_f$ e $v_r$ sono le velocità lineari delle ruote motrici anteriori e posteriori, per cui chiaramente valgono:
+\begin{equation}\label{eq:tan_vel}
+    v_f = r \omega_f \quad , \quad v_r = r \omega_r
+\end{equation}
+dove $r$ è il raggio delle ruote motrici e $\omega_f$, $\omega_r$ sono le velocità angolari delle ruote motrici anteriori e posteriori.
+
+Si può vedere poi che sostituendo le \cref{eq:v_betamodel,eq:beta_betamodel} nella \cref{eq:betamodel}, si può ottenere un sistema matriciale del tipo $\dot{q} = J(q,u)u$, per mettere in relazione le velocità lineare e angolare del robot ($\dot(q)$) con le velocità angolari delle ruote motrici e gli angoli di sterzo ($u$). In particolare, scrivendo $J(q,u)$ come:
+\begin{equation*}
+    J(q,u) = R(\theta)\hat{J}(u)
+\end{equation*}
+dove $R(\theta)$ è la matrice di rotazione tra il sistema di riferimento globale e quello locale al robot descritta da:
+\begin{equation}\label{eq:Rtheta}
+    R(\theta) = \begin{bmatrix}
+        \cos(\theta) & -\sin(\theta) & 0 \\
+        \sin(\theta) & \cos(\theta)  & 0 \\
+        0            & 0             & 1
+    \end{bmatrix}
+\end{equation}
+e $\hat{J}(u)$ è la matrice jacobiana del sistema nel sistema di riferimento locale al robot, data da:
+\begin{equation}\label{eq:Jhat}
+    \hat{J}(u) = \frac{r}{2}\begin{bmatrix}
+        cos(\delta_f)                          & cos(\delta_r)                          \\
+        \cos(\delta_f)\tan(\beta)              & \cos(\delta_r)\tan(\beta)              \\
+        \frac{\cos(\delta_f)}{l}(\Delta_{tan}) & \frac{\cos(\delta_r)}{l}(\Delta_{tan})
+    \end{bmatrix}
+\end{equation}
+dove abbiamo definito:
+\begin{eqnarray*}
+    l          & = & l_f + l_r \\
+    \Delta_{tan} & = & \tan(\delta_f) - \tan(\delta_r)
+\end{eqnarray*}
+In questo modo, si ottiene una rappresentazione compatta del modello cinematico, che può essere utile per l'implementazione del controllo.
+\begin{equation}
+    \begin{bmatrix}
+        \dot{x} \\
+        \dot{y} \\
+        \dot{\theta}
+    \end{bmatrix} =
+    \frac{r}{2}\begin{bmatrix}
+        \left[\cos(\theta)-\sin(\theta)(\Sigma_{tan})\right]\cos(\delta_f) &
+        \left[\cos(\theta)-\sin(\theta)(\Sigma_{tan})\right]\cos(\delta_r)                                        \\
+        \left[\sin(\theta)+\cos(\theta)(\Sigma_{tan})\right]\cos(\delta_f) &
+        \left[\sin(\theta)+\cos(\theta)(\Sigma_{tan})\right]\cos(\delta_r)                                        \\
+        \frac{1}{l}\Delta_{tan}\cos(\delta_f)                              & \frac{1}{l}\Delta_{tan}\cos(\delta_r)
+    \end{bmatrix}
+    \begin{bmatrix}
+        \omega_f \\
+        \omega_r \\
+    \end{bmatrix}
+\end{equation}
+con
+\begin{eqnarray*}
+    \Sigma_{tan} &= \frac{l_r \tan(\delta_f) + l_f \tan(\delta_r)}{l_f + l_r}
+\end{eqnarray*}

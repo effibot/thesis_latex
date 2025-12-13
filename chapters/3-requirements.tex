@@ -778,11 +778,10 @@ Nel sistema del robot, le sonde STS1 sono collegate ai driver Mini-Traction Powe
 
 \section{Telaio e Struttura Meccanica}
 Il telaio del veicolo è stato progettato tramite software CAD (Computer-Aided Design) SolidWorks, tenendo in considerazione i requisiti di robustezza, leggerezza e facilità di assemblaggio. Dopo diverse iterazioni di design, si è deciso di adottare una struttura composta da profili in acciaio ($30\times30\times2.6$ mm) saldati tra loro, con travi di rinforzo ($20\times20\times2$ mm) per garantire rigidità e resistenza alle sollecitazioni meccaniche causate dall'alto carico da trasportare.\\
-Piastre in acciaio da $5$ e $2$ mm sono state poi aggiunte per il montaggio rispettivamente di ruote alloggiamenti per i quadri elettrici contenenti l'elettronica di controllo e alimentazione.\\
+La dimensione finale del telaio è risultata essere quindi di $1.8\times 1$m, con delle piastre in acciaio da $5$mm agli angoli per il montaggio delle ruote ruote. Ulteriori parti in lamiera sono state studiate per l'alloggiamento dei quadri elettrici contenenti l'elettronica di controllo e l'alimentazione.\\
 Telaio e lamiere sono stati infine realizzati tramite un fornitore qualificato che si è occupato del taglio dei profilati, della saldatura e di applicare un trattamento di zincatura per prevenire la corrosione.
 
-Seguono una parte di disegni tecnici estratti dal progetto CAD del telaio e immagini del veicolo assemblato.
-
+Nelle figure a seguire sono riportati alcuni disegni tecnici estratti dal progetto CAD, completo di lamierati di supporto, ruote e compressore. In \cref{tab:dimensioni_telaio} sono riportate invece le quote principali del veicolo.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{telaio/disegno_side.png}
@@ -860,6 +859,25 @@ Seguono una parte di disegni tecnici estratti dal progetto CAD del telaio e imma
     \end{minipage}
 \end{table}
 
+\subsection{Analisi agli Elementi Finiti}
+
+Per garantire che il telaio del veicolo fosse in grado di sopportare i carichi previsti senza deformazioni eccessive o cedimenti strutturali, è stata condotta un'analisi agli elementi finiti utilizzando FASTRAN, un software specializzato in simulazioni strutturali.
+
+L'analisi è stata condotta sulla penultima versione del telaio, che prevedeva una forma trapezoidale per le travi tubolari frontali per permettere il montaggio del LiDAR, sostituito poi nella versione finale con una trave orizzontale più semplice e una lamiera di supporto. Una volta importato il modello 3D nel software, sono stati definiti tutti i parametri necessari alla caratterizzazione del materiale e le condizioni al contorno (es: vincoli, distribuzione dei carichi, ecc.), così come sono state configurate le mesh di calcolo per suddividere il modello in elementi finiti.
+
+In \cref{fig:fem_telaio} è possibile vedere una schermata del programma di analisi dove è stato caricato il modello ed è stata definita la mesh di calcolo. Si può vedere con delle linne bianche la \textit{struttura a ragno} generata dal software per la distribuzione del carico sui punti di appoggio programmati.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{telaio/fem_telaio.png}
+    \caption{Schermata di FASTRAN con il modello FEM del telaio del veicolo con la struttura a ragno.}
+    \label{fig:fem_telaio}
+\end{figure}
+
+Sempre da \cref{fig:fem_telaio} si può osservare la \textbf{heatmap} dei risultati dell'analisi, che mostra la distribuzione delle deformazioni (in mm) del telaio sotto carico. Le aree in rosso indicano le zone di massima deformazione, mentre le aree in blu rappresentano le zone con deformazioni minime. Nelle \cref{fig:fem_stress_dett} e \cref{fig:fem_deform} possiamo vedere dei dettagli più ravvicinati dove si notano zone a tensione maggiore, che però rimangono comunque entro limiti di sicurezza. Si possono notare alcune zone colorate di rosso (massima tensione), localizzate in alcuni punti di giunzione tra travi e piastre di supporto, ma che probabilmente sono dovute a come il software genera le mesh piuttosto che a reali criticità strutturali.\\
+\twofigures{0.48}{telaio/fem_telaio_dettaglio_3}{Mappa delle tensioni nel telaio.}{fig:fem_stress_dett}{0.48}{telaio/fem_telaio_dettaglio_2}{Mappa delle deformazioni nel telaio.}{fig:fem_deform}{Risultati dell'analisi FEM del telaio.}
+
+
 \section{Analisi dei Costi}
 
 Di seguito viene riportata una tabella riepilogativa dei costi sostenuti per l'acquisto dei componenti principali del veicolo.
@@ -904,14 +922,14 @@ In \cref{fig:mockup_agv} è possibile vedere un render 3D del veicolo completo d
 \end{note}
 
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\textwidth]{3/mockup_agv}
     \caption{Render 3D del veicolo completo di componenti principali.}
     \label{fig:mockup_agv}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\textwidth]{3/mockup_intern}
     \caption{Disposizione ideale dei componenti interni del veicolo.}

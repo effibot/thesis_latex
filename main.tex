@@ -13,11 +13,22 @@
 \DeclareFontShape{T1}{qag}{b}{sl}{<->ssub*qag/b/it}{}
 \DeclareFontShape{T1}{qag}{bx}{sl}{<->ssub*qag/bx/it}{}
 \usepackage[italian]{babel}
-
+\usepackage{float}
 %% Utils
 \usepackage{hyphenat}
 \usepackage{graphicx}
 \usepackage{multirow}
+\usepackage{booktabs}      % Professional tables
+\usepackage{xcolor}        % Cell coloring
+\usepackage{booktabs}       % Professional tables (\toprule, \midrule, \bottomrule)
+\usepackage{array}          % Enhanced column formatting
+\usepackage{threeparttable} % Table with notes (\begin{tablenotes})
+\usepackage{caption}        % Caption formatting
+\usepackage{pifont}         % Dingbats for \checkmark and \texttimes symbols
+% Color definitions (add to preamble):
+\definecolor{success}{RGB}{0,150,0}
+\definecolor{failure}{RGB}{200,0,0}
+\definecolor{warning}{RGB}{255,140,0}
 \graphicspath{{img/}}           % Percorso immagini
 \makeatletter
 \def\input@path{{chapters/}}    % Percorso file .tex
@@ -60,6 +71,34 @@
     pdftitle={Progettazione e Realizzazione di un Veicolo Autonomo Teleoperato in CANOpen},
 }
 \usepackage{cleveref}  % Riferimenti intelligenti (es. "Figura 1" invece di solo "1")
+
+%% Configurazione etichette italiane per cleveref
+\crefname{figure}{figura}{figure}
+\Crefname{figure}{Figura}{Figure}
+\Crefname{table}{Tabella}{Tabelle}
+\crefname{equation}{equazione}{equazioni}
+\Crefname{equation}{Equazione}{Equazioni}
+\crefname{chapter}{capitolo}{capitoli}
+\Crefname{chapter}{Capitolo}{Capitoli}
+\crefname{section}{sezione}{sezioni}
+\Crefname{section}{Sezione}{Sezioni}
+\crefname{subsection}{sottosezione}{sottosezioni}
+\Crefname{subsection}{Sottosezione}{Sottosezioni}
+\crefname{appendix}{appendice}{appendici}
+\Crefname{appendix}{Appendice}{Appendici}
+\crefname{theorem}{teorema}{teoremi}
+\Crefname{theorem}{Teorema}{Teoremi}
+\crefname{lemma}{lemma}{lemmi}
+\Crefname{lemma}{Lemma}{Lemmi}
+\crefname{definition}{definizione}{definizioni}
+\Crefname{definition}{Definizione}{Definizioni}
+\crefname{proposition}{proposizione}{proposizioni}
+\Crefname{proposition}{Proposizione}{Proposizioni}
+\crefname{corollary}{corollario}{corollari}
+\Crefname{corollary}{Corollario}{Corollari}
+\crefname{example}{esempio}{esempi}
+\Crefname{example}{Esempio}{Esempi}
+
 \usepackage{siunitx}
 
 

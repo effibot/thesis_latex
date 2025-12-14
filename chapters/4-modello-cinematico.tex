@@ -812,11 +812,14 @@ Successivamente, si calcolano le azioni di controllo sulla singola componente de
 \begin{equation}\label{eq:pid_control_law}
     u_i(t) = K_{p,i} e_i^b(t) + K_{i,i} \int_0^t e_i^b(\tau) d\tau + K_{d,i} \frac{d e_i^b(t)}{dt} \quad , \quad i \in \{x,y,\theta\}
 \end{equation}
-Dove $K_{p,i}$, $K_{i,i}$ e $K_{d,i}$ sono i guadagni proporzionale, integrale e derivativo del controllore PID per la componente $i$ dello stato. Le azioni di controllo calcolate vengono poi sommate alle velocità desiderate provenienti dalla traiettoria di riferimento per ottenere le velocità di input corrette:
+Dove $K_{p,i}$, $K_{i,i}$ e $K_{d,i}$ sono i guadagni proporzionale, integrale e derivativo del controllore PID per la componente $i$ dello stato. Le azioni di controllo calcolate vengono poi riportate nel sistema di riferimento globale e sommate alle velocità desiderate provenienti dalla traiettoria di riferimento per ottenere le velocità di input corrette:
 \begin{equation}\label{eq:corrected_desired_state}
     \dot{q}_{cmd} = \dot{q}^d + u
 \end{equation}
 Dove $u = [u_x, u_y, u_\theta]^T$ è il vettore delle azioni di controllo calcolate. Infine, si utilizzano le formule di cinematica inversa per ottenere gli input di controllo per entrambi i modelli, e si procede con la simulazione dell'evoluzione del sistema nel tempo, tenendo conto della dinamica degli attuatori e dei limiti imposti.
+\begin{note}
+    Si noti che, a differenza dello schema di controllo in catena aperta, in questo caso si utilizza il valore misurato di $\theta$ per calcolare l'errore di tracciamento, permettendo al controllore di correggere gli errori accumulati durante la simulazione.
+\end{note}
 
 A seguito di alcune prove sperimentali, si è deciso di implementare il controllore derivativo con un filtro passa basso del primo ordine per evitare di amplificare il rumore di misura e le variazioni rapide dell'errore (importanti soprattutto per la componente angolare). Pertanto, la parte derivativa del controllore PID è stata implementata come:
 \begin{equation}\label{eq:filtered_derivative}
@@ -893,7 +896,7 @@ Le simulazioni in feedback sono state eseguite utilizzando lo stesso setup e le 
     \caption{Confronto prestazioni modelli Bicycle e Bisteer con \textbf{PID+FF}.}
     \label{tab:pid_summary}
 \end{table}
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \begin{subfigure}{\textwidth}
         \centering
@@ -908,7 +911,7 @@ Le simulazioni in feedback sono state eseguite utilizzando lo stesso setup e le 
     \caption{Risultati delle simulazioni in feedback per la traiettoria circolare.}
     \label{fig:arc_pid_simulation_results}
 \end{figure}
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \begin{subfigure}{\textwidth}
         \centering
@@ -923,7 +926,7 @@ Le simulazioni in feedback sono state eseguite utilizzando lo stesso setup e le 
     \caption{Risultati delle simulazioni in feedback per la traiettoria traslatoria verso Nord.}
     \label{fig:crab_pid_simulation_results}
 \end{figure}
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \begin{subfigure}{\textwidth}
         \centering
@@ -943,3 +946,6 @@ L'introduzione del controllore PID in feedback ha portato a miglioramenti signif
 \begin{note}
     Si può notare in \cref{fig:spin_pid_simulation_results} come ci sia un rumore molto evidente nelle velocità del robot, probabilmente dovuti a fenomini di errore numerico, visto che la loro scale è di $10^{-17}$. Questo non influenza però le prestazioni di tracking, che risultano comunque ottimali.
 \end{note}
+In conclusione, l'analisi delle simulazioni in feedback conferma la validità del modello a doppia ruota sterzante sopra a quello del biciclo sterzante per l'applicazione considerata, specialmente a fronte della maggior versatilità. 
+
+Questo implica che, sebbene il modello cinematico descritto da \cite{tourajizadeh2020fourwheel} sia valido per rappresentare il comportamento di veicoli a quattro ruote sterzanti, il modello proposto in questo lavoro offre un'alternativa più semplice e diretta per la modellazione e il controllo di tali veicoli, pur rappresentando una grande approssimazione della realtà.

@@ -1,6 +1,6 @@
-\chapter{Requisiti e Specifiche}
-\section{Selezione del Payload}
-L'idea iniziale del progetto è stata quella di movimentare le sezioni ventilanti (\textit{SV}) che compongono il sottoassieme superiore dei chiller prodotti nello stabilimento. La ragione di questo obiettivo risiede nel fatto che le SV sono componenti di grandi dimensioni, che vengono prodotte all'interno di uno dei capannoni dello stabilimento e successivamente poste negli spazi esterni in piazzole sparse in diversi punti, in attesa di essere assemblate sul prodotto finito.
+\chapter{Requisiti e specifiche}
+\section{Selezione del payload}
+L'idea iniziale del progetto è stata quella di movimentare le sezioni ventilanti (\textit{SV}) che compongono il sottoassieme superiore dei \textit{chiller} prodotti nello stabilimento. La ragione di questo obiettivo risiede nel fatto che le SV sono componenti di grandi dimensioni, che vengono prodotte all'interno di uno dei capannoni dello stabilimento e successivamente poste negli spazi esterni in piazzole sparse in diversi punti, in attesa di essere assemblate sul prodotto finito.
 
 \begin{note}
     Attualmente, una volta che una SV è pronta per passare alla fase di assemblaggio successiva, viene calettata su appositi supporti con ruote caster e trasportate tramite dei muletti elettrici. Questo richiede l'intervento di personale specializzato all'uso di carroponti e muletti, con conseguente dispendio di tempo e risorse.
@@ -9,7 +9,7 @@ L'idea iniziale del progetto è stata quella di movimentare le sezioni ventilant
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\textwidth]{2/sv_chiller.png}
-    \caption{Modello 3D di una Sezione Ventilante di un Chiller, formata da 8 \textbf{\textit{Moduli a V}}. Ogni modulo, ha dimensioni $(L \times W \times H)m=(2 \times 1 \times 1.5)m$. L'intero sottoassieme ha quindi dimensioni complessive di circa $(8 \times 2 \times 1.5)m$.\\Si possono apprezzare in giallo i supporti con ruote caster su cui viene calettata la SV.}
+    \caption{Modello 3D di una Sezione Ventilante di un chiller, formata da 8 \textbf{\textit{moduli a V}}. Ogni modulo, ha dimensioni $(L \times W \times H)m=(2 \times 1 \times 1.5)m$. L'intero sottoassieme ha quindi dimensioni complessive di circa $(8 \times 2 \times 1.5)m$.\\Si possono apprezzare in giallo i supporti con ruote caster su cui viene calettata la SV.}
 \end{figure}
 
 Data la difficoltà di dover gestire delle strutture così ingombranti in un ambiente produttivo già di per sé complesso, si è deciso di ridefinire l'obiettivo del progetto, orientandolo la movimentazione dei compressori \textit{a vite}, componenti di taglia standard dal peso contenuto. Questi sono componenti fondamentali per il funzionamento dei chiller, in quanto sono responsabili della compressione del refrigerante e del suo trasferimento attraverso il sistema di climatizzazione per attuare il ciclo termico e pertanto è di interesse primario una gestione logistica efficiente di questi componenti all'interno dello stabilimento.
@@ -23,69 +23,68 @@ Data la difficoltà di dover gestire delle strutture così ingombranti in un amb
     \caption{Compressore a vite Daikin, modello SM100. Peso: 70 kg. Dimensioni: $(L \times W \times H)m=(0.9 \times 0.4 \times 0.6)m$.}
 \end{figure}
 
-La scelta di questo payload ha permesso di definire requisiti più gestibili in termini di capacità di carico e dimensioni del veicolo. Si è comunque mantenuta l'idea di dimensionare i motori e la struttura del veicolo in modo da poter essere scalabile in futuro, qualora si volesse aumentare la capacità di carico per movimentare componenti più grandi come le SV.
+La scelta di questo payload ha permesso di definire requisiti più gestibili in termini di capacità di carico e dimensioni del veicolo, ottenendo comunque un valido dimostratore tecnologico. Si è comunque mantenuta l'idea di dimensionare i motori e la struttura del veicolo in modo da poter essere scalabile in futuro, qualora si volesse aumentare la capacità di carico per movimentare componenti più grandi come le SV.
 
-\section{Requisiti del Veicolo}
-In base alla scelta del payload e all'ambiente operativo, sono stati definiti i seguenti requisiti funzionali e prestazionali per il veicolo autonomo:
+\section{Requisiti del veicolo}
+In base alla scelta del payload e all'ambiente operativo, sono stati definiti i seguenti requisiti funzionali e prestazionali per il veicolo a guida autonoma.
 \begin{itemize}
-    \item \textbf{Limitare i costi:} Il progetto deve mirare a contenere i costi, usando il minimo numero di componenti necessari per raggiungere gli obiettivi prefissati e privilegiando soluzioni economiche ma affidabili.
-    \item \textbf{Capacità di carico:} Il veicolo deve essere in grado di trasportare un carico utile minimo di $1000$ kg, per garantire la movimentazione sicura del compressore a vite e di eventuali accessori o attrezzature aggiuntive.
-    \item \textbf{Velocità massima:} La velocità massima del veicolo deve essere al massimo di $1$ m/s, per garantire la sicurezza degli operatori e la stabilità del carico durante il trasporto.
-    \item \textbf{Tipologia di motori:} Tutti i motori (trazione e sterzo) devono essere elettrici, per ridurre l'impatto ambientale e facilitare la manutenzione.
-    \item \textbf{Alimentazione:} Il veicolo deve essere alimentato a batteria, per garantire l'autonomia operativa e la flessibilità di movimento all'interno dello stabilimento.
-    \item \textbf{Autonomia operativa:} Il veicolo deve essere in grado di operare almeno per $4$ ore prima di ricaricarsi.
-    \item \textbf{Navigazione e localizzazione:} Il veicolo deve essere in grado di navigare autonomamente all'interno dello stabilimento, evitando ostacoli statici e dinamici.
-    \item \textbf{Manovrabilità:} Il veicolo deve essere in grado di effettuare manovre semplici come: traiettorie rettilinee, curve morbide, rotazioni sul posto e traslazioni laterali.
-    \item \textbf{Interfaccia di controllo:} Il veicolo deve essere dotato di un'interfaccia di controllo che permetta la programmazione delle rotte, il monitoraggio dello stato del veicolo e l'intervento manuale in caso di emergenza.
-    \item \textbf{Spazio Operativo:} Il veicolo deve essere in grado di operare in esterna, su asfalto e cemento, e in interna, su pavimentazioni industriali.
+    \item \textbf{Limitare i costi:} il progetto deve mirare a contenere i costi, usando il minimo numero di componenti necessari per raggiungere gli obiettivi prefissati e privilegiando soluzioni economiche ma affidabili.
+    \item \textbf{Capacità di carico:} il veicolo deve essere in grado di trasportare un carico utile minimo di $1000$ kg, per garantire la movimentazione sicura del compressore a vite e di eventuali accessori o attrezzature aggiuntive.
+    \item \textbf{Velocità massima:} la velocità massima del veicolo deve essere al massimo di $1$ m/s, per garantire la sicurezza degli operatori e la stabilità del carico durante il trasporto.
+    \item \textbf{Tipologia di motori:} tutti i motori (trazione e sterzo) devono essere elettrici, per ridurre l'impatto ambientale e facilitare la manutenzione.
+    \item \textbf{Alimentazione:} il veicolo deve essere alimentato a batteria, per garantire l'autonomia operativa e la flessibilità di movimento all'interno dello stabilimento.
+    \item \textbf{Autonomia operativa:} il veicolo deve essere in grado di operare almeno per $4$ ore prima di dover essere ricaricato.
+    \item \textbf{Navigazione e localizzazione:} il veicolo deve essere in grado di asservire traiettorie preimpostate all'interno dello stabilimento, come parte delle lavorazioni in cui è coinvolto, individuando ostacoli statici e dinamici per garantire la sicurezza degli operatori circostanti.
+    \item \textbf{Manovrabilità:} il veicolo deve essere in grado di effettuare manovre quali: traiettorie rettilinee, curve morbide, rotazioni sul posto e traslazioni laterali.
+    \item \textbf{Spazio operativo:} il veicolo deve essere in grado di operare in esterni, su asfalto e cemento, e in interni, su pavimentazioni industriali.
 \end{itemize}
 
-\section{Specifiche Tecniche}
-Considerando i requisiti funzionali e prestazionali, calcoliamo le specifiche tecniche che deve avere il veicolo. Consideriamo, spesso sovradimensionado, i seguenti parametri:
+\section{Specifiche tecniche}
+Le specifiche tecniche che deve avere il veicolo sono state calcolate considerando i suoi requisiti funzionali e prestazionali. Sono stati considerati i seguenti parametri, sovradimensionati per poter avere un adeguato margine di tolleranza.
 \begin{itemize}
-    \item \textbf{Carico utile:} (robot + payload) $1000$ kg
+    \item \textbf{Carico utile:} (robot e payload) $1000$ kg
     \item \textbf{Velocità massima:} $1$ m/s
     \item \textbf{Autonomia operativa:} $4$ h
     \item \textbf{Raggio delle ruote:} $0.1$ m
-    \item \textbf{Pendenza massima affrontabile:} $10\%$, presa rispetto a una rampa di $0.3$m di altezza per $3$m di lunghezza. Corrispondente a circa $5.7^\circ$.
-    \item \textbf{Attrito Statico:} Coefficiente di attrito statico tra ruota e asfalto $\mu_s = 0.5$.
-    \item \textbf{Attrito Volvente:} Coefficiente di attrito volvente tra ruota e asfalto $\mu_r = 0.03$.
-    \item \textbf{Vel. \& Acc. max}: Supponendo di voler raggiungere una velocità massima di $1$ m/s in $3$ s, si ha un'accelerazione di $\sim0.333$ m/s$^2$.
+    \item \textbf{Pendenza massima affrontabile:} $10\%$, presa rispetto a una rampa di $0.3$m di altezza per $3$m di lunghezza; corrispondente a circa $5.7^\circ$.
+    \item \textbf{Attrito statico:} coefficiente di attrito statico tra ruota e asfalto $\mu_s = 0.5$.
+    \item \textbf{Attrito volvente:} coefficiente di attrito volvente tra ruota e asfalto $\mu_r = 0.03$.
+    \item \textbf{Vel. \& acc. max}: supponendo di voler raggiungere una velocità massima di $1$ m/s in $3$ s, si ha un'accelerazione di $\sim0.333$ m/s$^2$.
 \end{itemize}
-Da questi dati, calcoliamo le seguenti specifiche tecniche affinché avvenga il primo distacco:
+Da questi dati possono essere ricavate le specifiche tecniche necessarie affinché avvenga il primo distacco.
 \begin{itemize}
-    \item In piano, dobbiamo vincere:
+    \item In piano, occorre vincere
           \begin{equation}
               \begin{aligned}
-                  F_{r}   & = \mu_r \cdot m \cdot g = 0.03 \cdot 1000 \cdot 9.81 = 294.3 \text{ N} \\
-                  F_{a}   & = m \cdot a = 1000 \cdot 0.333 = 333 \text{ N}                         \\
-                  F_{tot} & = F_{r} + F_{a} = 294.3 + 333 = 627.3 \text{ N}
+                  F_{r}   & = \mu_r \cdot m \cdot g = 0.03 \cdot 1000 \cdot 9.81 = 294.3 \text{ N}, \\
+                  F_{a}   & = m \cdot a = 1000 \cdot 0.333 = 333 \text{ N},                         \\
+                  F_{tot} & = F_{r} + F_{a} = 294.3 + 333 = 627.3 \text{ N},
               \end{aligned}
           \end{equation}
-          Quindi, la coppia totale richiesta è:
+          quindi, la coppia totale richiesta è
           \begin{equation}
-              \tau_{tot} = F_{tot} \cdot r = 627.3 \cdot 0.1 = 62.73 \text{ Nm}
+              \tau_{tot} = F_{tot} \cdot r = 627.3 \cdot 0.1 = 62.73 \text{ Nm},
           \end{equation}
-          Che corrisponde a una potenza totale di:
+          che corrisponde a una potenza totale di
           \begin{equation}
-              P_{tot} = F_{tot} \cdot v = 627.3 \cdot 1 = 627.3 \text{ W}
+              P_{tot} = F_{tot} \cdot v = 627.3 \cdot 1 = 627.3 \text{ W}.
           \end{equation}
-    \item Su una pendenza del $10\%$, dobbiamo vincere:
+    \item Su una pendenza del $10\%$, occorre vincere
           \begin{equation}
               \begin{aligned}
-                  F_{\parallel} & = m \cdot g \cdot \sin(\theta) = 1000 \cdot 9.81 \cdot \sin(5.7^\circ) = 973.6 \text{ N}                        \\
-                  F_{r}         & = \mu_r \cdot m \cdot g \cdot \cos(\theta) = 0.03 \cdot 1000 \cdot 9.81 \cdot \cos(5.7^\circ) = 293.1 \text{ N} \\
-                  F_{a}         & = m \cdot a = 1000 \cdot 0.333 = 333 \text{ N}                                                                  \\
-                  F_{tot}       & = F_{\parallel} + F_{r} + F_{a} = 973.6 + 293.1 + 333 = 1599.7 \text{ N}
+                  F_{\parallel} & = m \cdot g \cdot \sin(\theta) = 1000 \cdot 9.81 \cdot \sin(5.7^\circ) = 973.6 \text{ N},                        \\
+                  F_{r}         & = \mu_r \cdot m \cdot g \cdot \cos(\theta) = 0.03 \cdot 1000 \cdot 9.81 \cdot \cos(5.7^\circ) = 293.1 \text{ N}, \\
+                  F_{a}         & = m \cdot a = 1000 \cdot 0.333 = 333 \text{ N},                                                                  \\
+                  F_{tot}       & = F_{\parallel} + F_{r} + F_{a} = 973.6 + 293.1 + 333 = 1599.7 \text{ N},
               \end{aligned}
           \end{equation}
-          Quindi, la coppia totale richiesta a ciascuna ruota è:
+          quindi, la coppia totale richiesta a ciascuna ruota è
           \begin{equation}
-              \tau_{tot} = F_{tot} \cdot r = 1599.7 \cdot 0.1 = 159.97 \text{ Nm}
+              \tau_{tot} = F_{tot} \cdot r = 1599.7 \cdot 0.1 = 159.97 \text{ Nm},
           \end{equation}
-          Che corrisponde a una potenza totale di:
+          che corrisponde a una potenza totale di
           \begin{equation}
-              P_{tot} = F_{tot} \cdot v = 1599.7 \cdot 1 = 1599.7 \text{ W}
+              P_{tot} = F_{tot} \cdot v = 1599.7 \cdot 1 = 1599.7 \text{ W}.
           \end{equation}
 \end{itemize}
 Approssimando la potenza totale necessaria a $1$ kW, si è deciso di richiedere per la batteria una capacità energetica di almeno $4$ kWh per garantire l'autonomia operativa di $4$ ore.
@@ -94,40 +93,43 @@ Approssimando la potenza totale necessaria a $1$ kW, si è deciso di richiedere 
     In questa trattazione preliminare, non è stato calcolato l'effetto inerziale delle masse in rotazione né tantonmeno le coppie necessarie ad eventuali motori di sterzo per orientare le ruote una volta messe sotto carico e/o in movimento. Questi aspetti più complessi sono stati demandati ai fornitori.
 \end{note}
 
-\section{Sistemi di bordo e Sensoristica}
+\section{Sistemi di bordo e sensoristica}
 Al fine di ottenere un sistema in grado di navigare autonomamente e di poter controllare i motori, si è deciso di dotare il veicolo di un sistema di bordo composto da:
 \begin{itemize}
-    \item \textbf{Computer di bordo:} Un \textit{Single Board Computer} (SBC) con capacità di calcolo sufficiente per eseguire gli algoritmi di navigazione e controllo in tempo reale. Si è optato per una soluzione basata su architettura $x86$ per garantire compatibilità con una vasta gamma di software e librerie, data anche la necessità di utilizzare ROS2 e Linux come sistema operativo e framework di sviluppo.
-    \item \textbf{Inverter per motori PMAC:} Per il controllo dei motori di trazione e sterzo, si è scelto di utilizzare inverter compatibili con motori brushless a magneti permanenti (PMAC), in grado di fornire la potenza richiesta e di supportare protocolli di comunicazione industriali come CANOpen.
-    \item \textbf{Batteria LiFePO4:} Per l'alimentazione del veicolo, si è optato per una batteria al litio-ferro-fosfato (LiFePO4) da almeno $4$ kWh, in grado di garantire l'autonomia operativa richiesta e di supportare cicli di carica/scarica profondi senza degradazione significativa.
-    \item \textbf{Sistema di comunicazione CAN:} Per l'integrazione e il controllo dei vari componenti del veicolo, si è scelto di utilizzare un adattatore USB-CAN, che permetta la comunicazione tra il computer di bordo e gli inverter dei motori in CAN bus.
+    \item \textbf{Computer di bordo:} un \textit{Single Board Computer} (SBC) con capacità di calcolo sufficiente per eseguire gli algoritmi di navigazione e controllo in tempo reale. Si è optato per una soluzione basata su architettura $x86$ per garantire compatibilità con una vasta gamma di software e librerie, data anche la necessità di utilizzare Linux e ROS~2 come sistema operativo e middleware rispettivamente.
+    \item \textbf{Inverter per motori PMAC:} per il controllo dei motori di trazione e sterzo, si è scelto di utilizzare inverter compatibili con motori brushless a magneti permanenti (PMAC), in grado di fornire la potenza richiesta e di supportare protocolli di comunicazione industriali come CANOpen.
+    \item \textbf{Batteria LiFePO4:} per l'alimentazione del veicolo, si è optato per una batteria al litio-ferro-fosfato (LiFePO4) da almeno $4$ kWh, in grado di garantire l'autonomia operativa richiesta e di supportare cicli di carica/scarica profondi senza degradazione significativa.
+    \item \textbf{Sistema di comunicazione CAN:} per l'integrazione e il controllo dei vari componenti del veicolo, si è scelto di utilizzare un adattatore USB-CAN, che permetta la comunicazione tra il computer di bordo e gli inverter dei motori in CAN bus.
 \end{itemize}
-Per la sensoristica, si è cercato di contenere il numero di sensori al minimo per ridurre i costi, selezionando solo quelli strettamente necessari per la navigazione autonoma e il controllo del veicolo:
+Per la sensoristica, si è cercato di contenere il numero di sensori al minimo per ridurre i costi, selezionando solo quelli strettamente necessari per la navigazione autonoma e il controllo del veicolo.
 \begin{itemize}
-    \item \textbf{LIDAR 3D:} Per la mappatura tridimensionale dell'ambiente circostante e l'individuazione di ostacoli. Il cono di visione del sensore scelto deve coprire almeno $180^\circ$ in orizzontale e $30^\circ$ in verticale, con una portata minima di $10$ m.
-    \item \textbf{Encoder sui motori:} Per la misurazione della velocità, della posizione degli sterzi e del numero di giri dei motori di trazione per un calcolo a valle della stima della posizione del veicolo tramite odometria.
+    \item \textbf{LIDAR 3D:} per la mappatura tridimensionale dell'ambiente circostante e l'individuazione di ostacoli. Il cono di visione del sensore scelto deve coprire almeno $180^\circ$ in orizzontale e $30^\circ$ in verticale, con una portata minima di $10$ m.
+    \item \textbf{Encoder sui motori:} per la misurazione della velocità, della posizione degli sterzi e del numero di giri dei motori di trazione per un calcolo a valle della stima della posizione del veicolo tramite odometria.
 \end{itemize}
 \begin{note}
-    La scelta di non utilizzare telecamere è stata dettata dalla volontà di non dover gestire eventuali problemi legati alla privacy degli operatori nelle prossimità del robot e tantomeno alla complessità della gestione della sicurezza informatica legata alla trasmissione di immagini video per evitare possibili attacchi di spionaggio industriale.
+    La scelta di non utilizzare telecamere è stata dettata dalla volontà di evitare problemi legati alla privacy degli operatori nelle prossimità del robot nonché alla gestione sicura della trasmissione di immagini acquisite all'interno dell'impianto industriale.
 \end{note}
-\section{Sistema di Movimentazione}
-Per soddisfare i requisiti di manovrabilità, è risultata da subito ovvia la necessità di prevedere meccanismi di sterzo al fine di garantire la riuscita di manovre come rotazioni sul posto e traslazioni laterali. Tuttavia, introdurre meccanismi di sterzo avrebbe comportato un aumento della complessità meccanica andando a incidere sui costi complessivi del progetto. Si è quindi proceduto ad analizzare diverse configurazioni di ruote motrici e sterzanti per trovare un compromesso tra le richieste esplicitate. Le configurazioni prese in considerazione sono state:
+
+\section{Sistema di movimentazione}
+Per soddisfare i requisiti di manovrabilità, è risultata da subito ovvia la necessità di prevedere meccanismi di sterzo al fine di garantire la riuscita di manovre come rotazioni sul posto e traslazioni laterali. Tuttavia, introdurre meccanismi di sterzo avrebbe comportato un aumento della complessità meccanica andando a incidere sui costi complessivi del progetto. Si è quindi proceduto ad analizzare diverse configurazioni di ruote motrici e sterzanti per trovare un compromesso tra le richieste esplicitate. Le configurazioni prese in considerazione sono state le seguenti.
 \begin{enumerate}
-    \item \textbf{4 ruote motrici e sterzanti:} Offre la massima trazione e manovrabilità, ma comporta costi elevati e complessità meccanica.
-    \item \textbf{2 ruote motrici + 2 ruote fisse:} Compromesso tra trazione e semplicità, ma con limitata capacità di sterzata tramite guida differenziale.
-    \item \textbf{2 ruote motrici e sterzanti + 2 ruote fisse:} Buona manovrabilità e trazione, con costi e complessità moderate. Simile ad una configurazione di veicolo tradizionale.
-    \item \textbf{2 ruote motrici e sterzanti + 2 ruote caster:} Migliore manovrabilità se le attuazioni sono posizionate opportunamente, con riduzione dei costi e della complessità meccanica.
+    \item \textbf{4 ruote motrici e sterzanti:} offre la massima trazione e manovrabilità, ma comporta costi elevati e complessità meccanica.
+    \item \textbf{2 ruote motrici + 2 ruote fisse:} compromesso tra trazione e semplicità, ma con limitata capacità di sterzata tramite guida differenziale.
+    \item \textbf{2 ruote motrici e sterzanti + 2 ruote fisse:} buona manovrabilità e trazione, con costi e complessità moderate. Simile ad una configurazione di veicolo tradizionale.
+    \item \textbf{2 ruote motrici e sterzanti + 2 ruote caster:} migliore manovrabilità se le attuazioni sono posizionate opportunamente, con riduzione dei costi e della complessità meccanica.
 \end{enumerate}
-Dopo un'attenta valutazione, si è deciso di adottare la configurazione a 2 ruote motrici e sterzanti più 2 ruote caster, in quanto offre un buon equilibrio tra manovrabilità, trazione, costi e semplicità meccanica. Le ruote motrici e sterzanti sono state posizionate su una diagonale del veicolo, per massimizzare l'efficacia della sterzata e permettere manovre come rotazioni sul posto e traslazioni laterali. Le ruote caster, invece, sono state posizionate sull'altra diagonale per garantire stabilità e supporto al veicolo durante il movimento.
+Dopo un'attenta valutazione, si è deciso di adottare la configurazione a due ruote motrici e sterzanti più due ruote caster in quanto offre un buon equilibrio tra manovrabilità, trazione, costi e semplicità meccanica. Le ruote motrici e sterzanti sono state posizionate su una diagonale del veicolo, per massimizzare l'efficacia della sterzata e permettere manovre come rotazioni sul posto e traslazioni laterali. Le ruote caster, invece, sono state posizionate sull'altra diagonale per garantire stabilità e supporto al veicolo durante il movimento.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.6\textwidth]{3/2wd_steering.pdf}
     \caption{Schema della configurazione a 2 ruote motrici e sterzanti (in verde) e 2 ruote caster (in viola).}
 \end{figure}
+
 \section{Selezione componenti}
-Sulla base delle specifiche tecniche calcolate, e della configurazione di ruote scelta, si è proceduto alla selezione dei componenti principali del veicolo.
+Sulla base delle specifiche tecniche calcolate e della configurazione di ruote scelta, si è proceduto alla selezione dei componenti principali del veicolo.
+
 \subsection{Motori}
-Per gruppo motori, si è scelto di acquistare delle motoruote. Una motoruota integra in un unico componente il motore elettrico, la ruota stessa e il sistema di trasmissione, semplificando notevolmente la progettazione meccanica e riducendo i costi di assemblaggio. Infatti, possono essere montate direttamente sul telaio del veicolo, a patto di predisporre opportune staffe di supporto.
+Per gruppo motori, si è scelto di acquistare delle \textit{motoruote}. Una motoruota integra in un unico componente il motore elettrico, la ruota stessa e il sistema di trasmissione, semplificando notevolmente la progettazione meccanica e riducendo i costi di assemblaggio. Infatti, possono essere montate direttamente sul telaio del veicolo, a patto di predisporre opportune staffe di supporto.
 
 Il prodotto acquistato è la MRT05 di CFR, che combina inoltre un motore di sterzo posizionato verticalmente rispetto al piano della ruota, permettendo di ottenere la sterzata mediante un accoppiamento ad ingranaggi. Questo consente di ottenere un sistema di sterzo compatto e integrato, riducendo ulteriormente la complessità meccanica.
 
@@ -139,7 +141,7 @@ Il prodotto acquistato è la MRT05 di CFR, che combina inoltre un motore di ster
 
 \begin{table}[htbp]
     \centering
-    \caption{Specifiche tecniche dei motori di trazione e sterzo}
+    \caption{Specifiche tecniche dei motori di trazione e sterzo.}
     \label{tab:motors_data}
     \begin{tabular}{|l|c|c|c|}
         \hline
@@ -163,7 +165,7 @@ Il prodotto acquistato è la MRT05 di CFR, che combina inoltre un motore di ster
 
 \begin{table}[htbp]
     \centering
-    \caption{Peso complessivo del gruppo ruota motrice}
+    \caption{Peso complessivo del gruppo ruota motrice.}
     \label{tab:drive_unit_weight}
     \begin{tabular}{|l|c|c|}
         \hline
@@ -174,71 +176,71 @@ Il prodotto acquistato è la MRT05 di CFR, che combina inoltre un motore di ster
     \end{tabular}
 \end{table}
 
-\subsection{Verifica dei Requisiti di Trazione}
+\subsection{Verifica dei requisiti di trazione}
 Verifichiamo ora che i motori selezionati soddisfino i requisiti di coppia e potenza calcolati in precedenza.
 
 \textbf{Requisiti di trazione:}
 \begin{itemize}
-    \item In piano: coppia totale richiesta $\tau_{richiesta} = 62.73$ Nm, potenza $P_{richiesta} = 627.3$ W
-    \item Su rampa 10\%: coppia totale richiesta $\tau_{richiesta} = 159.97$ Nm, potenza $P_{richiesta} = 1599.7$ W
+    \item in piano: coppia totale richiesta $\tau_{richiesta} = 62.73$ Nm, potenza $P_{richiesta} = 627.3$ W;
+    \item su rampa 10\%: coppia totale richiesta $\tau_{richiesta} = 159.97$ Nm, potenza $P_{richiesta} = 1599.7$ W.
 \end{itemize}
 
 \textbf{Caratteristiche dei motori:}
 \begin{itemize}
-    \item Coppia nominale per ruota: $37$ Nm
-    \item Coppia di picco per ruota: $180$ Nm
-    \item Potenza nominale per ruota (S2 - 60 min): $500$ W
+    \item coppia nominale per ruota: $37$ Nm;
+    \item coppia di picco per ruota: $180$ Nm;
+    \item potenza nominale per ruota (S2 - 60 min): $500$ W.
 \end{itemize}
 
 \textbf{Verifica in piano:}
-La coppia totale disponibile con 2 motoruote è:
+la coppia totale disponibile con 2 motoruote è
 \begin{equation}
-    \tau_{disponibile} = 2 \times \tau_{nominale} = 2 \times 37 = 74 \, \text{Nm} \geq \tau_{richiesta} = 62.73 \, \text{Nm} \quad \checkmark
+    \tau_{disponibile} = 2 \times \tau_{nominale} = 2 \times 37 = 74 \, \text{Nm} \geq \tau_{richiesta} = 62.73 \, \text{Nm}. \quad \checkmark
 \end{equation}
 
-La forza di trazione massima erogabile in condizioni nominali:
+La forza di trazione massima erogabile in condizioni nominali è
 \begin{equation}
-    F_{trazione} = \frac{\tau_{disponibile}}{r} = \frac{74}{0.099} \approx 747 \, \text{N} \geq F_{richiesta} = 627.3 \, \text{N} \quad \checkmark
+    F_{trazione} = \frac{\tau_{disponibile}}{r} = \frac{74}{0.099} \approx 747 \, \text{N} \geq F_{richiesta} = 627.3 \, \text{N}. \quad \checkmark
 \end{equation}
 
-Margine di sicurezza in piano:
+Il margine di sicurezza in piano risulta
 \begin{equation}
-    \text{Margine}_{\tau} = \frac{74 - 62.73}{62.73} \times 100 \approx 18\%
+    \text{Margine}_{\tau} = \frac{74 - 62.73}{62.73} \times 100 \approx 18\%.
 \end{equation}
 
 \textbf{Verifica su rampa 10\%:}
-Nel caso peggiore (salita 10\% con accelerazione $a = 0.33 \, m/s^2$), la forza richiesta è:
+nel caso peggiore (salita 10\% con accelerazione $a = 0.33 \, m/s^2$), la forza richiesta è
 \begin{equation}
-    F_{richiesta} = m \cdot g \cdot \sin(\theta) + \mu_r \cdot m \cdot g \cdot \cos(\theta) + m \cdot a = 976 + 293 + 333 = 1602 \, \text{N}
+    F_{richiesta} = m \cdot g \cdot \sin(\theta) + \mu_r \cdot m \cdot g \cdot \cos(\theta) + m \cdot a = 976 + 293 + 333 = 1602 \, \text{N},
 \end{equation}
 
-La coppia corrispondente:
+la coppia corrispondente è
 \begin{equation}
-    \tau_{richiesta} = F_{richiesta} \cdot r = 1602 \times 0.099 \approx 159 \, \text{Nm}
+    \tau_{richiesta} = F_{richiesta} \cdot r = 1602 \times 0.099 \approx 159 \, \text{Nm}.
 \end{equation}
 
 Questa condizione supera la coppia nominale ma rientra ampiamente nella coppia di picco disponibile:
 \begin{equation}
-    \tau_{picco} = 2 \times 180 = 360 \, \text{Nm} \gg \tau_{richiesta} = 159 \, \text{Nm} \quad \checkmark
+    \tau_{picco} = 2 \times 180 = 360 \, \text{Nm} \gg \tau_{richiesta} = 159 \, \text{Nm}. \quad \checkmark
 \end{equation}
 
-La durata della rampa è:
+La durata della rampa è
 \begin{equation}
-    t_{rampa} = \frac{L}{v} = \frac{3}{1} = 3 \, \text{s} \ll t_{picco,max}
+    t_{rampa} = \frac{L}{v} = \frac{3}{1} = 3 \, \text{s} \ll t_{picco,max}.
 \end{equation}
 
-\textbf{Conclusione:} I motori selezionati sono adeguati per operazioni in piano con un margine di sicurezza del 18\%, e possono gestire rampe fino al 10\% utilizzando la coppia di picco per brevi periodi (3 secondi), ben al di sotto del limite temporale consentito.
+In conclusione, i motori selezionati sono adeguati per operazioni in piano con un margine di sicurezza del 18\%, e possono gestire rampe fino al 10\% utilizzando la coppia di picco per brevi periodi (3 secondi), ben al di sotto del limite temporale consentito.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\textwidth]{motore/side_view_2.jpeg}
     \caption{Foto reale della motoruota MRT05 di CFR su un banco di prova. Si possono notare i due motori e la piastra di supporto.}
 \end{figure}
 \subsection{Batteria}
-Per l'alimentazione del veicolo, si è scelto di utilizzare una batteria con tecnoligia LiFePO4 (Litio-Ferro-Fosfato). Questa tecnologia offre numerosi vantaggi, tra cui:
+Per l'alimentazione del veicolo, si è scelto di utilizzare una batteria con tecnologia LiFePO4 (Litio-Ferro-Fosfato). Questa tecnologia offre numerosi vantaggi, tra cui i seguenti.
 \begin{itemize}
-    \item \textbf{Sicurezza:} Le batterie LiFePO4 sono più stabili termicamente e chimicamente rispetto ad altre tecnologie al litio, riducendo il rischio di incendi o esplosioni.
-    \item \textbf{Durata:} Le batterie LiFePO4 hanno una vita utile più lunga, con un numero maggiore di cicli di carica/scarica rispetto ad altre tecnologie.
-    \item \textbf{Prestazioni:} Le batterie LiFePO4 offrono buone prestazioni in termini di capacità di scarica ad alta corrente, rendendole adatte per applicazioni che richiedono picchi di potenza.
+    \item \textbf{Sicurezza:} le batterie LiFePO4 sono più stabili termicamente e chimicamente rispetto ad altre tecnologie al litio, riducendo il rischio di incendi o esplosioni.
+    \item \textbf{Durata:} le batterie LiFePO4 hanno una vita utile più lunga, con un numero maggiore di cicli di carica/scarica rispetto ad altre tecnologie.
+    \item \textbf{Prestazioni:} le batterie LiFePO4 offrono buone prestazioni in termini di capacità di scarica ad alta corrente, rendendole adatte per applicazioni che richiedono picchi di potenza.
 \end{itemize}
 Su queste basi, la ricerca del fornitore per tale componente si è concentrata su aziende che operassero nel campo dei veicoli elettrici. Dopo un'attenta valutazione, si è deciso di affidarsi a \textit{FlashBattery}, un'azienda italiana specializzata nel settore, che offre soluzioni dotate di sistemi di gestione della batteria (BMS) avanzati con comunicazione in CANOpen.
 \begin{figure}[htbp]
@@ -246,11 +248,11 @@ Su queste basi, la ricerca del fornitore per tale componente si è concentrata s
     \includegraphics[width=0.6\textwidth]{batteria/front_view.jpeg}
     \caption{Foto del pacco batteria (rosso) e del caricabatterie (nero) forniti da FlashBattery, alloggiate su un carrello di prova. Si possono notare in rosso/nero e in giallo i cavi di alimentazione e comunicazione.}
 \end{figure}
-Sulle base delle specifiche tecniche calcolate in precedenza, il fornitore ha proposto una batteria con le seguenti caratteristiche:
+Sulle base delle specifiche tecniche calcolate in precedenza, il fornitore ha proposto una batteria con le seguenti caratteristiche.
 
 \begin{table}[htbp]
     \centering
-    \caption{Specifiche tecniche della batteria LiFePO4}
+    \caption{Specifiche tecniche della batteria LiFePO4.}
     \label{tab:battery_specs}
     \begin{tabular}{|l|c|c|}
         \hline
@@ -278,7 +280,7 @@ Sulle base delle specifiche tecniche calcolate in precedenza, il fornitore ha pr
 
 \begin{table}[htbp]
     \centering
-    \caption{Specifiche meccaniche della batteria}
+    \caption{Specifiche meccaniche della batteria.}
     \label{tab:battery_mechanical}
     \begin{tabular}{|l|c|c|}
         \hline
@@ -295,75 +297,75 @@ Sulle base delle specifiche tecniche calcolate in precedenza, il fornitore ha pr
     \end{tabular}
 \end{table}
 
-\subsection{Verifica dei Requisiti Energetici}
-Confrontiamo ora i requisiti energetici calcolati in precedenza con le caratteristiche della batteria selezionata.
+\subsection{Verifica dei requisiti energetici}
+Si presenta ora un confronto tra i requisiti energetici calcolati in precedenza e le caratteristiche della batteria selezionata.
 
-\textbf{Requisito energetico:} Era stato calcolato un fabbisogno di almeno $4$ kWh per garantire $4$ ore di autonomia operativa con una potenza media stimata di $1$ kW.
+\textbf{Requisito energetico:} era stato calcolato un fabbisogno di almeno $4$ kWh per garantire $4$ ore di autonomia operativa con una potenza media stimata di $1$ kW.
 
 \textbf{Caratteristiche della batteria:}
 \begin{itemize}
-    \item Energia totale: $5.38$ kWh
-    \item Energia disponibile (80\% DOD): $4.30$ kWh
+    \item energia totale: $5.38$ kWh;
+    \item energia disponibile (80\% DOD): $4.30$ kWh.
 \end{itemize}
 
 \textbf{Verifica della capacità energetica:}
 \begin{equation}
-    E_{disponibile} = 4.30 \, \text{kWh} \geq E_{richiesta} = 4 \, \text{kWh} \quad \checkmark
+    E_{disponibile} = 4.30 \, \text{kWh} \geq E_{richiesta} = 4 \, \text{kWh}. \quad \checkmark
 \end{equation}
 
-La batteria soddisfa il requisito minimo con un margine di sicurezza del:
+La batteria soddisfa il requisito minimo con un margine di sicurezza del
 \begin{equation}
-    \text{Margine} = \frac{E_{disponibile} - E_{richiesta}}{E_{richiesta}} \times 100 = \frac{4.30 - 4}{4} \times 100 = 7.5\%
+    \text{Margine} = \frac{E_{disponibile} - E_{richiesta}}{E_{richiesta}} \times 100 = \frac{4.30 - 4}{4} \times 100 = 7.5\%.
 \end{equation}
 
 \textbf{Verifica della corrente di scarica:}
-La potenza massima richiesta in condizioni critiche (rampa 10\%) è $P_{max} = 1.6$ kW. La corrente corrispondente alla tensione nominale è:
+la potenza massima richiesta in condizioni critiche (rampa 10\%) è $P_{max} = 1.6$ kW. La corrente corrispondente alla tensione nominale è
 \begin{equation}
-    I_{richiesta} = \frac{P_{max}}{V_{nominale}} = \frac{1600}{51.2} \approx 31.25 \, \text{A}
+    I_{richiesta} = \frac{P_{max}}{V_{nominale}} = \frac{1600}{51.2} \approx 31.25 \, \text{A}.
 \end{equation}
 
-La batteria fornisce:
+La batteria fornisce
 \begin{itemize}
-    \item Corrente continua: $105$ A $\gg 31.25$ A $\checkmark$
-    \item Corrente di picco (t $\leq$ 60s): $210$ A $\checkmark$
+    \item corrente continua: $105$ A $\gg 31.25$ A; $\checkmark$
+    \item corrente di picco (t $\leq$ 60s): $210$ A. $\checkmark$
 \end{itemize}
 
-\textbf{Conclusione:} La batteria selezionata è adeguata ai requisiti del veicolo, offrendo capacità energetica sufficiente per l'autonomia richiesta e correnti di scarica ampiamente superiori alle necessità operative, garantendo così un margine di sicurezza per eventuali picchi di potenza o inefficienze del sistema.
+In conclusione, la batteria selezionata è adeguata ai requisiti del veicolo, offrendo capacità energetica sufficiente per l'autonomia richiesta e correnti di scarica ampiamente superiori alle necessità operative, garantendo così un margine di sicurezza per eventuali picchi di potenza o inefficienze del sistema.
 
 \subsection{Caricabatterie}
 Insieme al pacco batteria, FlashBattery ha fornito un caricabatterie dedicato progettato specificamente per batterie al litio-ferro-fosfato (LiFePO4). Il modello fornito è lo \textit{Zivan NG3} configurato per batterie 48V con corrente di carica massima di 60A, un caricabatterie industriale di alta qualità prodotto da Zivan, azienda leader nel settore dei sistemi di ricarica per veicoli elettrici e applicazioni industriali.
 
 Il caricabatterie implementa un algoritmo di carica ottimizzato per la chimica LiFePO4, garantendo cicli di carica completi e sicuri che massimizzano la vita utile della batteria.
 
-\textbf{Caratteristiche principali del caricabatterie Zivan NG3:}
+Di seguito le sue caratteristiche tecniche principali.
 \begin{itemize}
-    \item \textbf{Modello:} Zivan NG3 48V 60A
-    \item \textbf{Tensione di ingresso:} Alimentazione da rete elettrica monofase 230V AC (50-60 Hz)
-    \item \textbf{Tensione di uscita:} Configurata per batterie LiFePO4 a 48V nominali (16 celle in serie)
-    \item \textbf{Corrente di carica:} Programmabile fino a 60A, configurata a 50A per rispettare le specifiche della batteria
-    \item \textbf{Potenza massima:} Circa 3 kW
-    \item \textbf{Profilo di carica:} CC-CV (Constant Current - Constant Voltage) ottimizzato per LiFePO4, con fase di bilanciamento delle celle
+    \item \textbf{Modello:} Zivan NG3 48V 60A.
+    \item \textbf{Tensione di ingresso:} alimentazione da rete elettrica monofase 230V AC (50-60 Hz).
+    \item \textbf{Tensione di uscita:} configurata per batterie LiFePO4 a 48V nominali (16 celle in serie).
+    \item \textbf{Corrente di carica:} programmabile fino a 60A, configurata a 50A per rispettare le specifiche della batteria.
+    \item \textbf{Potenza massima:} circa 3 kW.
+    \item \textbf{Profilo di carica:} CC-CV (Constant Current - Constant Voltage) ottimizzato per LiFePO4, con fase di bilanciamento delle celle.
     \item \textbf{Protezioni integrate:}
           \begin{itemize}
-              \item Protezione da sovratensione e sovracorrente
-              \item Protezione termica con ventilazione forzata
-              \item Protezione da inversione di polarità
-              \item Protezione da cortocircuito
+              \item protezione da sovratensione e sovracorrente;
+              \item protezione termica con ventilazione forzata;
+              \item protezione da inversione di polarità;
+              \item protezione da cortocircuito.
           \end{itemize}
-    \item \textbf{Comunicazione:} Interfaccia CAN integrata per monitoraggio stato di carica e parametri in tempo reale
-    \item \textbf{Indicatori:} LED di stato per visualizzazione fasi di carica (carica in corso, bilanciamento, carica completata)
-    \item \textbf{Efficienza:} Superiore al 90\% a pieno carico
-    \item \textbf{Grado di protezione:} IP20 (per uso in ambiente interno protetto)
+    \item \textbf{Comunicazione:} interfaccia CAN integrata per monitoraggio stato di carica e parametri in tempo reale.
+    \item \textbf{Indicatori:} LED di stato per visualizzazione fasi di carica (carica in corso, bilanciamento, carica completata).
+    \item \textbf{Efficienza:} superiore al 90\% a pieno carico.
+    \item \textbf{Grado di protezione:} IP20 (per uso in ambiente interno protetto).
 \end{itemize}
 
-Il caricabatterie è dotato di sistema di gestione intelligente che comunica con il BMS della batteria tramite bus CAN per ottimizzare il processo di carica, garantendo il bilanciamento delle celle e prevenendo situazioni di sovraccarica o sottocarica che potrebbero danneggiare il pacco batteria. Il tempo di ricarica tipico da 20\% a 100\% di capacità è di circa 2-3 ore, compatibile con le esigenze operative del veicolo.
+Il caricabatterie è dotato di sistema di gestione intelligente che comunica con il BMS (Battery Management System) della batteria tramite bus CAN per ottimizzare il processo di carica, garantendo il bilanciamento delle celle e prevenendo situazioni di sovraccarica o sottocarica che potrebbero danneggiare il pacco batteria. Il tempo di ricarica tipico da 20\% a 100\% di capacità è di circa 2-3 ore, compatibile con le esigenze operative del veicolo.
 
-\subsection{Driver per Motori Elettrici}
-Per il controllo di basso livello dei motori PMAC integrati nelle motoruote, si è deciso di utilizzare degli inverter compatibili con le specifiche dei motori stessi, ovvero:
+\subsection{Driver per motori elettrici}
+Per il controllo di basso livello dei motori PMAC integrati nelle motoruote, si è deciso di utilizzare degli inverter compatibili con le specifiche dei motori stessi, ovvero
 \begin{itemize}
-    \item Tensione di alimentazione: 48V
-    \item Potenza nominale: almeno 500W per i motori di trazione e 300W per i motori di sterzo
-    \item Supporto per protocollo di comunicazione CANOpen.
+    \item tensione di alimentazione: 48V;
+    \item potenza nominale: almeno 500W per i motori di trazione e 300W per i motori di sterzo;
+    \item supporto per protocollo di comunicazione CANOpen.
 \end{itemize}
 Dopo una ricerca tra i possibili fornitori\footnote{Tale ricerca è stata necessaria in quanto CFR \textbf{non produce} inverter.}, si è scelto di accettare la proposta offerta da \textbf{MicroPhase}, un'azienda italiana specializzata in azionamenti per motori elettrici.
 \begin{figure}[htbp]
@@ -373,15 +375,15 @@ Dopo una ricerca tra i possibili fornitori\footnote{Tale ricerca è stata necess
 \end{figure}
 Il modello da loro selezionato è il \textit{Mini-Traction Power} che soddisfa tutti i requisiti richiesti. Difatti, tali driver \textbf{implementano completamente} i protocolli CiA 301 e 402 per la definizione degli oggetti e della macchina a stati finiti per il controllo dei motori.
 
-Inoltre, l'azienda ha offerto supporto tecnico per:
+Inoltre, l'azienda ha offerto supporto tecnico per
 \begin{itemize}
-    \item Configurazione dei driver per l'uso specifico con i motori CFR e gli encoder \textit{SIN/COS} da loro integrati.
-    \item Taratura dei PID per il controllo di basso livello delle fasi di corrente dei motori.
+    \item configurazione dei driver per l'uso specifico con i motori CFR e gli encoder \textit{SIN/COS} da loro integrati;
+    \item taratura dei PID per il controllo di basso livello delle fasi di corrente dei motori.
 \end{itemize}
 
 \begin{table}[htbp]
     \centering
-    \caption{Specifiche tecniche dell'inverter Mini-Traction Power (Modello 48V)}
+    \caption{Specifiche tecniche dell'inverter Mini-Traction Power (Modello 48V).}
     \label{tab:inverter_specs}
     \begin{tabular}{|l|c|c|}
         \hline
@@ -408,8 +410,9 @@ Inoltre, l'azienda ha offerto supporto tecnico per:
         \hline
     \end{tabular}
 \end{table}
-\subsection{Computer di Bordo}
-Per il computer di bordo, si è scelto il \textit{LattePanda Sigma}, un Single Board Computer (SBC) basato su architettura x86 che offre prestazioni eccezionali in un formato compatto. Questo dispositivo è equipaggiato con un processore Intel® Core™ i5-1340P di 13ª generazione (Raptor Lake), caratterizzato da 12 core (4 Performance-core + 8 Efficient-core) e 16 thread, con frequenza turbo fino a 4.6 GHz per i core ad alte prestazioni e 3.4 GHz per quelli efficienti.
+
+\subsection{Computer di bordo}
+Per il computer di bordo, si è scelto il \textit{LattePanda Sigma}, un SBC basato su architettura x86 che offre prestazioni eccezionali in un formato compatto. Questo dispositivo è equipaggiato con un processore Intel® Core™ i5-1340P di 13ª generazione (Raptor Lake), caratterizzato da 12 core (4 Performance-core + 8 Efficient-core) e 16 thread, con frequenza turbo fino a 4.6 GHz per i core ad alte prestazioni e 3.4 GHz per quelli efficienti.
 
 \begin{figure}[htbp]
     \centering
@@ -417,28 +420,28 @@ Per il computer di bordo, si è scelto il \textit{LattePanda Sigma}, un Single B
     \caption{LattePanda Sigma Single Board Computer con processore Intel Core i5-1340P.}
 \end{figure}
 
-La scelta di questo SBC è stata motivata da diversi fattori chiave:
+La scelta di questo SBC è stata motivata da diversi fattori chiave.
 \begin{itemize}
-    \item \textbf{Architettura x86:} Garantisce compatibilità nativa con ROS2 e una vasta gamma di software e librerie di robotica, semplificando lo sviluppo e il debug.
-    \item \textbf{Potenza di calcolo:} Il processore i5-1340P offre prestazioni elevate per eseguire algoritmi di navigazione, localizzazione e controllo in tempo reale, con una potenza base di 28W (configurabile fino a 45W).
-    \item \textbf{Memoria veloce:} Dotato di 32GB di RAM LPDDR5-6400 dual-channel, con una banda passante di 102.4 GB/s, permette l'elaborazione simultanea di dati provenienti dai sensori e l'esecuzione di algoritmi complessi.
+    \item \textbf{Architettura x86:} garantisce compatibilità nativa con ROS~2 e una vasta gamma di software e librerie di robotica, semplificando lo sviluppo e il debug.
+    \item \textbf{Potenza di calcolo:} il processore i5-1340P offre prestazioni elevate per eseguire algoritmi di navigazione, localizzazione e controllo in tempo reale, con una potenza base di 28W (configurabile fino a 45W).
+    \item \textbf{Memoria veloce:} dotato di 32GB di RAM LPDDR5-6400 dual-channel, con una banda massima di 102.4 GB/s, permette l'elaborazione simultanea di dati provenienti dai sensori e l'esecuzione di algoritmi complessi.
     \item \textbf{GPU integrata:} Intel® Iris® Xe Graphics con 80 unità di esecuzione, utile per eventuali elaborazioni grafiche o visualizzazioni.
-    \item \textbf{Connettività industriale:} Include interfacce essenziali per applicazioni robotiche:
+    \item \textbf{Connettività industriale:} include interfacce essenziali per applicazioni robotiche.
           \begin{itemize}
-              \item 2 porte Ethernet 2.5GbE (Intel® i225-V) per comunicazioni di rete affidabili
-              \item Porte USB (2x USB2.0, 2x USB3.2 Gen2, 2x Thunderbolt™ 4) per collegare adattatori CAN-USB e altri dispositivi
-              \item Porta COM con supporto nativo per protocolli industriali RS232/RS485
-              \item Header GPIO a 34 pin con co-processore ATmega32U4 per interfacciamento I/O
+              \item 2 porte Ethernet 2.5GbE (Intel® i225-V) per comunicazioni di rete affidabili.
+              \item Porte USB (2x USB2.0, 2x USB3.2 Gen2, 2x Thunderbolt™ 4) per collegare adattatori CAN-USB e altri dispositivi.
+              \item Porta COM con supporto nativo per protocolli industriali RS232/RS485.
+              \item Header GPIO a 34 pin con co-processore ATmega32U4 per interfacciamento I/O.
           \end{itemize}
-    \item \textbf{Espandibilità:} Slot M.2 per storage NVMe ad alte prestazioni e moduli wireless, permettendo l'installazione di SSD per logging dei dati e moduli WiFi/4G per comunicazioni remote.
-    \item \textbf{Supporto multi-OS:} Compatibile con Windows, Ubuntu e altre distribuzioni Linux, Proxmox VE, permettendo la scelta del sistema operativo più adatto. Per il progetto è stato scelto Ubuntu 24.04 LTS con ROS2 Jazzy Jalisco.
-    \item \textbf{Formato compatto:} Form factor 3.5" (146 $\times$ 102 mm), facilmente integrabile nel telaio del robot.
-    \item \textbf{Gestione energetica:} Alimentazione flessibile tramite DC Jack (12-20V) o USB Type-C PD (20V), con funzioni BIOS avanzate tra cui Auto Power-on e Watchdog Timer, essenziali per applicazioni autonome.
+    \item \textbf{Espandibilità:} slot M.2 per storage NVMe ad alte prestazioni e moduli wireless, permettendo l'installazione di SSD per logging dei dati e moduli WiFi/4G per comunicazioni remote.
+    \item \textbf{Supporto multi-OS:} compatibile con Windows, Ubuntu e altre distribuzioni Linux, Proxmox VE, permettendo la scelta del sistema operativo più adatto. Per il progetto è stato scelto Ubuntu 24.04 LTS con ROS~2 Jazzy Jalisco.
+    \item \textbf{Formato compatto:} form factor 3.5" (146 $\times$ 102 mm), facilmente integrabile nel telaio del robot.
+    \item \textbf{Gestione energetica:} alimentazione flessibile tramite DC Jack (12-20V) o USB Type-C PD (20V), con funzioni BIOS avanzate tra cui \textit{Auto Power-On} e \textit{Watchdog Timer}, essenziali per applicazioni autonome.
 \end{itemize}
 
 \begin{table}[htbp]
     \centering
-    \caption{Specifiche tecniche principali del LattePanda Sigma}
+    \caption{Specifiche tecniche principali del LattePanda Sigma.}
     \label{tab:sbc_specs}
     \begin{tabular}{|l|c|c|}
         \hline
@@ -463,17 +466,17 @@ La scelta di questo SBC è stata motivata da diversi fattori chiave:
     \end{tabular}
 \end{table}
 
-Questa piattaforma hardware fornisce le risorse computazionali necessarie per eseguire l'intero stack software del robot, includendo la gestione dei sensori, la localizzazione, la pianificazione del percorso e il controllo dei motori, mantenendo al contempo un profilo energetico compatibile con l'alimentazione a batteria del veicolo.
+Questa piattaforma hardware fornisce le risorse computazionali necessarie per eseguire l'intero stack software del robot, includendo la gestione dei sensori, la localizzazione e il controllo dei motori, mantenendo al contempo un profilo energetico compatibile con l'alimentazione a batteria del veicolo.
 
 \subsection{Adattatore USB-CAN}
 Per l'integrazione e il controllo dei vari componenti del veicolo tramite bus CAN, si è scelto di utilizzare il convertitore \textit{USB-CAN-A} di Waveshare. Questo dispositivo permette la comunicazione tra il computer di bordo (LattePanda Sigma), gli inverter Mini-Traction Power e la batteria FlashBattery.
 
 Il \textit{USB-CAN-A} è un convertitore USB-Seriale-CAN economico e versatile, basato su una soluzione con chip STM32 che garantisce stabilità e affidabilità della comunicazione. La scelta di questo dispositivo è stata motivata principalmente da:
 \begin{itemize}
-    \item \textbf{Convenienza economica:} Disponibile a basso prezzo rispetto ad alternative industriali più costose, mantenendo comunque funzionalità adeguate per l'applicazione.
-    \item \textbf{Facilità di reperibilità:} Acquistabile facilmente tramite Amazon e altri marketplace online, riducendo i tempi di approvvigionamento.
-    \item \textbf{Compatibilità con i protocolli CAN:} Supporta completamente CAN 2.0A (frame standard, ID 11-bit) e CAN 2.0B (frame esteso, ID 29-bit).
-    \item \textbf{Velocità adeguata:} Range di velocità CAN configurabile da 5 kbps a 1 Mbps, compatibile con le specifiche CANOpen degli altri dispositivi.
+    \item \textbf{Convenienza economica:} disponibile a basso prezzo rispetto ad alternative industriali più costose, mantenendo comunque funzionalità adeguate per l'applicazione.
+    \item \textbf{Facilità di reperibilità:} acquistabile facilmente tramite Amazon e altri marketplace online, riducendo i tempi di approvvigionamento.
+    \item \textbf{Compatibilità con i protocolli CAN:} supporta completamente CAN 2.0A (frame standard, ID 11-bit) e CAN 2.0B (frame esteso, ID 29-bit).
+    \item \textbf{Velocità adeguata:} range di velocità CAN configurabile da 5 kbps a 1 Mbps, compatibile con le specifiche CANOpen degli altri dispositivi.
     \item \textbf{Supporto software per Linux:} automaticamente riconosciuto come porta seriale virtuale (ttyUSB) tramite driver CH341, con demo in C e Python fornite dal produttore.
 \end{itemize}
 
@@ -483,22 +486,22 @@ Il \textit{USB-CAN-A} è un convertitore USB-Seriale-CAN economico e versatile, 
     \caption{Convertitore USB-CAN-A di Waveshare con terminale CAN a vite e interruttore per resistenza di terminazione 120$\Omega$.}
 \end{figure}
 
-\textbf{Caratteristiche tecniche principali:}
+Seguono le caratteristiche tecniche principali del convertitore.
 \begin{itemize}
-    \item \textbf{Protocolli CAN:} Supporto CAN 2.0A (standard frame) e CAN 2.0B (extended frame)
-    \item \textbf{Velocità CAN:} Configurabile da 5 kbps a 1 Mbps, con preset per le velocità comuni (1M, 500K, 250K, 125K, ecc.)
-    \item \textbf{Baud rate porta seriale:} Predefinito a 2 Mbps (compatibile con la maggior parte delle velocità CAN), configurabile da 9600 bps a 2 Mbps
-    \item \textbf{Modalità operative:} Normale, loopback (per self-test), silenziosa (solo ricezione), silenziosa-loopback
-    \item \textbf{Protezione hardware:} TVS (Transient Voltage Suppressor) integrato per protezione da sovratensioni e picchi transienti sul bus CAN
-    \item \textbf{Resistenza di terminazione:} Resistenza 120$\Omega$ commutabile tramite interruttore, essenziale per terminare correttamente il bus CAN
-    \item \textbf{Filtro ID:} Possibilità di configurare filtri per ricevere solo messaggi con ID specifici
-    \item \textbf{Buffer interno:} Capacità di buffering fino a 20 messaggi per gestire burst di dati
-    \item \textbf{Timestamp:} I messaggi ricevuti includono timestamp per sincronizzazione temporale
+    \item \textbf{Protocolli CAN:} supporto CAN 2.0A (standard frame) e CAN 2.0B (extended frame).
+    \item \textbf{Velocità CAN:} configurabile da 5 kbps a 1 Mbps, con preset per le velocità comuni (1M, 500K, 250K, 125K, ecc.).
+    \item \textbf{Baud rate porta seriale:} predefinito a 2 Mbps (compatibile con la maggior parte delle velocità CAN), configurabile da 9600 bps a 2 Mbps.
+    \item \textbf{Modalità operative:} normale, loopback (per self-test), silenziosa (solo ricezione), silenziosa-loopback
+    \item \textbf{Protezione hardware:} TVS (Transient Voltage Suppressor) integrato per protezione da sovratensioni e picchi transienti sul bus CAN.
+    \item \textbf{Resistenza di terminazione:} resistenza 120$\Omega$ commutabile tramite interruttore, essenziale per terminare correttamente il bus CAN.
+    \item \textbf{Filtro ID:} possibilità di configurare filtri per ricevere solo messaggi con ID specifici.
+    \item \textbf{Buffer interno:} capacità di buffering fino a 20 messaggi per gestire burst di dati.
+    \item \textbf{Timestamp:} i messaggi ricevuti includono timestamp per sincronizzazione temporale.
 \end{itemize}
 
 \begin{table}[htbp]
     \centering
-    \caption{Specifiche tecniche del convertitore USB-CAN-A}
+    \caption{Specifiche tecniche del convertitore USB-CAN-A.}
     \label{tab:usb_can_specs}
     \begin{tabular}{|l|c|c|}
         \hline
@@ -525,55 +528,53 @@ Il \textit{USB-CAN-A} è un convertitore USB-Seriale-CAN economico e versatile, 
     \end{tabular}
 \end{table}
 
-\textbf{Software di configurazione:}
-Il dispositivo è supportato da un tool di configurazione gratuito per Windows (USB-CAN-A TOOL) che permette di:
+Il dispositivo è supportato da un tool di configurazione gratuito per Windows (USB-CAN-A TOOL) che permette di
 \begin{itemize}
-    \item Configurare la velocità del bus CAN e il baud rate della porta seriale
-    \item Selezionare la modalità operativa (normale, loopback, silent)
-    \item Impostare filtri ID per la ricezione selettiva di messaggi
-    \item Inviare e ricevere messaggi CAN in tempo reale con visualizzazione timestamp
-    \item Salvare log dei messaggi in formato TXT o Excel per analisi offline
-    \item Configurare risposte automatiche a messaggi con ID specifici
+    \item configurare la velocità del bus CAN e il baud rate della porta seriale;
+    \item selezionare la modalità operativa (normale, loopback, silent);
+    \item impostare filtri sul CAN ID per la ricezione selettiva di messaggi;
+    \item inviare e ricevere messaggi CAN in tempo reale con visualizzazione timestamp;
+    \item salvare log dei messaggi in formato TXT o Excel per analisi offline;
+    \item configurare risposte automatiche a messaggi con ID specifici.
 \end{itemize}
 
-\textbf{Modalità di Trasmissione:}
 Il convertitore USB-CAN-A implementa una conversione USB $\rightarrow$ Seriale $\rightarrow$ CAN, a differenza di soluzioni più avanzate che utilizzano direttamente USB $\rightarrow$ CAN (come USB-CAN-B dello stesso produttore).
 \begin{note}
     Questo comporta una latenza maggiore nella trasmissione dei messaggi, ma per l'applicazione in questione dovrebbe essere trascurabile contando che la lunghezza del bus CAN è limitata a pochi metri all'interno del veicolo. Studi futuri verranno condotti per quantificare questa latenza e valutarne l'impatto sulle prestazioni complessive del sistema di controllo.
 \end{note}
-Il problema di questa conversione si traduce a livello software con l'incompatibilità con librerie CANOpen più diffuse come \textit{SocketCAN} su Linux, che richiedono un'interfaccia CAN nativa o un driver specifico che si occupi di mostrare il bus come una interfaccia di rete virtuale. Difatti, l'adattatore usa un protocollo proprietario per l'invio e la ricezione dei messaggi tramite la porta seriale virtuale. Il funzionamento di tale protocollo è stato analizzato tramite reverse engineering delle demo fornite dal produttore, permettendo così di sviluppare una libreria in C++. Nel capitolo 5 verrà descritto in dettaglio il funzionamento di questa libreria e il suo utilizzo all'interno del software di controllo del veicolo.
+Il problema di questa conversione si traduce a livello software con l'incompatibilità con librerie CANOpen più diffuse come \textit{SocketCAN} su Linux, che richiedono un'interfaccia CAN nativa o un driver specifico che si occupi di mostrare il bus come una interfaccia di rete virtuale. Difatti, l'adattatore usa un protocollo proprietario per l'invio e la ricezione dei messaggi tramite la porta seriale. Il funzionamento di tale protocollo è stato analizzato tramite reverse engineering delle demo fornite dal produttore, permettendo così di sviluppare una libreria in C++. Nel Capitolo 5 verrà descritto in dettaglio il funzionamento di questa libreria e il suo utilizzo all'interno del software di controllo del veicolo.
 
 \subsection{Convertitori DC-DC}
-Per l'alimentazione del computer di bordo e dei sensori è stato necessario integrare convertitori DC-DC che adattano la tensione di batteria (48V nominali) alle tensioni richieste dai vari componenti. La scelta è ricaduta su convertitori switching della serie \textit{SD} di Meanwell, un produttore affermato nel settore dell'elettronica di potenza industriale, noti per affidabilità ed efficienza.
+Per l'alimentazione del computer di bordo e dei sensori è stato necessario integrare convertitori DC-DC che adattino la tensione di batteria (48V nominali) alle tensioni richieste dai vari componenti. La scelta è ricaduta su convertitori switching della serie \textit{SD} di Meanwell, un produttore affermato nel settore dell'elettronica di potenza industriale, noti per affidabilità ed efficienza.
 
-Sono stati selezionati due modelli:
+Sono stati selezionati due modelli.
 \begin{itemize}
-    \item \textbf{SD-25B-12:} Convertitore DC-DC da 48V a 12V con potenza nominale di 25W. Questo modulo è utilizzato per l'alimentazione del sensore LiDAR Livox Mid-360, che richiede una tensione di alimentazione tra 9V e 27V. Il convertitore fornisce una tensione stabile di 12V con corrente massima di 2.1A, ampiamente sufficiente per il consumo medio del LiDAR di 6.5W. Il dispositivo è dotato di protezione da sovratensione, sovracorrente e cortocircuito, garantendo affidabilità operativa.
+    \item \textbf{SD-25B-12:} convertitore DC-DC da 48V a 12V con potenza nominale di 25W. Questo modulo è utilizzato per l'alimentazione del sensore LiDAR Livox Mid-360, che richiede una tensione di alimentazione tra 9V e 27V. Il convertitore fornisce una tensione stabile di 12V con corrente massima di 2.1A, ampiamente sufficiente per il consumo medio del LiDAR di 6.5W. Il dispositivo è dotato di protezione da sovratensione, sovracorrente e cortocircuito, garantendo affidabilità operativa.
 
-    \item \textbf{SD-100D-12:} Convertitore DC-DC da 48V a 12V con potenza nominale di 102W. Questo modulo alimenta il computer di bordo LattePanda Sigma tramite l'ingresso DC Jack. Con una corrente massima di 8.5A a 12V, il convertitore è dimensionato per gestire il consumo del processore i5-1340P che, in configurazione TDP a 28W (estendibile fino a 45W), richiede una potenza significativa durante le fasi di calcolo intensivo. Il margine di potenza disponibile permette di alimentare anche eventuali periferiche USB collegate al computer.
+    \item \textbf{SD-100D-12:} convertitore DC-DC da 48V a 12V con potenza nominale di 102W. Questo modulo alimenta il computer di bordo LattePanda Sigma tramite l'ingresso DC Jack. Con una corrente massima di 8.5A a 12V, il convertitore è dimensionato per gestire il consumo del processore i5-1340P che, in configurazione TDP a 28W (estendibile fino a 45W), richiede una potenza significativa durante le fasi di calcolo intensivo. Il margine di potenza disponibile permette di alimentare anche eventuali periferiche USB collegate al computer.
 \end{itemize}
 
-Entrambi i convertitori operano con un'ampia gamma di tensione di ingresso (18-75V DC) compatibile con le variazioni di tensione della batteria LiFePO4 durante i cicli di carica e scarica (44V-59.2V). Presentano inoltre un'efficienza tipica superiore al 75\%, limitando le perdite energetiche e il surriscaldamento. Il grado di protezione e le certificazioni di sicurezza (IEC/EN 62368-1) li rendono adatti all'impiego in ambiente industriale.
+Entrambi i convertitori operano con un'ampia gamma di tensioni di ingresso (18-75V DC) compatibile con le variazioni di tensione della batteria LiFePO4 durante i cicli di carica e scarica (44V-59.2V). Presentano inoltre un'efficienza tipica superiore al 75\%, limitando le perdite energetiche e il surriscaldamento. Il grado di protezione e le certificazioni di sicurezza (IEC/EN 62368-1) li rendono adatti all'impiego in ambiente industriale.
 
 \section{Sensoristica}
 
-Analizziamo ora l'insieme della sensoristica a disposizione e/o scelta per il veicolo.
+Viene ora analizzato l'insieme della sensoristica a disposizione e/o scelta per il veicolo.
 
 \subsection{LiDAR}
 
 Il sensore LiDAR scelto per il progetto è il \textit{Livox Mid-360}, un dispositivo di scansione 3D prodotto da Livox Technology che offre un eccellente compromesso tra prestazioni, costo e facilità di integrazione. Questo sensore utilizza un pattern di scansione non ripetitivo proprietario di Livox, che garantisce una copertura più uniforme dell'ambiente rispetto ai LiDAR tradizionali a scansione meccanica.
 
-La scelta di questo sensore è stata motivata da diverse caratteristiche chiave:
+La scelta di questo sensore è stata motivata da diverse caratteristiche chiave, quali le seguenti.
 \begin{itemize}
     \item \textbf{Campo visivo esteso:} $360^\circ$ in orizzontale e $59^\circ$ in verticale ($-7^\circ$ a $+52^\circ$), permettendo una copertura quasi completa dell'ambiente circostante il veicolo, essenziale per la navigazione autonoma e il rilevamento di ostacoli.
-    \item \textbf{Portata adeguata:} Fino a 70 m per superfici con riflettività dell'80\%, ampiamente sufficiente per l'ambiente industriale interno ed esterno dello stabilimento.
+    \item \textbf{Portata adeguata:} fino a 70 m per superfici con riflettività dell'80\%, ampiamente sufficiente per l'ambiente industriale interno ed esterno dello stabilimento.
     \item \textbf{Alta frequenza di acquisizione:} 200,000 punti/secondo con frame rate di 10 Hz, fornendo una densità di punti adeguata per algoritmi di SLAM e mappatura in tempo reale.
-    \item \textbf{IMU integrata:} Dotato di IMU a 6 assi (modello ICM40609) che fornisce dati di accelerazione e velocità angolare, fondamentali per la fusione sensoriale con gli algoritmi di localizzazione come FAST-LIO2.
-    \item \textbf{Sincronizzazione precisa:} Supporto per IEEE 1588-2008 (PTPv2) e GPS per la sincronizzazione temporale, utile per la fusione multi-sensoriale.
-    \item \textbf{Interfaccia Ethernet:} Comunicazione tramite Ethernet 100BASE-TX, facilmente integrabile con il computer di bordo e compatibile con ROS2.
-    \item \textbf{Compattezza e leggerezza:} Dimensioni ridotte (65×65×60 mm) e peso contenuto (265 g) facilitano l'integrazione meccanica sul veicolo.
-    \item \textbf{Robustezza:} Grado di protezione IP67, adatto per operazioni in ambiente industriale e all'aperto.
-    \item \textbf{Basso consumo:} Potenza media di 6.5 W, compatibile con l'alimentazione a batteria del veicolo.
+    \item \textbf{IMU integrata:} dotato di IMU a 6 assi (modello ICM40609) che fornisce dati di accelerazione e velocità angolare, fondamentali per la fusione sensoriale con gli algoritmi di localizzazione come FAST-LIO2.
+    \item \textbf{Sincronizzazione precisa:} supporto per IEEE 1588-2008 (PTPv2) e GPS per la sincronizzazione temporale, utile per la fusione multi-sensoriale.
+    \item \textbf{Interfaccia Ethernet:} comunicazione tramite Ethernet 100BASE-TX, facilmente integrabile con il computer di bordo e compatibile con ROS~2.
+    \item \textbf{Compattezza e leggerezza:} dimensioni ridotte (65×65×60 mm) e peso contenuto (265 g) facilitano l'integrazione meccanica sul veicolo.
+    \item \textbf{Robustezza:} grado di protezione IP67, adatto per operazioni in ambiente industriale e all'aperto.
+    \item \textbf{Basso consumo:} potenza media di 6.5 W, compatibile con l'alimentazione a batteria del veicolo.
 \end{itemize}
 
 \begin{figure}[htbp]
@@ -590,7 +591,7 @@ La scelta di questo sensore è stata motivata da diverse caratteristiche chiave:
 
 \begin{table}[htbp]
     \centering
-    \caption{Specifiche tecniche del LiDAR Livox Mid-360}
+    \caption{Specifiche tecniche del LiDAR Livox Mid-360.}
     \label{tab:lidar_specs}
     \begin{tabular}{|l|c|c|}
         \hline
@@ -622,36 +623,36 @@ La scelta di questo sensore è stata motivata da diverse caratteristiche chiave:
     \end{tabular}
 \end{table}
 
-\subsubsection{Supporto Software}
-Il Livox Mid-360 dispone di un ecosistema software completo sviluppato e mantenuto da Livox Technology, che facilita l'integrazione del sensore in applicazioni robotiche:
+\subsubsection{Supporto software}
+Il Livox Mid-360 dispone di un ecosistema software completo sviluppato e mantenuto da Livox Technology, che facilita l'integrazione del sensore in applicazioni robotiche.
 
-\textbf{Livox SDK2:} È la libreria di base scritta in C/C++ che implementa il protocollo di comunicazione proprietario di Livox. L'SDK fornisce:
+\textbf{Livox SDK2:} è la libreria di base scritta in C/C++ che implementa il protocollo di comunicazione proprietario di Livox. L'SDK fornisce
 \begin{itemize}
-    \item API C-style per il controllo del LiDAR e la ricezione dei dati
-    \item Supporto multi-piattaforma (Linux e Windows)
-    \item Gestione di configurazioni multi-sensore e multi-host
-    \item Sincronizzazione temporale tramite IEEE 1588 (PTP) e GPS
-    \item Logging dei dati del firmware per diagnostica
-    \item Modalità master/slave per scenari multi-casting
+    \item API C-style per il controllo del LiDAR e la ricezione dei dati;
+    \item supporto multi-piattaforma (Linux e Windows);
+    \item gestione di configurazioni multi-sensore e multi-host;
+    \item sincronizzazione temporale tramite IEEE 1588 (PTP) e/o GPS;
+    \item logging dei dati del firmware per diagnostica;
+    \item modalità master/slave per scenari multi-casting.
 \end{itemize}
 
-\textbf{Livox ROS Driver 2:} È il driver ufficiale per l'integrazione con ROS e ROS2, sviluppato sopra l'SDK2. Supporta:
+\textbf{Livox ROS Driver 2:} ` il driver ufficiale per l'integrazione con ROS e ROS~2, sviluppato a partire dall'SDK. Supporta
 \begin{itemize}
-    \item ROS Melodic e Noetic (ROS1)
-    \item ROS2 Foxy e Humble. Jazzy non è ancora ufficialmente supportato, ma il driver per Humble funziona correttamente anche su questa versione.
+    \item ROS Melodic e Noetic (ROS~1)
+    \item ROS~2 Foxy e Humble. Jazzy non è ancora ufficialmente supportato, ma il driver per Humble funziona correttamente anche su questa versione.
     \item Pubblicazione dati in formati multipli:
           \begin{itemize}
-              \item PointCloud2 standard (sensor\_msgs/PointCloud2)
-              \item Formato personalizzato Livox con timestamp per punto
-              \item Formato PCL (pcl::PointXYZI)
+              \item pointCloud2 standard (sensor\_msgs/PointCloud2);
+              \item formato personalizzato Livox con timestamp per punto;
+              \item formato PCL (\texttt{pcl::PointXYZI}).
           \end{itemize}
-    \item Configurazione tramite file JSON per parametri di rete, modalità di scansione e calibrazione estrinseca
-    \item Pubblicazione separata di dati IMU integrati
-    \item Supporto per topic multipli (un topic per LiDAR o topic condiviso)
-    \item Frequenza di pubblicazione configurabile (fino a 100 Hz)
+    \item Configurazione tramite file JSON per parametri di rete, modalità di scansione e calibrazione estrinseca.
+    \item Pubblicazione separata di dati IMU integrati.
+    \item Supporto per topic multipli (un topic per LiDAR o topic condiviso).
+    \item Frequenza di pubblicazione configurabile (fino a 100 Hz).
 \end{itemize}
 
-Per il progetto è stata utilizzata la versione ROS2 Humble del driver, che permette l'integrazione diretta con l'architettura software del robot. Il sensore è inoltre supportato nativamente da FAST-LIO2, l'algoritmo di SLAM scelto per il progetto, garantendo prestazioni ottimali per la localizzazione e la mappatura in tempo reale. La compatibilità nativa con FAST-LIO2 deriva dal fatto che il formato dati personalizzato di Livox, che fornisce un timestamp per ogni singolo punto anziché per frame, è particolarmente adatto agli algoritmi di SLAM basati su odometria LiDAR-inerziale.
+Per il progetto è stata utilizzata la versione ROS~2 Humble del driver, che permette l'integrazione diretta con l'architettura software del robot. Il sensore è inoltre supportato nativamente da FAST-LIO2, l'algoritmo di SLAM scelto per il progetto, garantendo prestazioni ottimali per la localizzazione e la mappatura in tempo reale. La compatibilità nativa con FAST-LIO2 deriva dal fatto che il formato dati personalizzato di Livox, che fornisce un timestamp per ogni singolo punto anziché per frame, è particolarmente adatto agli algoritmi di SLAM basati su odometria LiDAR-inerziale.
 
 \begin{note}
     Il cono cieco del sensore implica che ci sono dei limiti nella copertura verticale che il sensore può offrire. Questo implica che è importante il punto di montaggio del sensore sul veicolo per massimizzare l'area coperta e minimizzare le zone non visibili in funzione delle operazioni previste.
@@ -661,39 +662,39 @@ Per il progetto è stata utilizzata la versione ROS2 Humble del driver, che perm
 
 \subsection{Encoder}
 
-Gli encoder per il controllo della velocità e della posizione angolare sono componenti integrati di fabbrica nelle motoruote MRT05 fornite da CFR. Si tratta di encoder magnetici angolari di tipo \textit{SIN/COS} modello \textbf{FTS1} prodotti da COBO Spa, progettati specificamente per applicazioni "through-shaft" (albero passante).
+Gli encoder per il controllo della velocità e della posizione angolare sono componenti integrati di fabbrica nelle motoruote MRT05 fornite da CFR. Si tratta di encoder magnetici angolari di tipo \textit{SIN/COS} modello \textbf{FTS1} prodotti da COBO s.p.a., progettati specificamente per applicazioni ``through-shaft'' (albero passante).
 
 Questa tecnologia utilizza un anello magnetico permanente polarizzato diametralmente montato sull'albero rotante del motore. Il sensore FTS1 rileva la distribuzione del campo magnetico attraverso una combinazione brevettata di sensori Hall allo stato solido e algoritmi di elaborazione digitale del segnale. Le uscite sinusoidali (SIN) e cosinusoidali (COS) variano in funzione della posizione angolare del magnete, fornendo informazioni precise sulla rotazione.
 
-\textbf{Caratteristiche principali:}
+Le sue caratteristiche tecniche principali sono a seguire.
 \begin{itemize}
-    \item \textbf{Tecnologia contactless:} Assenza di usura meccanica e manutenzione, ideale per ambienti industriali severi
+    \item \textbf{Tecnologia contactless:} assenza di usura meccanica e manutenzione, ideale per ambienti industriali severi
     \item \textbf{Uscite multiple programmabili:}
           \begin{itemize}
-              \item Segnali analogici SIN/COS con ampiezze configurabili (1.0, 1.1, 2.2 o 4 Vpp)
-              \item Uscita analogica 0.5-4.5 Vdc per posizione assoluta
-              \item Encoder incrementale ABZ con 1024 conteggi per giro
-              \item Uscite UVW per motori brushless
-              \item Interfaccia SPI per dati digitali a 12 bit
+              \item segnali analogici SIN/COS con ampiezze configurabili (1.0, 1.1, 2.2 o 4 Vpp);
+              \item uscita analogica 0.5-4.5 Vdc per posizione assoluta;
+              \item encoder incrementale ABZ con 1024 conteggi per giro;
+              \item uscite UVW per motori brushless;
+              \item interfaccia SPI per dati digitali a 12 bit.
           \end{itemize}
-    \item \textbf{Risoluzione:} 10-bit assoluta, 12-bit tramite SPI, interpolabile fino a 1024 PPR in modalità incrementale
-    \item \textbf{Latenza ridotta:} Tipicamente 12 $\mu$s (high bandwidth) o 75 $\mu$s (low bandwidth)
-    \item \textbf{Non linearità integrale:} ±0.6° con magnete ideale e calibrazione
-    \item \textbf{Velocità rotazionale:} Fino a 25000 rpm (prestazioni ottimali fino a 10000 rpm)
+    \item \textbf{Risoluzione:} 10-bit assoluta, 12-bit tramite SPI, interpolabile fino a 1024 PPR in modalità incrementale.
+    \item \textbf{Latenza ridotta:} tipicamente 12 $\mu$s (high bandwidth) o 75 $\mu$s (low bandwidth).
+    \item \textbf{Non linearità integrale:} ±0.6° con magnete ideale e calibrazione.
+    \item \textbf{Velocità rotazionale:} fino a 25000 rpm (prestazioni ottimali fino a 10000 rpm).
     \item \textbf{Funzioni avanzate:}
           \begin{itemize}
-              \item Auto-calibrazione per compensazione offset e gain
-              \item Funzione ZERO programmabile
-              \item Emulazione fino a 16 poli per uscite SIN/COS
+              \item auto-calibrazione per compensazione offset e gain;
+              \item funzione ZERO programmabile;
+              \item emulazione fino a 16 poli per uscite SIN/COS.
           \end{itemize}
-    \item \textbf{Robustezza:} Resistenza a vibrazioni (20g, 10-2000 Hz) e shock (50g, 11ms), grado di protezione IP67
-    \item \textbf{Range di temperatura:} -40°C a +125°C (uscite SIN/COS, SPI, ABZ, UVW @ 5V)
-    \item \textbf{Alimentazione flessibile:} 5 Vdc o 9-36 Vdc
+    \item \textbf{Robustezza:} resistenza a vibrazioni (20g, 10-2000 Hz) e shock (50g, 11ms), grado di protezione IP67.
+    \item \textbf{Range di temperatura:} -40°C a +125°C (uscite SIN/COS, SPI, ABZ, UVW @ 5V).
+    \item \textbf{Alimentazione flessibile:} 5 Vdc o 9-36 Vdc.
 \end{itemize}
 
 \begin{table}[htbp]
     \centering
-    \caption{Specifiche tecniche dell'encoder magnetico FTS1}
+    \caption{Specifiche tecniche dell'encoder magnetico FTS1.}
     \label{tab:encoder_specs}
     \begin{tabular}{|l|c|c|}
         \hline
@@ -724,29 +725,29 @@ Questa tecnologia utilizza un anello magnetico permanente polarizzato diametralm
 
 Nel sistema del robot, gli encoder FTS1 sono collegati direttamente ai driver Mini-Traction Power, ai quali forniscono feedback di posizione angolare e velocità tramite i segnali SIN/COS analogici. I driver eseguono l'interpolazione dei segnali per implementare il controllo in anello chiuso della posizione e della velocità dei motori, garantendo precisione e reattività nella risposta ai comandi. I dati di encoder sono inoltre accessibili dal computer di bordo tramite il bus CAN per il calcolo dell'odometria delle ruote, contribuendo alla stima della posizione del veicolo insieme ai dati del LiDAR e dell'IMU.
 
-\subsection{Sonda di Temperatura}
+\subsection{Sonda di temperatura}
 
-Le sonde di temperatura integrate nelle motoruote MRT05 sono sensori resistivi (RTD) modello \textbf{STS1} prodotti da Microtherm GmbH, forniti di serie da CFR per il monitoraggio termico dei motori. Si tratta di sensori con caratteristiche simili al classico KTY84, ma con prestazioni migliorate.
+Le sonde di temperatura integrate nelle motoruote MRT05 sono sensori resistivi (RTD) modello \textbf{STS1} prodotti da Microtherm GmbH, forniti di serie da CFR per il monitoraggio termico dei motori. Si tratta di sensori con caratteristiche simili al classico KTY84 ma con prestazioni migliorate.
 
 Il principio di funzionamento si basa sulla variazione della resistenza elettrica di un elemento sensibile in funzione della temperatura. Il sensore fornisce una curva resistenza-temperatura ben definita e ripetibile, permettendo una misurazione precisa attraverso la lettura della resistenza con un circuito di condizionamento appropriato.
 
-\textbf{Caratteristiche principali:}
+Di seguito le sue caratteristiche tecniche principali.
 \begin{itemize}
-    \item \textbf{Range di temperatura esteso:} Da -40°C a +170°C (fino a +190°C con possibile perdita di linearità)
-    \item \textbf{Resistenza nominale:} 1000 $\Omega$ a 100°C (±3\%)
-    \item \textbf{Eccellente stabilità termica a lungo termine:} Garantisce misurazioni affidabili nel tempo
-    \item \textbf{Alta precisione:} Curve resistenza-temperatura con tolleranze ben definite
-    \item \textbf{Nessuna polarità:} Non richiede attenzione alla connessione (+/-)
-    \item \textbf{Isolamento elevato:} Resistenza di isolamento minima di 100 M$\Omega$ a 100 Vdc
-    \item \textbf{Basso assorbimento:} Corrente nominale 5 mA, massima 8 mA
-    \item \textbf{Potenza dissipata ridotta:} Massimo 50 mW
-    \item \textbf{Robustezza meccanica:} Disponibile con involucro in PPS o guaina termorestringente in Kynar®
-    \item \textbf{Compatibilità RoHS:} Conformità alle normative ambientali
+    \item \textbf{Range di temperatura esteso:} da -40°C a +170°C (fino a +190°C con possibile perdita di linearità).
+    \item \textbf{Resistenza nominale:} 1000 $\Omega$ a 100°C (±3\%).
+    \item \textbf{Eccellente stabilità termica a lungo termine:} garantisce misurazioni affidabili nel tempo.
+    \item \textbf{Alta precisione:} curve resistenza-temperatura con tolleranze ben definite.
+    \item \textbf{Nessuna polarità:} non richiede attenzione alla connessione (+/-).
+    \item \textbf{Isolamento elevato:} resistenza di isolamento minima di 100 M$\Omega$ a 100 Vdc.
+    \item \textbf{Basso assorbimento:} corrente nominale 5 mA, massima 8 mA.
+    \item \textbf{Potenza dissipata ridotta:} massimo 50 mW.
+    \item \textbf{Robustezza meccanica:} disponibile con involucro in PPS o guaina termorestringente in Kynar®.
+    \item \textbf{Compatibilità RoHS:} conformità alle normative ambientali.
 \end{itemize}
 
 \begin{table}[htbp]
     \centering
-    \caption{Specifiche tecniche della sonda di temperatura STS1}
+    \caption{Specifiche tecniche della sonda di temperatura STS1.}
     \label{tab:temp_sensor_specs}
     \begin{tabular}{|l|c|c|}
         \hline
@@ -776,7 +777,7 @@ Il principio di funzionamento si basa sulla variazione della resistenza elettric
 
 Nel sistema del robot, le sonde STS1 sono collegate ai driver Mini-Traction Power, che monitorano costantemente la temperatura dei motori per prevenire danni da surriscaldamento. I driver implementano protezioni termiche automatiche, riducendo la potenza erogata o arrestando il motore qualora la temperatura superi soglie critiche. I dati di temperatura sono accessibili anche dal computer di bordo tramite il bus CAN, permettendo la supervisione termica in tempo reale dell'intero sistema e l'implementazione di strategie di gestione termica a livello di veicolo (ad esempio, limitazione della velocità massima in condizioni di alta temperatura ambiente).
 
-\section{Telaio e Struttura Meccanica}
+\section{Telaio e struttura meccanica}
 Il telaio del veicolo è stato progettato tramite software CAD (Computer-Aided Design) SolidWorks, tenendo in considerazione i requisiti di robustezza, leggerezza e facilità di assemblaggio. Dopo diverse iterazioni di design, si è deciso di adottare una struttura composta da profili in acciaio ($30\times30\times2.6$ mm) saldati tra loro, con travi di rinforzo ($20\times20\times2$ mm) per garantire rigidità e resistenza alle sollecitazioni meccaniche causate dall'alto carico da trasportare.\\
 La dimensione finale del telaio è risultata essere quindi di $1.8\times 1$m, con delle piastre in acciaio da $5$mm agli angoli per il montaggio delle ruote ruote. Ulteriori parti in lamiera sono state studiate per l'alloggiamento dei quadri elettrici contenenti l'elettronica di controllo e l'alimentazione.\\
 Telaio e lamiere sono stati infine realizzati tramite un fornitore qualificato che si è occupato del taglio dei profilati, della saldatura e di applicare un trattamento di zincatura per prevenire la corrosione.
@@ -785,18 +786,18 @@ Nelle figure a seguire sono riportati alcuni disegni tecnici estratti dal proget
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{telaio/disegno_side.png}
-    \caption{Progetto CAD del telaio del veicolo - Disegno in Vista isometrica.}
+    \caption{Progetto CAD del telaio del veicolo -- disegno in vista isometrica.}
     \label{fig:telaio_side_view}
 \end{figure}
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{telaio/disegno_front_horiz.png}
-    \caption{Progetto CAD del telaio del veicolo - Quote significative}
+    \caption{Progetto CAD del telaio del veicolo -- quote significative.}
     \label{fig:vista_quote}
 \end{figure}
 
-\twofigures{0.48}{3/piastra_supporto batteria.png}{Supporto Batteria}{fig:piastra_batteria}{0.48}{3/piastra_supporto_lidar.png}{Supporto LiDAR.}{fig:piastra_lidar}{Dettagli di piastre di supporto.}
+\twofigures{0.48}{3/piastra_supporto batteria.png}{Supporto batteria.}{fig:piastra_batteria}{0.48}{3/piastra_supporto_lidar.png}{Supporto LiDAR.}{fig:piastra_lidar}{Dettagli di piastre di supporto.}
 
 \begin{figure}[htbp]
     \centering
@@ -809,7 +810,7 @@ Nelle figure a seguire sono riportati alcuni disegni tecnici estratti dal proget
     \centering
     \begin{minipage}[t]{0.48\textwidth}
         \centering
-        \caption{Distinta componenti principali del telaio per \cref{fig:telaio_esploso}}
+        \caption{Distinta componenti principali del telaio per \cref{fig:telaio_esploso}.}
         \label{tab:bom_telaio}
         \begin{tabular}{|c|l|}
             \hline
@@ -835,7 +836,7 @@ Nelle figure a seguire sono riportati alcuni disegni tecnici estratti dal proget
     \hfill
     \begin{minipage}[t]{0.48\textwidth}
         \centering
-        \caption{Dimensioni principali del telaio da \cref{fig:vista_quote}}
+        \caption{Dimensioni principali del telaio da \cref{fig:vista_quote}.}
         \label{tab:dimensioni_telaio}
         \begin{tabular}{|l|c|c|}
             \hline
@@ -859,13 +860,12 @@ Nelle figure a seguire sono riportati alcuni disegni tecnici estratti dal proget
     \end{minipage}
 \end{table}
 
-\subsection{Analisi agli Elementi Finiti}
-
+\subsection{Analisi agli elementi finiti}
 Per garantire che il telaio del veicolo fosse in grado di sopportare i carichi previsti senza deformazioni eccessive o cedimenti strutturali, è stata condotta un'analisi agli elementi finiti utilizzando FASTRAN, un software specializzato in simulazioni strutturali.
 
-L'analisi è stata condotta sulla penultima versione del telaio, che prevedeva una forma trapezoidale per le travi tubolari frontali per permettere il montaggio del LiDAR, sostituito poi nella versione finale con una trave orizzontale più semplice e una lamiera di supporto. Una volta importato il modello 3D nel software, sono stati definiti tutti i parametri necessari alla caratterizzazione del materiale e le condizioni al contorno (es: vincoli, distribuzione dei carichi, ecc.), così come sono state configurate le mesh di calcolo per suddividere il modello in elementi finiti.
+L'analisi è stata condotta sulla penultima versione del telaio, che prevedeva una forma trapezoidale per le travi tubolari frontali per permettere il montaggio del LiDAR, sostituito poi nella versione finale con una trave orizzontale più semplice e una lamiera di supporto. Una volta importato il modello 3D nel software, sono stati definiti tutti i parametri necessari alla caratterizzazione del materiale e le condizioni al contorno (es.: vincoli, distribuzione dei carichi, ecc.), così come sono state configurate le mesh di calcolo per suddividere il modello in elementi finiti.
 
-In \cref{fig:fem_telaio} è possibile vedere una schermata del programma di analisi dove è stato caricato il modello ed è stata definita la mesh di calcolo. Si può vedere con delle linne bianche la \textit{struttura a ragno} generata dal software per la distribuzione del carico sui punti di appoggio programmati.
+In \cref{fig:fem_telaio} è possibile vedere una schermata del programma di analisi dove è stato caricato il modello ed è stata definita la mesh di calcolo. Si può vedere con delle linee bianche la \textit{struttura a ragno} generata dal software per la distribuzione del carico sui punti di appoggio programmati.
 
 \begin{figure}[htbp]
     \centering
@@ -877,20 +877,18 @@ In \cref{fig:fem_telaio} è possibile vedere una schermata del programma di anal
 Sempre da \cref{fig:fem_telaio} si può osservare la \textbf{heatmap} dei risultati dell'analisi, che mostra la distribuzione delle deformazioni (in mm) del telaio sotto carico. Le aree in rosso indicano le zone di massima deformazione, mentre le aree in blu rappresentano le zone con deformazioni minime. Nelle \cref{fig:fem_stress_dett} e \cref{fig:fem_deform} possiamo vedere dei dettagli più ravvicinati dove si notano zone a tensione maggiore, che però rimangono comunque entro limiti di sicurezza. Si possono notare alcune zone colorate di rosso (massima tensione), localizzate in alcuni punti di giunzione tra travi e piastre di supporto, ma che probabilmente sono dovute a come il software genera le mesh piuttosto che a reali criticità strutturali.\\
 \twofigures{0.48}{telaio/fem_telaio_dettaglio_3}{Mappa delle tensioni nel telaio.}{fig:fem_stress_dett}{0.48}{telaio/fem_telaio_dettaglio_2}{Mappa delle deformazioni nel telaio.}{fig:fem_deform}{Risultati dell'analisi FEM del telaio.}
 
-
-\section{Analisi dei Costi}
-
+\section{Analisi dei costi}
 Di seguito viene riportata una tabella riepilogativa dei costi sostenuti per l'acquisto dei componenti principali del veicolo.
-Si annoverano i seguenti extra, non inclusi nella trattazione dei singoli componenti:
+Si annoverano i seguenti extra, non inclusi nella trattazione dei singoli componenti.
 \begin{itemize}
-    \item Costi per accessori e cavi connettori. Es: cover di protezione per SBC, modulo Wi-Fi, antenne, SSD, cavo di collegamento LiDAR e interfaccia USB per configurazione driver.
+    \item Costi per accessori e cavi connettori. Es: cover di protezione per SBC, modulo Wi-Fi, antenne, SSD  (Solid-State Drive), cavo di collegamento LiDAR e interfaccia USB per configurazione driver.
     \item Costi di cablaggio e messa in opera del veicolo, inclusi materiali di consumo (connettori, canaline, fascette, ecc.) e manodopera specializzata.
     \item Costi di ricerca e acquisto delle ruote caster per la stabilizzazione del veicolo, inclusi materiali di montaggio.
 \end{itemize}
 I prezzi indicati sono quelli forniti nelle offerte ricevute dai fornitori al momento dell'acquisto, senza IVA.
 \begin{table}[htbp]
     \centering
-    \caption{Analisi dei costi dei componenti principali del veicolo}
+    \caption{Analisi dei costi dei componenti principali del veicolo.}
     \label{tab:analisi_costi}
     \begin{tabular}{|l|c|c|c|}
         \hline
@@ -905,9 +903,9 @@ I prezzi indicati sono quelli forniti nelle offerte ricevute dai fornitori al mo
         DC-DC SD-25C-12            & 1                 & 25                          & 25                        \\
         DC-DC SD-100C-12           & 1                 & 65                          & 65                        \\
         Livox Mid-360              & 1                 & 659                         & 1000                      \\
-        Telaio, Lamierati e Caster & -                 & -                           & 2356                      \\
+        Telaio, lamierati e caster & -                 & -                           & 2356                      \\
         Cablaggi e messa in opera  & -                 & -                           & 1800                      \\
-        Extra Accessori            & -                 & -                           & 314                       \\
+        Extra accessori            & -                 & -                           & 314                       \\
         \hline
         \textbf{Totale}            &                   &                             & \textbf{17573}            \\
         \hline
@@ -918,9 +916,8 @@ Il costo totale del veicolo ammonta a circa €17,573, che include tutti i compo
 In \cref{fig:mockup_agv} è possibile vedere un render 3D del veicolo completo di tutti i componenti principali, dove sopra vi è posizionato un compressore. In \cref{fig:mockup_intern} si può vedere invece una disposizione ideale dei componenti.
 
 \begin{note}
-    Lo studio di questo prototipo non tiene minimamente conto di costi di sviluppo software, test e validazione, menché meno di ridondanze hardware o certificazioni di sicurezza necessarie per un prodotto che, anche se ad uso interno, deve operare in ambienti nei quali sono presenti operatori umani e altre macchine. Questi aspetti verranno discussi nel capitolo conclusivo, dove verranno proposte possibili evoluzioni del progetto per la realizzazione di un prototipo più avanzato e vicino ad un prodotto commerciale.
+    Lo studio di questo prototipo non tiene conto di costi di sviluppo software, test e validazione, né di ridondanze hardware o certificazioni di sicurezza necessarie per un prodotto che, anche se ad uso interno, deve operare in ambienti nei quali sono presenti operatori umani e altre macchine. Questi aspetti verranno discussi nel capitolo conclusivo, dove verranno proposte possibili evoluzioni del progetto per la realizzazione di un prototipo più avanzato e vicino ad un prodotto commerciale.
 \end{note}
-
 
 \begin{figure}[htbp]
     \centering

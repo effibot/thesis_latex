@@ -15,6 +15,8 @@ In \cref{fig:modello_cinematico} mostriamo una rappresentazione schematica del r
     \caption{Rappresentazione schematica del modello cinematico del robot in posizione generica.}
     \label{fig:modello_cinematico_2}
 \end{figure}
+\section{Cinematica Diretta}
+L'obiettivo di questa sezione è quello di derivare le equazioni cinematiche che descrivono il moto del veicolo, inteso come vettore di velocità generalizzate $\dot{q} = [\dot{x}, \dot{y}, \dot{\theta}]^T$, in funzione degli input di controllo, ovvero gli angoli di sterzo $\delta_f$, $\delta_r$ e le velocità angolari delle ruote motrici $\omega_f$, $\omega_r$.
 
 Per derivare le equazioni cinematiche del veicolo, facciamo le seguenti ipotesi semplificative:
 \begin{itemize}
@@ -23,13 +25,18 @@ Per derivare le equazioni cinematiche del veicolo, facciamo le seguenti ipotesi 
     \item Le ruote castor sono libere di ruotare attorno al proprio perno verticale senza attrito.
     \item Le ruote sono perfettamente aderenti al terreno senza slittamenti laterali.
     \item Il veicolo si muove su un piano orizzontale senza pendenze.
-    \item Le dimensioni del veicolo sono note e costanti pari ad $L$ e $W$, con le ruote motrici montate nei punti $ (L/2, W/2) $ e $ (-L/2, -W/2) $ rispetto al centro geometrico.
+    \item Le dimensioni del veicolo sono note e costanti pari ad $L$ e $W$, con le ruote motrici montate nei punti $ (L/2, W/2) $ e $ (-L/2, -W/2) $ rispetto al centro geometrico. Conseguentemente, lo sfasamento angolare delle ruote rispetto l'asse longitudinale è dato da:
+          \begin{equation}\label{eq:alpha}
+              \alpha = \atanyx{W/2}{L/2}
+          \end{equation}
     \item Il centro di massa del veicolo coincide con il centro geometrico.
     \item Le forze esterne agenti sul veicolo (es. vento, urti, ecc.) sono trascurabili.
     \item Le accelerazioni del veicolo sono moderate, permettendo di trascurare gli effetti dinamici complessi come l'inerzia delle ruote e le forze di Coriolis.
     \item Il veicolo è simmetrico rispetto agli assi longitudinale e trasversale.
     \item Le ruote motrici sono identiche tra loro, con lo stesso raggio $r$ e caratteristiche di attrito.
     \item Il sistema di riferimento globale è inerziale e fisso, mentre il sistema di riferimento locale al robot si muove con esso.
+    \item Si trascurano gli effetti di deformazione delle ruote e del terreno.
+    \item Si trascurano differenze legate alle geometrie delle ruote motrici che ne vincolano il montaggio nella realtà e per questo si assume che il verso di rotazione positivo delle ruote motrici sia sempre quello che produce una velocità positiva lungo l'asse longitudinale del veicolo.
 \end{itemize}
 
 Tali ipotesi sono comuni nella letteratura sui robot mobili e permettono di semplificare notevolmente l'analisi del modello cinematico. In particolare, per un robot dotato di quattro ruote indipendenti, tipicamente si considerano le ruote sullo stesso asse (quindi le due anteriori e le due posteriori) come un'unica ruota virtuale per asse, ognuna con un proprio angolo di sterzo e velocità~\cite{tourajizadeh2020fourwheel}. Questo approccio riduce il numero di variabili da considerare e semplifica le equazioni cinematiche del veicolo.
@@ -37,8 +44,13 @@ Tali ipotesi sono comuni nella letteratura sui robot mobili e permettono di semp
 Tuttavia, quando questa semplificazione viene applicata, è importante tenere conto delle possibili differenze di comportamento tra le ruote sullo stesso asse, specialmente durante manove di traslazione laterale (anche dette \textit{crab steering}) o delle rotazioni sul posto. In questi casi, i modelli spesso diventano singolari e richiedono di essere adattati per gestire correttamente tali situazioni.
 
 Per questo motivo, sebbene lo studio iniziale del problema sia stato condotto sul modello descritto in~\cite{tourajizadeh2020fourwheel}, si è deciso di verificare la validità di un modello più generale che invece è ottenuto tramite la trattazione classica delle equazioni di vincolo per i robot mobili~\cite{deluca1998feedback}.
+\subsection{Modello a Biciclo Sterzante}
+Vediamo quindi il modello a biciclo descritto da ~\cite{tourajizadeh2020fourwheel}, dove aggiungiamo la seguenti ipotesi:
+\begin{itemize}
+    \item Le ruote motrici sono approssimabili come se fossero montate lungo l'asse longitudinale del veicolo, ovvero, la motoruota anteriore è montata in $ (L/2, 0) $ e la motoruota posteriore in $ (-L/2, 0) $.
 
-Vediamo quindi il modello a biciclo descritto da ~\cite{tourajizadeh2020fourwheel}, dove le equazioni cinematiche del veicolo sono date da:
+\end{itemize}
+le equazioni cinematiche del veicolo sono date da:
 
 \begin{equation}
     \label{eq:betamodel}
@@ -50,10 +62,10 @@ Vediamo quindi il modello a biciclo descritto da ~\cite{tourajizadeh2020fourwhee
 \end{equation}
 
 dove:
-\begin{eqnarray}
-    v     & = & \frac{v_f \cos(\delta_f) + v_r \cos(\delta_r)}{2\cos(\beta)} \label{eq:v_betamodel}\\
-    \beta & = & \tan^{-1}\left(\frac{l_f \tan(\delta_r) + l_r \tan(\delta_f)}{l_f + l_r}\right) \label{eq:beta_betamodel}
-\end{eqnarray}
+\begin{align}
+    v     & =  \frac{v_f \cos(\delta_f) + v_r \cos(\delta_r)}{2\cos(\beta)} \label{eq:v_betamodel}                       \\
+    \beta & =  \tan^{-1}\left(\frac{l_f \tan(\delta_r) + l_r \tan(\delta_f)}{l_f + l_r}\right) \label{eq:beta_betamodel}
+\end{align}
 
 Rappresentano rispettivamente velocità del centro del robot e angolo di \textit{side-slip}, ovvero, l'angolo tra la direzione di avanzamento del veicolo descritta dal vettore velocità e l'asse longitudinale del robot.
 
@@ -63,7 +75,7 @@ In queste equazioni, $l_f$ e $l_r$ rappresentano rispettivamente la distanza tra
 \end{equation}
 dove $r$ è il raggio delle ruote motrici e $\omega_f$, $\omega_r$ sono le velocità angolari delle ruote motrici anteriori e posteriori.
 
-Si può vedere poi che sostituendo le \cref{eq:v_betamodel,eq:beta_betamodel} nella \cref{eq:betamodel}, si può ottenere un sistema matriciale del tipo $\dot{q} = J(q,u)u$, per mettere in relazione le velocità lineare e angolare del robot ($\dot(q)$) con le velocità angolari delle ruote motrici e gli angoli di sterzo ($u$). In particolare, scrivendo $J(q,u)$ come:
+Si può vedere poi che sostituendo le \cref{eq:v_betamodel,eq:beta_betamodel} nella \cref{eq:betamodel}, si può ottenere un sistema matriciale del tipo $\dot{q} = J(q,u)u$, per mettere in relazione le velocità lineare e angolare del robot ($\dot{q}$) con le velocità angolari delle ruote motrici e gli angoli di sterzo ($u$). In particolare, scrivendo $J(q,u)$ come:
 \begin{equation*}
     J(q,u) = R(\theta)\hat{J}(u)
 \end{equation*}
@@ -84,10 +96,10 @@ e $\hat{J}(u)$ è la matrice jacobiana del sistema nel sistema di riferimento lo
     \end{bmatrix}
 \end{equation}
 dove abbiamo definito:
-\begin{eqnarray*}
-    l          & = & l_f + l_r \\
-    \Delta_{tan} & = & \tan(\delta_f) - \tan(\delta_r)
-\end{eqnarray*}
+\begin{align}
+    l            & =  l_f + l_r \label{eq:l}                             \\
+    \Delta_{tan} & =  \tan(\delta_f) - \tan(\delta_r)\label{eq:deltatan}
+\end{align}
 In questo modo, si ottiene una rappresentazione compatta del modello cinematico, che può essere utile per l'implementazione del controllo.
 \begin{equation}
     \begin{bmatrix}
@@ -96,11 +108,11 @@ In questo modo, si ottiene una rappresentazione compatta del modello cinematico,
         \dot{\theta}
     \end{bmatrix} =
     \frac{r}{2}\begin{bmatrix}
-        \left[\cos(\theta)-\sin(\theta)(\Sigma_{tan})\right]\cos(\delta_f) &
-        \left[\cos(\theta)-\sin(\theta)(\Sigma_{tan})\right]\cos(\delta_r)                                        \\
-        \left[\sin(\theta)+\cos(\theta)(\Sigma_{tan})\right]\cos(\delta_f) &
-        \left[\sin(\theta)+\cos(\theta)(\Sigma_{tan})\right]\cos(\delta_r)                                        \\
-        \frac{1}{l}\Delta_{tan}\cos(\delta_f)                              & \frac{1}{l}\Delta_{tan}\cos(\delta_r)
+        \bar{J}_1\cos(\delta_f)               &
+        \bar{J}_1\cos(\delta_r)                                                       \\
+        \bar{J}_2\cos(\delta_f)               &
+        \bar{J}_2\cos(\delta_r)                                                       \\
+        \frac{1}{l}\Delta_{tan}\cos(\delta_f) & \frac{1}{l}\Delta_{tan}\cos(\delta_r)
     \end{bmatrix}
     \begin{bmatrix}
         \omega_f \\
@@ -108,6 +120,826 @@ In questo modo, si ottiene una rappresentazione compatta del modello cinematico,
     \end{bmatrix}
 \end{equation}
 con
+\begin{align}
+    \bar{J}_1    & = \cos(\theta)-\sin(\theta)(\Sigma_{tan}) \label{eq:Jbar1}             \\
+    \bar{J}_2    & = \sin(\theta)+\cos(\theta)(\Sigma_{tan}) \label{eq:Jbar2}             \\
+    \Sigma_{tan} & = \frac{l_r \tan(\delta_f) + l_f \tan(\delta_r)}{l}\label{eq:Sigmatan}
+\end{align}
+Osservando l'\cref{eq:beta_betamodel}, si nota che l'angolo di side-slip $\beta$ si comporta come una media pesata delle tangenti dell'angolo di sterzo. Questo implica che, se uno dei due angoli di sterzo è pari a $\pi/2$, l'angolo di side-slip è infinito e quindi tutto il modello perde di significato.
+
+Analogamente, si può osservare che, per ottenere una rotazione sul posto, sarebbe necessario imporre che le velocità lungo gli assi $x$ e $y$ siano nulle, ma se ciò fosse vero per angoli $\theta$ e $\beta$ tali per cui la loro somma non è un multiplo di $\pi/2$, allora la velocità $v$ dovrebbe essere nulla, il che implicherebbe che entrambe le velocità delle ruote motrici siano nulle, rendendo impossibile la rotazione.
+
+\begin{note}
+    Questo comportamento evidenzia una limitazione del modello a biciclo, che non è in grado di gestire correttamente parte delle manovre che vogliamo richiedere, come le traslazioni laterali e le rotazioni sul posto.
+\end{note}
+
+\subsection{Modello a Doppia Ruota Sterzante}
+
+Il modello proposto di seguito, derivato tramite l'analisi dei vincoli non olonomi del veicolo, è in grado di gestire correttamente tutte le manovre desiderate senza incorrere in singolarità, a patto di risolvere ai minimi quadrati un sistema sovradeterminato di equazioni.
+
+Consideriamo quindi lo schema di sistemi di riferimento descritto da \cref{fig:modello_cinematico}, dove per semplicità non sono riportare le ruote castor e viene considerato il robot orientato in modo concorde con l'asse $x$ del sistema di riferimento globale per semplicità.
+\begin{note}
+    Si può osservare che i due sistemi di riferimento possono essere collegati tramite la matrice di rotazione $R(\theta)$ definita in \cref{eq:Rtheta}, pertanto, tutte le equazioni possono essere considerate invarianti rispetto all'orientamento del robot.
+\end{note}
+Oltre alle variabili già definite nel modello a biciclo sterzante, definiamo:
+\begin{itemize}
+    \item $x_c, y_c$ le coordinate del centro del veicolo nel sistema di riferimento globale.
+    \item $\theta$ l'angolo di orientamento del veicolo rispetto l'asse $x$ del sistema di riferimento globale.
+    \item $v_c$ la velocità lineare del centro del veicolo.
+    \item $\dot{\theta}$ la velocità angolare del veicolo attorno all'asse verticale che passa per il centro del veicolo.
+    \item $p_i^b$ la posizione della ruota motrice $i$ nel sistema di riferimento locale al robot, con $i \in \{f,r\}$, dove $b$ sta per \textit{body-frame}.
+    \item $d$ la distanza tra il centro del veicolo e il punto di montaggio delle ruote motrici:
+          \begin{equation}\label{eq:wheeldist}
+              d = \sqrt{\left(\frac{L}{2}\right)^2 + \left(\frac{W}{2}\right)^2}
+          \end{equation}
+    \item $\alpha$ l'angolo tra l'asse longitudinale del veicolo e la linea che congiunge il centro del veicolo con il punto di montaggio delle ruote motrici, definito in \cref{eq:alpha}.
+\end{itemize}
+Le posizioni delle ruote motrici nel sistema di riferimento locale al robot sono quindi date da:
+\begin{align}
+    p_f^b & = d\begin{bmatrix}
+                   \cos(\alpha) \\
+                   \sin(\alpha)
+               \end{bmatrix} = \begin{bmatrix}
+                                   \frac{L}{2} \\
+                                   \frac{W}{2}
+                               \end{bmatrix}  \label{eq:pfb} \\
+    p_r^b & = -d\begin{bmatrix}
+                    \cos(\alpha) \\
+                    \sin(\alpha)
+                \end{bmatrix} = \begin{bmatrix}
+                                    -\frac{L}{2} \\
+                                    -\frac{W}{2}
+                                \end{bmatrix} \label{eq:prb}
+\end{align}
+Considerando che le ruote motrici non si possono muovere rispetto al loro punto di montaggio, possiamo dire che la velocità di ogni ruota motrice sarà data da:
+\begin{equation}\label{eq:wheel_vel_general}
+    v_i^b = v_c + \omega \times p_i^b \quad , \quad i \in \{f,r\}
+\end{equation}
+dove $v_c = [\dot{x}_c, \dot{y}_c]^T$ è la velocità lineare del centro del veicolo nel sistema di riferimento locale, e $\omega = [0, 0, \dot{\theta}]^T$ è la velocità angolare del veicolo.
+
+Esplicitando il prodotto vettoriale e considerando che la velocità angolare $\dot{\theta}$ è diretta lungo l'asse verticale, otteniamo:
+\begin{equation}\label{eq:cross_product}
+    \omega \times p_i^b = \dot{\theta} \begin{bmatrix}
+        0 \\
+        0 \\
+        1
+    \end{bmatrix} \times \begin{bmatrix}
+        p_{i_x} \\
+        p_{i_y} \\
+        0
+    \end{bmatrix} = \dot{\theta} \begin{bmatrix}
+        -p_{i_y} \\
+        p_{i_x}  \\
+        0
+    \end{bmatrix}
+\end{equation}
+Sostituendo le posizioni delle ruote motrici dalle \cref{eq:pfb,eq:prb}, otteniamo le velocità delle ruote nel sistema di riferimento locale:
+\begin{align}
+    v_f^b & = \begin{bmatrix}
+                  \dot{x}_c - \dot{\theta} \frac{W}{2} \\
+                  \dot{y}_c + \dot{\theta} \frac{L}{2}
+              \end{bmatrix} \label{eq:vfb} \\
+    v_r^b & = \begin{bmatrix}
+                  \dot{x}_c + \dot{\theta} \frac{W}{2} \\
+                  \dot{y}_c - \dot{\theta} \frac{L}{2}
+              \end{bmatrix}\label{eq:vrb}
+\end{align}
+
+\subsubsection{Vincoli di Non Slittamento}
+Il primo vincolo fondamentale per un robot mobile è quello di evitare lo slittamento laterale delle ruote. Questo significa che la componente della velocità della ruota perpendicolare alla direzione di avanzamento deve essere nulla. In altri termini, la velocità della ruota deve essere sempre tangente al piano della ruota stessa.
+
+Per esprimere matematicamente questo vincolo, è necessario individuare il versore perpendicolare all'asse di rotazione della ruota. Dato che l'angolo di sterzo $\delta_i$ è definito come l'angolo tra l'asse della ruota e l'asse longitudinale del robot (positivo in senso antiorario), il versore perpendicolare all'asse della ruota nel sistema di riferimento locale è dato da:
+\begin{equation}\label{eq:normal_versor}
+    n_i = \begin{bmatrix}
+        -\sin(\delta_i) \\
+        \cos(\delta_i)
+    \end{bmatrix} \quad , \quad i \in \{f,r\}
+\end{equation}
+
+Il vincolo di non slittamento può quindi essere espresso come:
+\begin{equation}\label{eq:nonslip_constraint}
+    n_i^T v_i^b = 0 \quad , \quad i \in \{f,r\}
+\end{equation}
+
+Sostituendo le espressioni delle velocità delle ruote dalle \cref{eq:vfb,eq:vrb} e del versore normale dall'\cref{eq:normal_versor}, otteniamo:
+\begin{align}
+    -\sin(\delta_f)\left(\dot{x}_c - \dot{\theta} \frac{W}{2}\right) + \cos(\delta_f)\left(\dot{y}_c + \dot{\theta} \frac{L}{2}\right) & = 0 \label{eq:nonslip_f} \\
+    -\sin(\delta_r)\left(\dot{x}_c + \dot{\theta} \frac{W}{2}\right) + \cos(\delta_r)\left(\dot{y}_c - \dot{\theta} \frac{L}{2}\right) & = 0 \label{eq:nonslip_r}
+\end{align}
+
+Possiamo ora riscrivere questi vincoli in forma matriciale come $A^\top(u)\dot{q} = 0$, dove $q = [\dot{x}_c, \dot{y}_c, \dot{\theta}]^T$ è il vettore di stato delle velocità del centro del robot nel sistema di riferimento locale. La matrice dei vincoli è data da:
+\begin{equation}\label{eq:constraint_matrix}
+    A^\top = \begin{bmatrix}
+        -\sin(\delta_f) & \cos(\delta_f) & \frac{L}{2}\cos(\delta_f) + \frac{W}{2}\sin(\delta_f)  \\
+        -\sin(\delta_r) & \cos(\delta_r) & -\frac{L}{2}\cos(\delta_r) - \frac{W}{2}\sin(\delta_r)
+    \end{bmatrix}
+\end{equation}
+
+Il rango di questa matrice è sempre 2, ma la forma è $2 \times 3$, il che significa che il sistema ha un grado di libertà. Una soluzione per questo sistema può essere trovata cercando il nucleo di \cref{eq:constraint_matrix} il quale rappresenta l'insieme di tutte le velocità \textbf{istantanee} ammissibili che soddisfano i vincoli di non slittamento:
+
+\begin{equation}
+    \label{eq:kerA}
+    \ker(A^\top)=\begin{bmatrix}\frac{L \cos{\left(\delta_{f}{} \right)} \cos{\left(\delta_{r}{} \right)}}{\sin{\left(\delta_{f}{} - \delta_{r}{} \right)}} + \frac{W \sin{\left(\delta_{f}{} + \delta_{r}{} \right)}}{2 \sin{\left(\delta_{f}{} - \delta_{r}{} \right)}}\\\frac{L \sin{\left(\delta_{f}{} + \delta_{r}{} \right)}}{2 \sin{\left(\delta_{f}{} - \delta_{r}{} \right)}} + \frac{W \sin{\left(\delta_{f}{} \right)} \sin{\left(\delta_{r}{} \right)}}{\sin{\left(\delta_{f}{} - \delta_{r}{} \right)}}\\1\end{bmatrix}
+\end{equation}
+
+A questo punto si può ottenere un modello cinematico che descrive le velocità del veicolo moltiplicando le prime due righe di \cref{eq:kerA} per una velocità scalare $v_1$ e la terza riga per una velocità scalare $v_2$, che però non ha un significato fisico diretto.
+
+\subsubsection{Vincoli di Rotolamento Puro}
+Oltre al vincolo di non slittamento, possiamo aggiungere ulteriori vincoli richiedendo che le ruote rotolino senza strisciare. Questo significa che la velocità lineare nel punto di contatto di ciascuna ruota deve essere uguale alla velocità tangenziale dovuta alla rotazione della ruota stessa:
+\begin{equation}\label{eq:rolling_constraint}
+    v_i = r \omega_i \quad , \quad i \in \{f,r\}
+\end{equation}
+
+Questa velocità deve essere uguale alla proiezione della velocità della ruota lungo la direzione della ruota stessa. Definiamo quindi il versore tangente alla ruota come:
+\begin{equation}\label{eq:tangent_versor}
+    u_i = \begin{bmatrix}
+        \cos(\delta_i) \\
+        \sin(\delta_i)
+    \end{bmatrix} \quad , \quad i \in \{f,r\}
+\end{equation}
+
+Il vincolo di rotolamento puro diventa quindi:
+\begin{equation}\label{eq:rolling_general}
+    v_i^b \cdot u_i = r \omega_i \quad , \quad i \in \{f,r\}
+\end{equation}
+
+Esplicitando per entrambe le ruote, otteniamo:
+\begin{align}
+    \left(\dot{y}_c + \dot{\theta} \frac{L}{2}\right) \sin(\delta_f) + \left(\dot{x}_c - \dot{\theta} \frac{W}{2}\right) \cos(\delta_f) & = r \omega_f \label{eq:rolling_f} \\
+    \left(\dot{y}_c - \dot{\theta} \frac{L}{2}\right) \sin(\delta_r) + \left(\dot{x}_c + \dot{\theta} \frac{W}{2}\right) \cos(\delta_r) & = r \omega_r \label{eq:rolling_r}
+\end{align}
+
+\subsubsection{Matrice Estesa dei Vincoli}
+Considerando sia i vincoli di non slittamento che quelli di rotolamento puro insieme, possiamo formare una matrice estesa dei vincoli $A_{ext}^\top$ tale che:
+\begin{equation}\label{eq:extended_constraints}
+    A_{ext}^\top \dot{q} = \begin{bmatrix}
+        0          \\
+        0          \\
+        r \omega_f \\
+        r \omega_r
+    \end{bmatrix}
+\end{equation}
+
+dove la matrice estesa è:
+\begin{equation}\label{eq:Aext}
+    A_{ext}^\top = \begin{bmatrix}
+        -\sin(\delta_f) & \cos(\delta_f) & \frac{L}{2}\cos(\delta_f) + \frac{W}{2}\sin(\delta_f)  \\
+        -\sin(\delta_r) & \cos(\delta_r) & -\frac{L}{2}\cos(\delta_r) - \frac{W}{2}\sin(\delta_r) \\
+        \cos(\delta_f)  & \sin(\delta_f) & \frac{L}{2}\sin(\delta_f) - \frac{W}{2}\cos(\delta_f)  \\
+        \cos(\delta_r)  & \sin(\delta_r) & -\frac{L}{2}\sin(\delta_r) + \frac{W}{2}\cos(\delta_r)
+    \end{bmatrix}
+\end{equation}
+
+Questo è un sistema sovradeterminato di equazioni (4 equazioni in 3 incognite), che in generale non ammette una soluzione esatta. Tuttavia, possiamo trovare una soluzione ai minimi quadrati utilizzando la pseudoinversa di Moore-Penrose. La pseudoinversa è definita come:
+\begin{equation}\label{eq:pseudoinverse}
+    A_{ext}^\dagger = \left(A_{ext}^\top A_{ext}\right)^{-1} A_{ext}^\top
+\end{equation}
+
+Calcolando esplicitamente questa pseudoinversa, otteniamo:
+\begin{equation}\label{eq:Aext_pinv}
+    A_{ext}^\dagger = \begin{bmatrix}
+        -\frac{\sin(\delta_f)}{2} & -\frac{\sin(\delta_r)}{2} & \frac{\cos(\delta_f)}{2} & \frac{\cos(\delta_r)}{2} \\
+        \frac{\cos(\delta_f)}{2}  & \frac{\cos(\delta_r)}{2}  & \frac{\sin(\delta_f)}{2} & \frac{\sin(\delta_r)}{2} \\
+        \frac{a_{13}}{L^2 + W^2}  & \frac{a_{23}}{L^2 + W^2}  & \frac{a_{33}}{L^2 + W^2} & \frac{a_{43}}{L^2 + W^2}
+    \end{bmatrix}
+\end{equation}
+dove abbiamo definito per compattezza:
+\begin{align}
+    a_{13} & =L\cos(\delta_f)+W\sin(\delta_f) \label{eq:a13}                 \\
+    a_{23} & = -L\cos(\delta_r)-W\sin(\delta_r) \label{eq:a23}               \\
+    a_{33} & = L\sin(\delta_f) - W\cos(\delta_f) \label{eq:a33}              \\
+    a_{43} & = -L\sin(\delta_r) + W\cos(\delta_r)             \label{eq:a43}
+\end{align}
+
+Moltiplicando la pseudoinversa per il termine noto dell'\cref{eq:extended_constraints} e fattorizzando in termini delle velocità angolari delle ruote, otteniamo il modello cinematico diretto nel sistema di riferimento locale:
+\begin{equation}\label{eq:forward_kinematics_body}
+    \begin{bmatrix}
+        \dot{x}_c \\
+        \dot{y}_c \\
+        \dot{\theta}
+    \end{bmatrix} = \frac{r}{2} \begin{bmatrix}
+        \cos(\delta_f)                                         & \cos(\delta_r)                                       \\
+        \sin(\delta_f)                                         & \sin(\delta_r)                                       \\
+        \frac{2(L\sin(\delta_f) - W\cos(\delta_f))}{L^2 + W^2} & \frac{2(W\cos(\delta_r)-L\sin(\delta_r))}{L^2 + W^2}
+    \end{bmatrix} \begin{bmatrix}
+        \omega_f \\
+        \omega_r
+    \end{bmatrix}
+\end{equation}
+
+Questa rappresentazione evidenzia diverse proprietà interessanti:
+\begin{itemize}
+    \item Le velocità lineari $\dot{x}_c$ e $\dot{y}_c$ sono date da una media pesata dei contributi delle due ruote, dove i pesi dipendono dagli angoli di sterzo.
+    \item La velocità angolare $\dot{\theta}$ dipende dal momento angolare generato dalle ruote, normalizzato da un'approssimazione del momento d'inerzia del robot ($L^2 + W^2$).
+    \item Il modello è non singolare per nessuna configurazione degli angoli di sterzo, permettendo di gestire correttamente tutte le manovre desiderate, incluse le traslazioni laterali e le rotazioni sul posto.
+    \item Permette di descrivere le velocità istantanee nel sistema di riferimento globale semplicemente premoltiplicando la matrice di rotazione $R(-\theta)$.
+    \item Non impone in modo rigido una relazione tra le velocità delle ruote motrici e gli angoli di sterzo, permettendo quindi lo slittamento ma minimizzandolo.
+\end{itemize}
+
+\begin{note}
+    Sulla non singolarità, si può vedere che questo è anche dato dal fatto che la matrice $A_{ext}^\top A_{ext}$ è sempre invertibile per ogni configurazione degli angoli di sterzo, il che garantisce l'esistenza della pseudoinversa.
+\end{note}
+
+Per quanto riguarda la mobilità che questo modello consente, si può osservare che se si impone $\delta_f = \delta_r = \gamma$ con $\omega_f = \omega_r = \hat{\omega}$ si ottiene che:
+\begin{equation*}
+    \begin{bmatrix}
+        \dot{x}^b \\
+        \dot{y}^b \\
+        \dot{\theta}
+    \end{bmatrix} =
+    \begin{bmatrix}
+        \frac{r \cos{\left(\gamma \right)}}{2}                               & \frac{r \cos{\left(\gamma \right)}}{2}                                                             \\
+        \frac{r \sin{\left(\gamma \right)}}{2}                               & \frac{r \sin{\left(\gamma \right)}}{2}                                                             \\
+        \frac{r \left(L \sin(\gamma) - W \cos(\gamma)\right)}{L^{2} + W^{2}} & \frac{r \left(- L \sin{\left(\gamma \right)} + W \cos{\left(\gamma \right)}\right)}{L^{2} + W^{2}}\end{bmatrix}
+    \begin{bmatrix}\hat{\omega}\\\hat{\omega}\end{bmatrix} = \left[\begin{matrix}r \hat{\omega} \cos{\left(\gamma \right)}\\r \hat{\omega} \sin{\left(\gamma \right)}\\0\end{matrix}\right]
+\end{equation*}
+Che corrisponde ad una traslazione pura nella direzione definita dall'angolo di sterzo $\gamma$. Questo implica che, per $\gamma=\pm \pi/2$, si può effettuare una manovra di \textit{parcheggio parallelo} senza problemi di singolarità; mentre per $\gamma = 0$ o $\pi$ si ottiene una traslazione avanti o indietro.
+
+Invece, per ottenere una rotazione sul posto, si può imporre $\delta_f = \alpha+\pi/2$ e $\delta_r = \delta_f + \pi$, con $\omega_f = \omega_r = \hat{\omega}$, ottenendo:
+\begin{equation*}
+    \begin{bmatrix}
+        \dot{x}^b \\
+        \dot{y}^b \\
+        \dot{\theta}
+    \end{bmatrix} =
+    \begin{bmatrix}- \frac{r \sin{\left(\alpha \right)}}{2} & \frac{r \sin{\left(\alpha \right)}}{2}\\\frac{r \cos{\left(\alpha \right)}}{2} & - \frac{r \cos{\left(\alpha \right)}}{2}\\\frac{r \left(L \cos{\left(\alpha \right)} + W \sin{\left(\alpha \right)}\right)}{L^{2} + W^{2}} & \frac{r \left(L \cos{\left(\alpha \right)} + W \sin{\left(\alpha \right)}\right)}{L^{2} + W^{2}}\end{bmatrix}
+    \begin{bmatrix}\hat{\omega}\\\hat{\omega}\end{bmatrix} =
+    \begin{bmatrix}0 \\0\\\frac{2 r \left(L \cos{\left(\alpha \right)} + W \sin{\left(\alpha \right)}\right)}{L^{2} + W^{2}} \hat{\omega}
+    \end{bmatrix}
+\end{equation*}
+Che corrisponde ad una rotazione pura attorno al centro del veicolo.
+\section{Cinematica Inversa}
+L'obiettivo è ora quello di derivare le espressioni per calcolare gli input di controllo necessari per ottenere una data velocità del veicolo, ovvero, dato un vettore di velocità desiderate $\dot{q}_d = [\dot{x}_d, \dot{y}_d, \dot{\theta}_d]^T$, vogliamo calcolare i valori degli angoli di sterzo $\delta_f$, $\delta_r$ e delle velocità angolari delle ruote motrici $\omega_f$, $\omega_r$ che permettono di ottenere tali velocità.
+
+\begin{note}
+    Si può osservare che non è importante se le velocità desiderate sono espresse nel sistema di riferimento globale o locale al robot, poiché la matrice di rotazione $R(\theta)$ è invertibile e può essere utilizzata per convertire le velocità tra i due sistemi di riferimento senza perdita di informazione.
+\end{note}
+
+Possiamo osservare che è possibile derivare delle soluzioni analitiche per entrambi i modelli cinematici descritti, sfruttando delle considerazioni di tipo geometrico basate sul concetto di centro di rotazione istantaneo (ICR), ovvero, il punto attorno al quale il veicolo sta ruotando in un dato istante di tempo.
+
+L'ICR può essere determinato considerando l'intersezione degli assi di rotazione delle ruote motrici, che sono perpendicolari alla direzione di avanzamento di ciascuna ruota. Per la ruota frontale, l'asse di rotazione è dato dalla retta passante per il punto di montaggio della ruota e con angolo $\delta_f + \pi/2$ rispetto all'asse longitudinale del veicolo. Analogamente, per la ruota posteriore, l'asse di rotazione è dato dalla retta passante per il punto di montaggio della ruota e con angolo $\delta_r + \pi/2$.
+
+Per semplicità mettiamoci nel sistema di riferimento locale al robot. Possiamo quindi scrivere:
+\begin{equation}
+    \begin{bmatrix}
+        x_{ICR} \\
+        y_{ICR}
+    \end{bmatrix} =
+    p_f^b + s_f \begin{bmatrix}
+        \cos(\delta_f + \pi/2) \\
+        \sin(\delta_f + \pi/2)
+    \end{bmatrix} =
+    p_r^b + s_r \begin{bmatrix}
+        \cos(\delta_r + \pi/2) \\
+        \sin(\delta_r + \pi/2)
+    \end{bmatrix}
+\end{equation}
+Dove $s_f$ e $s_r$ sono delle variabili scalari che rappresentano la distanza lungo l'asse di rotazione di ciascuna ruota fino all'ICR. Ora, ricordandoci che $\cos(k+\pi/2) = -\sin(k)$ e $\sin(k+\pi/2) = \cos(k)$, possiamo riscrivere le equazioni come:
+\begin{equation}
+    \begin{bmatrix}
+        x_{ICR} \\
+        y_{ICR}
+    \end{bmatrix} =
+    p_f^b + s_f \begin{bmatrix}
+        -\sin(\delta_f) \\
+        \cos(\delta_f)
+    \end{bmatrix} =
+    p_r^b + s_r \begin{bmatrix}
+        -\sin(\delta_r) \\
+        \cos(\delta_r)
+    \end{bmatrix}
+\end{equation}
+Risolvendo il sistema di equazioni rispetto a $s_f$ e $s_r$, otteniamo:
+\begin{align}
+    s_f & =  \frac{(p_{f_x}-p_{r_x})\cos(\delta_r)+(p_{f_y}-p_{r_y})\sin(\delta_r)}{\sin(\delta_f-\delta_r)}\label{eq:sf}   \\
+    s_r & = \frac{(p_{f_x} - p_{r_x})\cos(\delta_f)+(p_{f_y}-p_{r_y})\sin(\delta_f)}{\sin(\delta_f-\delta_r)} \label{eq:sr}
+\end{align}
+Si può osservare che, poiché in un moto generale il veicolo si muove ruotando attorno all'ICR, il punto di contatto di ciascuna ruota con il suolo deve appartenere ad una circonferenza centrata nell'ICR con raggio pari alla distanza tra tale punto di contatto e l'ICR stesso. Questo implica che denotando con $R_f$ ed $R_r$ i raggi delle circonferenze per la ruota anteriore e posteriore, si ha che:
+\begin{align}
+    R_f & = \sqrt{(x_{ICR}-p_{f_x})^2 + (y_{ICR}-p_{f_y})^2} = |s_f| \label{eq:Rf} \\
+    R_r & = \sqrt{(x_{ICR}-p_{r_x})^2 + (y_{ICR}-p_{r_y})^2} = |s_r| \label{eq:Rr}
+\end{align}
+Nei casi considerati, si hanno le seguenti configurazioni:
+\begin{itemize}
+    \item \textbf{Modello a Biciclo Sterzante:}
+          \begin{align}
+              R_f     & =\sqrt{\frac{(l_{f} + l_{r})^{2} \cos^{2}{(\delta_{r} )}}{\sin^{2}{(\delta_{f} - \delta_{r} )}}} \label{eq:Rf_bicycle}                                            \\
+              R_r     & = \sqrt{\frac{(l_{f} + l_{r})^{2} \cos^{2}{(\delta_{f} )}}{\sin^{2}{(\delta_{f} - \delta_{r} )}}} \label{eq:Rr_bicycle}                                           \\
+              x_{icr} & =- \frac{l_{f} \sin{(\delta_{r} )} \cos{(\delta_{f} )} + l_{r} \sin{(\delta_{f} )} \cos{(\delta_{r} )}}{\sin{(\delta_{f} - \delta_{r} )}} \label{eq:xicr_bicycle} \\
+              y_{icr} & = \frac{(l_{f} + l_{r}) \cos{(\delta_{f} )} \cos{(\delta_{r} )}}{\sin{(\delta_{f} - \delta_{r} )}} \label{eq:yicr_bicycle}
+          \end{align}
+    \item \textbf{Modello a Doppia Ruota Sterzante:}
+          \begin{align}
+              R_f     & = \sqrt{\frac{(L \cos{(\delta_{r} )} + W \sin{(\delta_{r} )})^{2}}{\sin^{2}{(\delta_{f} - \delta_{r} )}}} \label{eq:Rf_double}
+              \\
+              R_r     & =\sqrt{\frac{(L \cos{(\delta_{f} )} + W \sin{(\delta_{f} )})^{2}}{\sin^{2}{(\delta_{f} - \delta_{r} )}}} \label{eq:Rr_double}                          \\
+              x_{icr} & = - \frac{L \sin{(\delta_{f} + \delta_{r} )} + 2 W \sin{(\delta_{f} )} \sin{(\delta_{r} )}}{2 \sin{(\delta_{f} - \delta_{r} )}} \label{eq:xicr_double}
+              \\
+              y_{icr} & = \frac{2 L \cos{(\delta_{f} )} \cos{(\delta_{r} )} + W \sin{(\delta_{f} + \delta_{r} )}}{2 \sin{(\delta_{f} - \delta_{r} )}} \label{eq:yicr_double}
+          \end{align}
+\end{itemize}
+Ora, osservando che la velocità angolare delle ruote è legata alla velocità angolare del robot tramite la relazione:
+\begin{equation}\label{eq:omega_relation}
+    \dot{\theta} R_i = r \omega_i \quad , \quad i \in \{f,r\}
+\end{equation}
+Si può dedurre di compatibilità tra le velocità desiderate del robot affinché il moto sia fisicamente realizzabile senza slittamento, ovvero, senza che le ruote si allontanino dalla stessa traiettoria circolare definita dall'ICR. Queste condizioni sono date da:
+\begin{equation}\label{eq:compatibility_condition}
+    R_r \omega_f = R_f \omega_r
+\end{equation}
+\begin{note}
+    È importante notare che, per costruzione, quando gli angoli di sterzo sono tali per cui le direzioni di avanzamento delle ruote sono parallele, le distanze $R_f$ e $R_r$ tendono all'infinito (portando anche l'ICR all'infinito), rendendo impossibile soddisfare la condizione di compatibilità definita da \cref{eq:compatibility_condition}. Pertanto, in quelle situazioni, l'\cref{eq:compatibility_condition} diventa:
+    \begin{equation}\label{eq:comp_cond_inf}
+        \omega_f = \omega_r
+    \end{equation}
+\end{note}
+\subsection{Modello a Biciclo Sterzante}
+Sia $\dot{q}_d = [\dot{x}_d, \dot{y}_d, \dot{\theta}_d]^T$ il vettore delle velocità desiderate nel sistema di riferimento globale. Se consideriamo le relazioni per $\dot{x}$ e $\dot{y}$ date da \cref{eq:betamodel}, si può osservare che:
 \begin{eqnarray*}
-    \Sigma_{tan} &= \frac{l_r \tan(\delta_f) + l_f \tan(\delta_r)}{l_f + l_r}
+    \dot{x}^2 + \dot{y}^2 & = & v^2 \cos^2(\theta + \beta) + v^2 \sin^2(\theta + \beta) \\
+    & = & v^2 (\cos^2(\theta + \beta) + \sin^2(\theta + \beta)) \\
+    & = & v^2
 \end{eqnarray*}
+Quindi, la velocità del veicolo desiderata data dal vettore $\dot{q}_d$ è:
+\begin{equation}\label{eq:vd_magnitude}
+    v_d = \sqrt{\dot{x}_d^2 + \dot{y}_d^2}
+\end{equation}
+Inoltre, se consideriamo il rapporto tra le velocità si vede che:
+\begin{equation*}
+    \frac{\dot{y}}{\dot{x}} = \frac{v \sin(\theta + \beta)}{v \cos(\theta + \beta)} = \tan(\theta + \beta)
+\end{equation*}
+Da cui, per le velocità desiderate, si ottiene:
+\begin{equation}\label{eq:beta_des}
+    \beta_d = \atanyx{\dot{y}_d}{\dot{x}_d} - \theta
+\end{equation}
+Dove $\theta$ è l'orientamento attuale del veicolo.
+
+Supponiamo di cercare una soluzione tale per cui $\dot{\theta}\neq0$, in modo da poter definire un ICR finito. Per l'\cref{eq:beta_betamodel}, $\beta_d$ deve soddisfare la relazione:
+\begin{equation}\label{eq:beta_relation}
+    \tan(\beta_d) = \frac{l_r \tan(\delta_f) + l_f \tan(\delta_r)}{l_f + l_r}
+\end{equation}
+Lo stesso è vero per la velocità angolare desiderata, che deve soddisfare la relazione data da \cref{eq:betamodel}:
+\begin{equation}\label{eq:thetad_relation}
+    \dot{\theta}_d = \frac{v_d \cos(\beta_d) (\tan(\delta_f) - \tan(\delta_r))}{l_f + l_r}
+\end{equation}
+Definendo per semplicità:
+\begin{align}
+    S & = \tan(\beta_d) \label{eq:S}                             \\
+    D & = \frac{l\dot{\theta}_d}{v_d \cos(\beta_d)} \label{eq:D}
+\end{align}
+Possiamo comporre il sistema di equazioni:
+\begin{equation}\label{eq:inverse_kinematics_system_betamodel}
+    \begin{cases}
+        l_r \tan(\delta_f) + l_f \tan(\delta_r) = lS \\
+        \tan(\delta_f) - \tan(\delta_r) = D
+    \end{cases}
+\end{equation}
+Risolvendo questo sistema rispetto a $\tan(\delta_f)$ e $\tan(\delta_r)$, otteniamo:
+\begin{align}
+    \delta_f & = \arctan\left(S + \frac{l_f}{l} D\right) \label{eq:deltaf_inverse_betamodel} \\
+    \delta_r & = \arctan\left(S - \frac{l_r}{l} D\right) \label{eq:deltar_inverse_betamodel}
+\end{align}
+Noti gli angoli di sterzo, possiamo calcolare i raggi $R_f$ e $R_r$ usando le \cref{eq:Rf_bicycle,eq:Rr_bicycle}, e quindi le velocità angolari delle ruote motrici usando la relazione di compatibilità data da \cref{eq:omega_relation,eq:compatibility_condition}. Supponendo di usare la ruota frontale come ruota dominante, possiamo scrivere:
+\begin{equation}\label{eq:omegar_inverse_betamodel}
+    \omega_r = \frac{R_r}{R_f} \omega_f
+\end{equation}
+E infine ottenere $\omega_f$ riscrivendo l'\cref{eq:v_betamodel} rispetto a tale variabile:
+\begin{equation}\label{eq:omegaf_inverse_betamodel}
+    \omega_f=\frac{2 R_{f} v_{d} \cos{\left(\beta_{d} \right)}}{r \left(R_{f} \cos{\left(\delta_{f}{} \right)} + R_{r} \cos{\left(\delta_{r}{} \right)}\right)}
+\end{equation}
+Considerando ora il caso in cui $\dot{\theta}_d = 0$, si ha che l'ICR tende all'infinito e quindi le direzioni di avanzamento delle ruote diventano parallele. In questo caso, possiamo imporre $\delta_f = \delta_r = \delta$ e notare da \cref{eq:beta_relation} che:
+\begin{equation}\label{eq:delta_parallel}
+    \beta_d = \arctan\left(\frac{l_f+l_r}{l_f+l_r}\tan(\delta)\right) = \delta
+\end{equation}
+Per cui vale che:
+\begin{equation}\label{eq:delta_inverse_parallel}
+    \delta = \atanyx{\dot{y}_d}{\dot{x}_d} - \theta
+\end{equation}
+Mentre la \cref{eq:comp_cond_inf}, possiamo semplicemente imporre che:
+\begin{equation}\label{eq:omegaf_inverse_parallel}
+    \omega_f = \omega_r = \frac{v_d}{r} = \frac{\sqrt{\dot{x}_d^2 + \dot{y}_d^2}}{r}
+\end{equation}
+\begin{note}
+    Ancora una volta si può notare la singolarità del modello biciclo nel caso in cui si cerchi di ottenere una traslazione rigida con sterzi a $\pm \pi/2$, in quanto $\dot{x}_d = 0$ la \cref{eq:delta_inverse_parallel} non è definita, richiedendo.
+\end{note}
+
+\subsection{Modello a Doppia Ruota Sterzante}
+Per il modello a doppia ruota sterzante, possiamo seguire un procedimento simile al precedente, ma sfruttando direttamente le relazioni date dai vincoli di non slittamento. Infatti, considerando le \cref{eq:nonslip_f,eq:nonslip_r} e risolvendo rispetto agli angoli di sterzo $\delta_f$ e $\delta_r$, otteniamo:
+\begin{align}
+    \delta_f & = \atanyx{\dot{y}_d + \dot{\theta}_d \frac{L}{2}}{\dot{x}_d - \dot{\theta}_d \frac{W}{2}} \label{eq:deltaf_inverse_double} \\
+    \delta_r & = \atanyx{\dot{y}_d - \dot{\theta}_d \frac{L}{2}}{\dot{x}_d + \dot{\theta}_d \frac{W}{2}} \label{eq:deltar_inverse_double}
+\end{align}
+A questo punto, per $\dot{\theta}\neq0$ dalle equazioni di puro rotolamento date da \cref{eq:rolling_f,eq:rolling_r}, possiamo calcolare le velocità angolari delle ruote motrici come:
+\begin{align}
+    \omega_f & = \frac{(\dot{y}_d + \dot{\theta}_d \frac{L}{2}) \sin(\delta_f) + (\dot{x}_d - \dot{\theta}_d \frac{W}{2}) \cos(\delta_f)}{r} \label{eq:omegaf_inverse_double} \\
+    \omega_r & = \frac{(\dot{y}_d - \dot{\theta}_d \frac{L}{2}) \sin(\delta_r) + (\dot{x}_d + \dot{\theta}_d \frac{W}{2}) \cos(\delta_r)}{r} \label{eq:omegar_inverse_double}
+\end{align}
+Nel caso in cui si desideri una traslazione pura, ovvero $\dot{\theta}_d = 0$, si ha che le direzioni di avanzamento delle ruote diventano parallele. In questo caso, possiamo imporre $\delta_f = \delta_r = \delta$ e notare che dalle \cref{eq:deltaf_inverse_double,eq:deltar_inverse_double} si ottiene:
+\begin{equation}\label{eq:delta_inverse_double_parallel}
+    \delta = \atanyx{\dot{y}_d}{\dot{x}_d}
+\end{equation}
+Mentre le velocità angolari delle ruote motrici diventano:
+\begin{equation}\label{eq:omega_inverse_double_parallel}
+    \omega_f = \omega_r = \frac{\sqrt{\dot{x}_d^2 + \dot{y}_d^2}}{r}
+\end{equation}
+\section{Analisi dei modelli e Simulazioni}
+In questa sezione confronteremo i due modelli cinematici sviluppati, analizzandone le caratteristiche principali e le differenze, mediante un sistema di controllo in catena aperta su traiettorie preprogrammate. Lo scopo è quello di evidenziare i punti di forza e le limitazioni di ciascun modello, al fine di guidare la scelta del modello più adatto per applicazioni specifiche.
+\subsection{Setup e Considerazioni Preliminari}
+I due modelli cinematici presentano caratteristiche distintive che li rendono più o meno adatti a diverse situazioni operative. Tuttavia, entrambi i modelli peccano di alcune limitazioni intrinseche legate alla loro natura semplificata di modelli cinematici e inoltre assumono di poter variare istantaneamente gli angoli di sterzo per ottenere tutte le manovre desiderate, il che non è realistico visto che nella realtà gli attuatori di sterzo e trazione hanno limiti di velocità e accelerazione.
+Per questo, nelle simulazioni che seguiranno, si è scelto di includere almeno dei limiti sulle velocità angolari e agli angoli di sterzo, approssimando inoltre la dinamica degli attuatori con un semplice modello del primo ordine con funzione di trasferimento:
+\begin{equation}\label{eq:actuator_dynamics}
+    P(s) = \frac{K}{\tau s + 1}
+\end{equation}
+Dove $K$ è il guadagno statico e $\tau$ la costante di tempo dell'attuatore. Nella \cref{tab:simulation_parameters} sono riportati i parametri utilizzati per le simulazioni.
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Parametro}              & \textbf{Simbolo} & \textbf{Valore}      & \textbf{Unità} \\
+        \hline
+        Lunghezza veicolo               & $L$              & 2                    & m              \\
+        \hline
+        Larghezza veicolo               & $W$              & 1                    & m              \\
+        \hline
+        Diametro ruote                  & $r$              & 0.198                & m              \\
+        \hline
+        Angolo di montaggio ruote       & $\alpha$         & 25.57                & deg            \\
+        \hline
+        Guadagno attuatori              & $K$              & 1                    & -              \\
+        \hline
+        Cost. tempo trazione            & $\tau_\omega$    & 1                    & s              \\
+        \hline
+        Cost. tempo sterzo              & $\tau_\delta$    & 2                    & s              \\
+        \hline
+        Massima velocità angolare ruote & $\omega_{max}$   & 10                   & rad/s          \\
+        \hline
+        Massimo angolo di sterzo        & $\delta_{max}$   & $\pm \frac{2\pi}{3}$ & rad            \\
+        \hline
+    \end{tabular}
+    \caption{Parametri utilizzati per le simulazioni.}
+    \label{tab:simulation_parameters}
+\end{table}
+La dinamica degli attuatori inoltre rende praticamente impossibile per entrambi i modelli soddisfare le condizioni di compatibilità tra le velocità delle ruote e gli angoli di sterzo, specialmente durante traiettorie curvilinee. Quest porta inevitabilmente a fenomeni di slittamento delle ruote, che i modelli cinematici non sono in grado di rappresentare accuratamente.
+Per valutare le prestazioni dei modelli, si è scelto di utilizzare le seguenti traiettorie di riferimento:
+\begin{itemize}
+    \item \textbf{Traiettoria Rettilinea:} Una semplice traiettoria lineare diretta verso Est, partendo dall'origine.
+          \begin{equation}
+              \label{eq:straight_trajectory}
+              \begin{cases}
+                  x(t) = v_{ref} t     \\
+                  y(t) = 0             \\
+                  \theta(t) = 0        \\
+                  \dot{x}(t) = v_{ref} \\
+                  \dot{y}(t) = 0       \\
+                  \dot{\theta}(t) = 0  \\
+              \end{cases}\qquad
+              \begin{aligned}
+                  v_{ref} & = 0.5 \text{ m/s} \\
+                  T_{sim} & = 5 \text{ s}     \\
+                  q(0)    & = [0, 0, 0]^T     \\
+                  q(T)    & = [2.5, 0, 0]^T
+              \end{aligned}
+          \end{equation}
+    \item \textbf{Traiettoria Circolare:} Una traiettoria circolare con raggio di 3 m, partendo dall'origine e ruotando in senso antiorario.
+          \begin{equation}
+              \label{eq:circular_trajectory}
+              \begin{cases}
+                  x(t) = R \sin(\omega_{ref} t)             \\
+                  y(t) = R (1 - \cos(\omega_{ref} t))       \\
+                  \theta(t) = \omega_{ref} t                \\
+                  \dot{x}(t) = v_{ref} \cos(\omega_{ref} t) \\
+                  \dot{y}(t) = v_{ref} \sin(\omega_{ref} t) \\
+                  \dot{\theta}(t) = \omega_{ref}            \\
+              \end{cases}\qquad
+              \begin{aligned}
+                  R            & = 3 \text{ m}       \\
+                  v_{ref}      & = 0.6 \text{ m/s}   \\
+                  \omega_{ref} & = 0.2 \text{ rad/s} \\
+                  T_{sim}      & =  8 \text{ s}      \\
+                  q(0)         & = [0, 0, 0]^T       \\
+                  q(T)         & = [3, 3, 2\pi]^T    \\
+              \end{aligned}
+          \end{equation}
+    \item \textbf{Traiettoria Traslatoria a Nord:} Una traslazione rigida verso Nord, partendo dall'origine mantenendo orientamento costante verso Est.
+          \begin{equation}
+              \begin{cases}
+                  x(t) = 0             \\
+                  y(t) = v_{ref} t     \\
+                  \theta(t) = 0        \\
+                  \dot{x}(t) = 0       \\
+                  \dot{y}(t) = v_{ref} \\
+                  \dot{\theta}(t) = 0  \\
+              \end{cases}\qquad
+              \begin{aligned}
+                  v_{ref} & = 0.4 \text{ m/s} \\
+                  T_{sim} & = 5 \text{ s}     \\
+                  q(0)    & = [0, 0, 0]^T     \\
+                  q(T)    & = [0, 2, 0]^T
+              \end{aligned}
+          \end{equation}
+    \item \textbf{Rotazione sul Posto:} Una rotazione sul posto di circa 180 gradi in senso antiorario, partendo dall'origine.
+          \begin{equation}
+              \begin{cases}
+                  x(t) = 0                       \\
+                  y(t) = 0                       \\
+                  \theta(t) = \omega_{ref} t     \\
+                  \dot{x}(t) = 0                 \\
+                  \dot{y}(t) = 0                 \\
+                  \dot{\theta}(t) = \omega_{ref} \\
+              \end{cases}\qquad
+              \begin{aligned}
+                  \omega_{ref} & = \pi/6 \text{ rad/s} \\
+                  T_{sim}      & = 6 \text{ s}         \\
+                  q(0)         & = [0, 0, 0]^T         \\
+                  q(T)         & = [0, 0, \pi]^T
+              \end{aligned}
+          \end{equation}
+\end{itemize}
+Nel seguito, chiameremo per semplicità queste traiettorie rispettivamente \textit{Straight}, \textit{Arc}, \textit{Crab} e \textit{Spin}.
+Per ogni traiettoria, si calcolano le velocità desiderate $\dot{q}_d$ e si utilizzano le formule di cinematica inversa per ottenere gli input di controllo per entrambi i modelli. Successivamente, si simula l'evoluzione del sistema nel tempo, tenendo conto della dinamica degli attuatori e dei limiti imposti. Infine, si confrontano le traiettorie effettive seguite dai modelli con quelle desiderate, analizzando gli errori di tracciamento e le caratteristiche del moto risultante.
+\begin{note}
+    Poiché in un contesto reale le traiettorie Crab e Spin non sono facilmente realizzabili in movimento, si è scelto di simulare solo il caso in cui il veicolo parte da fermo con gli sterzi già orientati correttamente per la manovra desiderata. Questo permette di isolare l'effetto del modello cinematico senza introdurre ulteriori complessità legate alla fase di transizione iniziale.
+\end{note}
+Lo schema di controllo utilizzato per le simulazioni in catena aperta illustrato in \cref{fig:open_loop_control_scheme} segue la logica descritta precedentemente, dove per semplicità di rappresentazione abbiamo indicato con:
+\begin{itemize}
+    \item $IK$ le operazioni di cinematica inversa per calcolare gli input di controllo dagli stati desiderati.
+    \item $FK$ le operazioni di cinematica diretta per calcolare gli stati effettivi del veicolo dagli input di controllo.
+    \item $\frac{1}{\tau_js+1}, j={1,2}$ la funzioni di trasferimento della dinamica degli attuatori, che sono state implementate in forma discreta utilizzando il metodo di Eulero in avanti con passo di integrazione pari a quello della simulazione.
+\end{itemize}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{4/FF_scheme.pdf}
+    \caption{Schema di controllo in catena aperta utilizzato per le simulazioni.}
+    \label{fig:open_loop_control_scheme}
+\end{figure}
+\begin{note}
+    È importate notare che per lo schema di controllo in catena aperta del biciclo, si è utilizzato come angolo $\theta$ dell'\cref{eq:beta_des} quello proveniente dalla traiettoria desiderata e non quello effettivo del veicolo.
+\end{note}
+\begin{note}
+    Le implementazioni di cinematica diretta e inversa includono saturazioni sugli angoli di sterzo e sulle velocità angolari delle ruote motrici, in modo da rispettare i limiti imposti dagli attuatori.
+\end{note}
+\subsection{Simulazioni in Catena Aperta}
+Tutte le simulazioni sono state eseguite in Python, derivando le equazioni simbolicamente con la libreria SymPy e implementando la simulazione numerica con NumPy e SciPy. I grafici sono stati generati utilizzando Matplotlib. Le simulazioni sono state eseguite con un passo di integrazione di $0.002$s utilizzando il metodo di integrazione di Runge-Kutta del quarto ordine (RK4).
+In \cref{tab:feedforward_comparison_summary} sono riportati i risultati delle simulazioni per ciascuna traiettoria, valutati in termini di Root Mean Square Error (RMSE) sia per la posizione che per l'orientamento del veicolo rispetto alla traiettoria desiderata.
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{@{}lcccc@{}}
+        \toprule
+        \textbf{Traiettoria} & \textbf{Modello} & \textbf{Supporto} & \textbf{RMSE Pos. [mm]}      & \textbf{RMSE Orient. [$^\circ$]} \\
+        \midrule
+        \multirow{2}{*}{Straight}
+                             & Bicycle          & x                 & 418.05                       & 0.00                             \\
+                             & Bisteer          & x                 & 418.05                       & 0.00                             \\
+        \midrule
+        \multirow{2}{*}{Arc}
+                             & Bicycle          & x                 & 749.92                       & 20.80                            \\
+                             & Bisteer          & x                 & \textbf{694.70}              & \textbf{18.85}                   \\
+        \midrule
+        \multirow{2}{*}{Crab}
+                             & Bicycle          & -                 & \textcolor{failure}{1154.82} & 0.00                             \\
+                             & Bisteer          & x                 & \textbf{334.44}              & 0.00                             \\
+        \midrule
+        \multirow{2}{*}{Spin}
+                             & Bicycle          & -                 & 0.00                         & \textcolor{failure}{103.93}      \\
+                             & Bisteer          & x                 & 0.00                         & \textbf{25.93}                   \\
+        \bottomrule
+    \end{tabular}
+    \caption{Confronto prestazioni modelli Bicycle e Bisteer con controllore \textbf{FeedForward}}
+    \label{tab:feedforward_comparison_summary}
+\end{table}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{4/straight_east_feedforward_bicycle.png}
+        \caption{Simulazione con modello biciclo sterzante per traiettoria Straight.}
+    \end{subfigure}\\
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{4/straight_east_feedforward_bisteer.png}
+        \caption{Simulazione con modello a doppia ruota sterzante per traiettoria Straight.}
+    \end{subfigure}
+    \caption{Risultati delle simulazioni in catena aperta per la traiettoria rettilinea verso Est.}
+    \label{fig:straight_simulation_results}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{4/curved_east_to_north_feedforward_bicycle.png}
+        \caption{Simulazione con modello biciclo sterzante per traiettoria Arc.}
+    \end{subfigure}\\
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{4/curved_east_to_north_feedforward_bisteer.png}
+        \caption{Simulazione con modello a doppia ruota sterzante per traiettoria Arc.}
+    \end{subfigure}
+    \caption{Risultati delle simulazioni in catena aperta per la traiettoria circolare.}
+    \label{fig:arc_simulation_results}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{4/crabbing_north_feedforward_bicycle.png}
+        \caption{Simulazione con modello biciclo sterzante per traiettoria Crab.}
+    \end{subfigure}\\
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{4/crabbing_north_feedforward_bisteer.png}
+        \caption{Simulazione con modello a doppia ruota sterzante per traiettoria Crab.}
+    \end{subfigure}
+    \caption{Risultati delle simulazioni in catena aperta per la traiettoria traslatoria verso Nord.}
+    \label{fig:crab_simulation_results}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{4/spin_in_place_feedforward_bicycle.png}
+        \caption{Simulazione con modello biciclo sterzante per traiettoria Spin.}
+    \end{subfigure}\\
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{4/spin_in_place_feedforward_bisteer.png}
+        \caption{Simulazione con modello a doppia ruota sterzante per traiettoria Spin.}
+    \end{subfigure}
+    \caption{Risultati delle simulazioni in catena aperta per la traiettoria di rotazione sul posto.}
+    \label{fig:spin_simulation_results}
+\end{figure}
+
+\subsubsection{Discussione dei Risultati}
+Dai risultati delle simulazioni in catena aperta, emergono alcune considerazioni chiave: come ci si aspettava, il modello biciclo non è in grado di eseguire correttamente le manovre di traslazione laterale e rotazione sul posto. Difatti, a livello implementativo, questo modello tende a generare angoli di sterzo estremi che si risolvono in $NaN$ durante la fase di calcolo della cinematica inversa, portando a comportamenti non definiti nella simulazione che NumPy tipicamente gestisce come zeri.
+
+Risulta interessante però vedere che il modello a doppia ruota sterzante si comporta in modo analogo nel portare il centro del robot da una posa a un'altra, tenendo a zero l'errore di slip e mostrando una possibile validità teorica del modello proposto. Inoltre, questo mostra una maggiore versatilità, riuscendo a seguire le traiettorie Crab e Spin anche se con un certo errore.
+
+In conclusione, possiamo aggiunger che la dinamica degli attuatori gioca un ruolo cruciale nel determinare le prestazioni di entrambi i modelli. Infatti, la presenza di ritardi e limiti nelle variazioni degli angoli di sterzo e delle velocità delle ruote motrici impedisce ai modelli di soddisfare le condizioni di compatibilità richieste per quando si è al di fuori delle traiettorie rettilinee e inoltre non permette di portare a zero gli errori di tracciamento a causa della mancanza di un feedback di controllo.
+
+\section{Controllo in Feedback}
+Per migliorare le prestazioni di tracking, si è implementato un semplice controllore in feedback dallo stato di tipo PID, che agisce sugli errori di posizione ed orientamento del veicolo rispetto alla traiettoria desiderata. Lo schema di controllo utilizzato è illustrato in \cref{fig:closed_loop_control_scheme}, dove per semplicità espositiva abbiamo usato le stesse notazioni della sezione precedente, aggiungendo però un blocco solo di controllo PID che però tiene in considerazione tutte e tre le componenti di stato del veicolo.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{4/FF_PID}
+    \caption{Schema di controllo in feedback utilizzato per le simulazioni.}
+    \label{fig:closed_loop_control_scheme}
+\end{figure}
+\begin{note}
+    Tale schema è stato selezionato per provare un primo metodo di controllo semplice ed efficace, che potesse inoltre essere una prima approssimazione dello schema di controllo reale implementato sul veicolo fisico, i cui attuatori sono già dotati di PID opportunamente configurati.
+\end{note}
+Nel dettaglio, l'algoritmo di controllo implementato calcola l'errore di posizione ed orientamento nel sistema di rifrimento globale come:
+\begin{equation}\label{eq:state_error}
+    e^g = \begin{bmatrix}
+        x_d -x \\
+        y_d -y \\
+        \theta_d -\theta
+    \end{bmatrix}
+\end{equation}
+riportandolo nel sistema di riferimento del veicolo usando il valore misurato di $\theta$:
+\begin{equation}\label{eq:state_error_body}
+    e^b = \begin{bmatrix}
+        \cos(\theta)  & \sin(\theta) & 0 \\
+        -\sin(\theta) & \cos(\theta) & 0 \\
+        0             & 0            & 1
+    \end{bmatrix} e^g
+\end{equation}
+\begin{note}
+    Come descritto in~\cite{kanayama1990stable}, l'errore di tracciamento viene
+    trasformato nel sistema di riferimento locale del robot (\cref{eq:state_error_body})
+    per permettere al controllore di operare in modo più intuitivo e robusto.
+\end{note}
+Successivamente, si calcolano le azioni di controllo sulla singola componente dello stato come:
+\begin{equation}\label{eq:pid_control_law}
+    u_i(t) = K_{p,i} e_i^b(t) + K_{i,i} \int_0^t e_i^b(\tau) d\tau + K_{d,i} \frac{d e_i^b(t)}{dt} \quad , \quad i \in \{x,y,\theta\}
+\end{equation}
+Dove $K_{p,i}$, $K_{i,i}$ e $K_{d,i}$ sono i guadagni proporzionale, integrale e derivativo del controllore PID per la componente $i$ dello stato. Le azioni di controllo calcolate vengono poi sommate alle velocità desiderate provenienti dalla traiettoria di riferimento per ottenere le velocità di input corrette:
+\begin{equation}\label{eq:corrected_desired_state}
+    \dot{q}_{cmd} = \dot{q}^d + u
+\end{equation}
+Dove $u = [u_x, u_y, u_\theta]^T$ è il vettore delle azioni di controllo calcolate. Infine, si utilizzano le formule di cinematica inversa per ottenere gli input di controllo per entrambi i modelli, e si procede con la simulazione dell'evoluzione del sistema nel tempo, tenendo conto della dinamica degli attuatori e dei limiti imposti.
+
+A seguito di alcune prove sperimentali, si è deciso di implementare il controllore derivativo con un filtro passa basso del primo ordine per evitare di amplificare il rumore di misura e le variazioni rapide dell'errore (importanti soprattutto per la componente angolare). Pertanto, la parte derivativa del controllore PID è stata implementata come:
+\begin{equation}\label{eq:filtered_derivative}
+    D_i(s) = \frac{K_{d,i} s}{\frac{s}{N} + 1}
+\end{equation}
+Dove $1/N$ è la costante di tempo del filtro passa basso.
+Inoltre, per evitare fenomeni di wind-up nell'azione integrale del controllore, si è implementato un meccanismo di anti-windup basato sulla saturazione dell'integrale. In pratica, l'integrale dell'errore viene limitato a un intervallo predefinito per evitare che cresca indefinitamente in presenza di errori persistenti.
+
+Per quanto riguarda invece le saturazioni applicate per rispettare i limiti fisici degli attuatori, si è applicato uno \textit{scaling proporzionale} alle azioni di controllo calcolate, in modo da mantenere le proporzioni tra le diverse componenti di controllo, ma riducendo la loro magnitudine complessiva per rientrare nei limiti imposti. Lo scaling è calcolato nel modo seguente:
+Definita la magnitudo massima tra le azioni di controllo calcolate come:
+\begin{equation}\label{eq:v_mag}
+    v_{mag} = \sqrt{u_x^2 + u_y^2}\\
+\end{equation}
+Se $v_{mag} > v_{max}$, con $v_{max}$ la massima velocità lineare ottenibile dagli attuatori, si calcola il fattore di scaling come:
+\begin{equation}\label{eq:scaling_factor}
+    k= \frac{v_{max}}{v_{mag}}
+\end{equation}
+E si scala ogni componente dell'azione di controllo come:
+\begin{equation}\label{eq:scaled_control_action}
+    u_i = k u_i \quad , \quad i \in \{x,y\}
+\end{equation}
+Mentre per la componente angolare si applica una saturazione diretta:
+\begin{equation}\label{eq:angular_saturation}
+    u_\theta = \begin{cases}
+        u_\theta                                & \text{se } |u_\theta| \leq \omega_{max} \\
+        \text{sgn}(u_\theta) \cdot \omega_{max} & \text{altrimenti}
+    \end{cases}
+\end{equation}
+Dove $\omega_{max}$ è la massima velocità angolare ottenibile dagli attuatori.
+I guadagni del controllore PID sono stati scelti empiricamente attraverso una serie di test e ottimizzazioni manuali, al fine di bilanciare la reattività del sistema con la stabilità e la robustezza del controllo. I valori finali utilizzati per le simulazioni sono riportati in \cref{tab:pid_gains}.
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+        \hline
+        \textbf{Componente} & \textbf{$K_p$} & \textbf{$K_i$} & \textbf{$K_d$} & $I_{max}$ & $N$  \\
+        \hline
+        $x$                 & $0.3$          & $0.05$         & $0.1$          & $2$       & $20$ \\
+        \hline
+        $y$                 & $0.3$          & $0.05$         & $0.1$          & $2$       & $20$ \\
+        \hline
+        $\theta$            & $0.2$          & $0.02$         & $0.05$         & $1$       & $20$ \\
+        \hline
+
+        \hline
+    \end{tabular}
+    \caption{Guadagni e costanti dei controllori PID utilizzati per le simulazioni.}
+    \label{tab:pid_gains}
+\end{table}
+\subsection{Simulazioni in Feedback}
+Le simulazioni in feedback sono state eseguite utilizzando lo stesso setup e le stesse traiettorie descritte nella sezione precedente, con l'aggiunta del controllore PID. I risultati delle simulazioni sono riportati in \cref{tab:pid_summary}, dove sono confrontati i valori di RMSE per la posizione e l'orientamento del veicolo rispetto alla traiettoria desiderata.
+\begin{table}[H]
+    \centering
+    \begin{tabular}{@{}lcccc@{}}
+        \toprule
+        \textbf{Traiettoria} & \textbf{Modello} & \textbf{Supporto} & \textbf{RMSE Pos. [mm]}      & \textbf{RMSE Orient. [$^\circ$]} \\
+        \midrule
+        \multirow{2}{*}{Straight}
+                             & Bicycle          & x                 & 233.96                       & 0.00                             \\
+                             & Bisteer          & x                 & 233.96                       & 0.00                             \\
+        \midrule
+        \multirow{2}{*}{Arc}
+                             & Bicycle          & x                 & 231.27                       & 12.53                            \\
+                             & Bisteer          & x                 & \textbf{229.57}              & \textbf{11.66}                   \\
+        \midrule
+        \multirow{2}{*}{Crab}
+                             & Bicycle          & -                 & \textcolor{failure}{1154.82} & 0.00                             \\
+                             & Bisteer          & x                 & \textbf{187.17}              & 0.00                             \\
+        \midrule
+        \multirow{2}{*}{Spin}
+                             & Bicycle          & -                 & 0.00                         & \textcolor{failure}{103.93}      \\
+                             & Bisteer          & x                 & 0.00                         & \textbf{16.14}                   \\
+        \bottomrule
+    \end{tabular}
+    \caption{Confronto prestazioni modelli Bicycle e Bisteer con \textbf{PID+FF}.}
+    \label{tab:pid_summary}
+\end{table}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{4/curved_east_to_north_pid_bicycle.png}
+        \caption{Simulazione con modello biciclo sterzante per traiettoria Arc.}
+    \end{subfigure}\\
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{4/curved_east_to_north_pid_bisteer.png}
+        \caption{Simulazione con modello a doppia ruota sterzante per traiettoria Arc.}
+    \end{subfigure}
+    \caption{Risultati delle simulazioni in feedback per la traiettoria circolare.}
+    \label{fig:arc_pid_simulation_results}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{4/crabbing_north_pid_bicycle.png}
+        \caption{Simulazione con modello biciclo sterzante per traiettoria Crab.}
+    \end{subfigure}\\
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{4/crabbing_north_pid_bisteer.png}
+        \caption{Simulazione con modello a doppia ruota sterzante per traiettoria Crab.}
+    \end{subfigure}
+    \caption{Risultati delle simulazioni in feedback per la traiettoria traslatoria verso Nord.}
+    \label{fig:crab_pid_simulation_results}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{4/spin_in_place_pid_bicycle.png}
+        \caption{Simulazione con modello biciclo sterzante per traiettoria Spin.}
+    \end{subfigure}\\
+    \begin{subfigure}{\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{4/spin_in_place_pid_bisteer.png}
+        \caption{Simulazione con modello a doppia ruota sterzante per traiettoria Spin.}
+    \end{subfigure}
+    \caption{Risultati delle simulazioni in feedback per la traiettoria di rotazione sul posto.}
+    \label{fig:spin_pid_simulation_results}
+\end{figure}
+\subsubsection{Discussione dei Risultati}
+L'introduzione del controllore PID in feedback ha portato a miglioramenti significativi nelle prestazioni di tracking per entrambi i modelli cinematici. Purtroppo, in entrambi i casi non si mantiene praticamente mai l'errore di slip a zero, a causa dei ritardi introdotti dagli attuatori e dalle limitazioni fisiche del sistema. Tuttavia, le performance complessive sono migliorate e il mdello a doppia ruota sterzante si conferma anche quello con il miglior comportamento di tracking.
+\begin{note}
+    Si può notare in \cref{fig:spin_pid_simulation_results} come ci sia un rumore molto evidente nelle velocità del robot, probabilmente dovuti a fenomini di errore numerico, visto che la loro scale è di $10^{-17}$. Questo non influenza però le prestazioni di tracking, che risultano comunque ottimali.
+\end{note}

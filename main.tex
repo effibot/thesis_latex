@@ -13,11 +13,22 @@
 \DeclareFontShape{T1}{qag}{b}{sl}{<->ssub*qag/b/it}{}
 \DeclareFontShape{T1}{qag}{bx}{sl}{<->ssub*qag/bx/it}{}
 \usepackage[italian]{babel}
-
+\usepackage{float}
 %% Utils
 \usepackage{hyphenat}
 \usepackage{graphicx}
 \usepackage{multirow}
+\usepackage{booktabs}      % Professional tables
+\usepackage{xcolor}        % Cell coloring
+\usepackage{booktabs}       % Professional tables (\toprule, \midrule, \bottomrule)
+\usepackage{array}          % Enhanced column formatting
+\usepackage{threeparttable} % Table with notes (\begin{tablenotes})
+\usepackage{caption}        % Caption formatting
+\usepackage{pifont}         % Dingbats for \checkmark and \texttimes symbols
+% Color definitions (add to preamble):
+\definecolor{success}{RGB}{0,150,0}
+\definecolor{failure}{RGB}{200,0,0}
+\definecolor{warning}{RGB}{255,140,0}
 \graphicspath{{img/}}           % Percorso immagini
 \makeatletter
 \def\input@path{{chapters/}}    % Percorso file .tex
@@ -64,7 +75,6 @@
 %% Configurazione etichette italiane per cleveref
 \crefname{figure}{figura}{figure}
 \Crefname{figure}{Figura}{Figure}
-\crefname{table}{tabella}{tabelle}
 \Crefname{table}{Tabella}{Tabelle}
 \crefname{equation}{equazione}{equazioni}
 \Crefname{equation}{Equazione}{Equazioni}

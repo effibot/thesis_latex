@@ -316,8 +316,8 @@ dove per compattezza
 Moltiplicando la pseudoinversa per il termine noto dell'\cref{eq:extended_constraints} e fattorizzando in termini delle velocità angolari delle ruote, si ottiene il modello cinematico diretto nel sistema di riferimento locale:
 \begin{equation}\label{eq:forward_kinematics_body}
     \begin{bmatrix}
-        \dot{x}_c \\
-        \dot{y}_c \\
+        \dot{x}_c^b \\
+        \dot{y}_c^b \\
         \dot{\theta}
     \end{bmatrix} = \frac{r}{2} \begin{bmatrix}
         \cos(\delta_f)                                         & \cos(\delta_r)                                       \\
@@ -331,7 +331,7 @@ Moltiplicando la pseudoinversa per il termine noto dell'\cref{eq:extended_constr
 
 Questa rappresentazione evidenzia diverse proprietà interessanti.
 \begin{itemize}
-    \item Le velocità lineari $\dot{x}_c$ e $\dot{y}_c$ sono date da una media pesata dei contributi delle due ruote, dove i pesi dipendono dagli angoli di sterzo.
+    \item Le velocità lineari $\dot{x}_c^b$ e $\dot{y}_c^b$ sono date da una media pesata dei contributi delle due ruote, dove i pesi dipendono dagli angoli di sterzo.
     \item La velocità angolare $\dot{\theta}$ dipende dal momento angolare generato dalle ruote, normalizzato da un'approssimazione del momento d'inerzia del robot ($L^2 + W^2$).
     \item Il modello è non singolare per nessuna configurazione degli angoli di sterzo, permettendo di gestire correttamente tutte le manovre desiderate, incluse le traslazioni laterali e le rotazioni sul posto.
     \item Non impone in modo rigido una relazione tra le velocità delle ruote motrici e gli angoli di sterzo, permettendo quindi lo slittamento ma minimizzandolo.
@@ -344,8 +344,8 @@ Questa rappresentazione evidenzia diverse proprietà interessanti.
 Per quanto riguarda la mobilità che questo modello consente, si può osservare che se si impone $\delta_f = \delta_r = \gamma$ con $\omega_f = \omega_r = \hat{\omega}$ si ottiene che
 \begin{equation}
     \begin{bmatrix}
-        \dot{x}^b \\
-        \dot{y}^b \\
+        \dot{x}_c^b \\
+        \dot{y}_c^b \\
         \dot{\theta}
     \end{bmatrix} =
     \begin{bmatrix}
@@ -359,8 +359,8 @@ che corrisponde ad una traslazione pura nella direzione definita dall'angolo di 
 Invece, per ottenere una rotazione sul posto, si può imporre $\delta_f = \alpha+\pi/2$ e $\delta_r = \delta_f + \pi$, con $\omega_f = \omega_r = \hat{\omega}$, ottenendo
 \begin{equation}
     \begin{bmatrix}
-        \dot{x}^b \\
-        \dot{y}^b \\
+        \dot{x}_c^b \\
+        \dot{y}_c^b \\
         \dot{\theta}
     \end{bmatrix} =
     \begin{bmatrix}- \frac{r \sin{\left(\alpha \right)}}{2} & \frac{r \sin{\left(\alpha \right)}}{2}\\\frac{r \cos{\left(\alpha \right)}}{2} & - \frac{r \cos{\left(\alpha \right)}}{2}\\\frac{r \left(L \cos{\left(\alpha \right)} + W \sin{\left(\alpha \right)}\right)}{L^{2} + W^{2}} & \frac{r \left(L \cos{\left(\alpha \right)} + W \sin{\left(\alpha \right)}\right)}{L^{2} + W^{2}}\end{bmatrix}

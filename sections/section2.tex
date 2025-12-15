@@ -100,41 +100,63 @@
 % Slide 5: Protocolli Industriali - CANopen
 \begin{frame}
     \frametitle{Protocolli di Comunicazione: CANopen}
-    Protocollo applicativo basato su bus CAN per atomotive e automazione industriale.
-    \begin{block}{Struttura Dati}
-        \begin{itemize}
-            \item \textbf{OD (Object Dictionary)}: Mappa parametri (Index/Subindex).
-            \item \textbf{PDO}: Dati real-time (es. velocità, encoder).
-            \item \textbf{SDO}: Configurazione (confermato).
-        \end{itemize}
-    \end{block}
+    \textbf{CANopen}: protocollo applicativo su CAN per automazione industriale.\\
 
-    \begin{block}{Gestione Rete}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \textbf{Componenti Principali}
         \begin{itemize}
-            \item \textbf{NMT}: Stati (Operational, Stopped).
-            \item \textbf{Heartbeat}: Monitoraggio nodi.
-            \item \textbf{Emergency}: Segnalazione guasti.
+            \item \textbf{Object Dictionary (OD)}: dizionario parametri dispositivo.
+            \item \textbf{PDO}: messaggi real-time (velocità, encoder).
+            \item \textbf{SDO}: configurazione parametri (client-server).
+            \item \textbf{NMT}: gestione stati nodi.
+        \end{itemize}
+
+        \column{0.5\textwidth}
+        \textbf{Profilo CiA 402}
+        \begin{itemize}
+            \item Standard per azionamenti elettrici
+            \item Macchina a stati
+            \item Modalità: Velocity, Position, Torque
+        \end{itemize}
+    \end{columns}
+\end{frame}
+\begin{frame}
+    \frametitle{Protocolli di Comunicazione: CANopen}
+    \begin{block}{Scelta per il Progetto}
+        \begin{itemize}
+            \item Standardizzazione CiA 402 (driver Mini-Traction Power)
+            \item Determinismo temporale (PDO sincronizzati)
+            \item Diagnostica integrata (heartbeat, emergency)
+            \item Interoperabilità (batteria + driver compatibili)
         \end{itemize}
     \end{block}
 \end{frame}
 
-% Slide 6: Profilo CiA 402
+% Slide 6: Panoramica Altri Protocolli
 \begin{frame}
-    \frametitle{Estensioni CANopen: CiA 402}
-    
-    Estensione del protocollo per il controllo di azionamenti elettrici.
+    \frametitle{Altri Protocolli Industriali}
+    \textbf{Alternative valutate} (non adottate per il progetto):
 
-    \begin{itemize}
-        \item \textbf{Macchina a Stati}: Gestione sicurezza e abilitazione potenza.
-        \item \textbf{Modalità Operative}:
-              \begin{itemize}
-                  \item \textit{Profile Velocity}: Controllo velocità.
-                  \item \textit{Profile Position}: Controllo posizione.
-                  \item \textit{Profile Torque}: Controllo coppia.
-              \end{itemize}
-    \end{itemize}
+    \vspace{0.3cm}
+    \begin{table}[htbp]
+        \centering
+        \small
+        \begin{tabular}{|l|p{6cm}|p{4cm}|}
+            \hline
+            \textbf{Protocollo} & \textbf{Caratteristiche}                             & \textbf{Limitazioni}                    \\
+            \hline
+            \textbf{EtherCAT}   & Ethernet industriale, latenze $<$ 1 ms, master-slave & Hardware dedicato, maggiore complessità \\
+            \hline
+            \textbf{PROFINET}   & Ethernet Siemens, alta integrazione IT               & Meno diffuso in robotica mobile         \\
+            \hline
+            \textbf{Modbus TCP} & Semplice, su TCP/IP                                  & Latenze non deterministiche             \\
+            \hline
+        \end{tabular}
+    \end{table}
 
-    \begin{alertblock}{Vantaggi}
-        Determinismo, affidabilità e interoperabilità tra produttori diversi.
+    \vspace{0.3cm}
+    \begin{alertblock}{Motivazione Scelta CANopen}
+        Miglior compromesso tra prestazioni, standardizzazione (profili CiA 402), disponibilità componenti compatibili e costi contenuti.
     \end{alertblock}
 \end{frame}

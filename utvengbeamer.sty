@@ -75,6 +75,13 @@
 \newcommand*{\@SetupEmail}[1]{
     \setkeys{UTVENGB}{email={#1}}
 }
+\DeclareStringOption[]{workemail}[]
+\newcommand*{\SetupWorkEmail}{
+    \expandafter\@SetupWorkEmail\expandafter{\CurrentOption}
+}
+\newcommand*{\@SetupWorkEmail}[1]{
+    \setkeys{UTVENGB}{workemail={#1}}
+}
 \DeclareStringOption[]{institute}[Institute]
 \newcommand*{\SetupInstitute}{
     \expandafter\@SetupInstitute\expandafter{\CurrentOption}
@@ -136,10 +143,21 @@
 \renewenvironment{itemize}{\tempone\addtolength{\itemsep}{0.5\baselineskip}}{\temptwo}
 \title[\UTVENGB@event]{\UTVENGB@title}
 \subtitle{\UTVENGB@subtitle}
-\author[\UTVENGB@author]{\texorpdfstring{\UTVENGB@longauthor\newline\href{mailto:\UTVENGB@email}{\url{\UTVENGB@email}}}{\UTVENGB@longauthor}}
+\author[\UTVENGB@author]{%
+    \texorpdfstring{%
+        \UTVENGB@longauthor\newline
+        \href{mailto:\UTVENGB@email}{\url{\UTVENGB@email}}%
+        \ifx\UTVENGB@workemail\@empty\else\newline\href{mailto:\UTVENGB@workemail}{\url{\UTVENGB@workemail}}\fi%
+    }{\UTVENGB@longauthor}%
+}
 \institute[\UTVENGB@institute]{\UTVENGB@longinstitute\newline\UTVENGB@department\newline\UTVENGB@researchgroup}
 \date{\UTVENGB@date}
-\titlegraphic{\vspace{-1.5pt}\includegraphics[height=1.75cm]{img/logo_trovergata_hz.pdf}}
+\titlegraphic{
+    \vspace{-12pt}%
+    \includegraphics[height=1.2cm,valign=c]{img/logo_trovergata_hz.pdf}%
+    \hspace{2pt}
+    \includegraphics[height=1.2cm,valign=c]{img/daikin_logo.png}%
+}
 \AtBeginSection[] % Comment this if you prefer the TOC to be shown only once
 {
     \begin{frame}

@@ -4,14 +4,27 @@
 % Slide 1: Selezione Payload e Requisiti
 \begin{frame}
     \frametitle{Selezione Payload}
-    \begin{block}{Payload: Compressore a Vite}
-        \begin{itemize}
-            \item \textbf{Oggetto}: Compressore Daikin 35-A-CO1005
-            \item \textbf{Peso}: 1465 kg.
-            \item \textbf{Dimensioni}: $1.9 \times 0.9 \times 0.75$ m.
-            \item \textbf{Logistica}: Trasporto da produzione a assemblaggio chiller.
-        \end{itemize}
-    \end{block}
+    \begin{columns}
+        \begin{column}{0.48\textwidth}
+            \begin{block}{Payload: Compressore a Vite}
+                \begin{itemize}
+                    \item \textbf{Oggetto}: Compressore Daikin (35-A-CO1005)
+                    \item \textbf{Peso}: $\sim$730 kg.
+                    \item \textbf{Dimensioni}: $1.9 \times 0.9 \times 0.75$ m.
+                    \item \textbf{Logistica}: Trasporto da produzione a assemblaggio chiller.
+                \end{itemize}
+            \end{block}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            \centering
+            \includegraphics[width=0.8\textwidth]{img/daikin/35-A-CO1005.jpeg}
+        \end{column}
+    \end{columns}
+
+    \vspace{0.2cm}
+    \begin{alertblock}{Scelta Progettuale}
+        Dimensionamento sovrastimato a \textbf{1000 kg} (robot + payload) per scalabilità futura e margine di sicurezza.
+    \end{alertblock}
 \end{frame}
 % Slide 2: Requisiti Veicolo
 \begin{frame}
@@ -30,16 +43,34 @@
 % Slide 2: Dimensionamento Potenza
 \begin{frame}
     \frametitle{Dimensionamento Potenza}
-    Calcolo forza di trazione necessaria ($m=1000$ kg):
-    \begin{itemize}
-        \item \textbf{Piano}: $F_{piano} = \mu \cdot m \cdot g \approx 98$ N ($\mu=0.01$).
-        \item \textbf{Pendenza (10\%)}: $F_{salita} = m \cdot g \cdot (\sin\theta + \mu\cos\theta) \approx 1078$ N.
-    \end{itemize}
+    Calcolo forza di trazione necessaria ($m=1000$ kg, $v_{max}=1$ m/s):
 
-    \vspace{0.5cm}
-    \begin{block}{Potenza Richiesta}
-        $$ P_{req} = F_{salita} \cdot v_{max} \approx 1078 \text{ N} \cdot 1 \text{ m/s} \approx \text{\textbf{1.1 kW}} $$
-    \end{block}
+    \textbf{Parametri:} $\mu_r = 0.03$ (attrito volvente), $\mu_s = 0.5$ (attrito statico), $a = 0.333$ m/s$^2$
+    \vspace{0.2cm}
+    \begin{columns}
+        \column{0.48\textwidth}
+        \textbf{In Piano:}
+        \begin{equation*}
+            \begin{aligned}
+                F_r     & = \mu_r \cdot m \cdot g = 294 \text{ N} \\
+                F_a     & = m \cdot a = 333 \text{ N}             \\
+                F_{tot} & = 627 \text{ N}
+            \end{aligned}
+        \end{equation*}
+        $$P_{piano} \approx 627 \text{ W}$$
+
+        \column{0.48\textwidth}
+        \textbf{Pendenza 10\% ($\theta=5.7^\circ$):}
+        \begin{equation*}
+            \begin{aligned}
+                F_{\parallel} & = mg\sin\theta = 974 \text{ N}       \\
+                F_r           & = \mu_r mg\cos\theta = 293 \text{ N} \\
+                F_a           & = 333 \text{ N}                      \\
+                F_{tot}       & = 1600 \text{ N}
+            \end{aligned}
+        \end{equation*}
+        $$P_{salita} \approx \textbf{1.6 kW}$$
+    \end{columns}
 \end{frame}
 
 % Slide 3: Selezione Batteria
@@ -49,47 +80,60 @@
         \column{0.6\textwidth}
         \textbf{FlashBattery LiFePO4} (Litio-Ferro-Fosfato)
         \begin{itemize}
-            \item \textbf{Tensione}: 51.2 V nominali.
-            \item \textbf{Capacità}: 80 Ah.
-            \item \textbf{Energia Totale}: $51.2 \text{ V} \times 80 \text{ Ah} \approx \textbf{4.1 kWh}$.
+            \item \textbf{Tensione}: 51.2 V nominali (44-59.2 V).
+            \item \textbf{Capacità}: 105 Ah.
+            \item \textbf{Energia Totale}: 5.38 kWh.
+            \item \textbf{Energia Disponibile} (80\% DOD): \textbf{4.30 kWh}.
+            \item \textbf{Corrente}: 105 A continua, 210 A picco.
         \end{itemize}
-        \vspace{0.3cm}
-        \textbf{Verifica Autonomia}:
-        $$T_{op} = \frac{E_{batt} \cdot \eta_{sys}}{P_{avg}} \approx \frac{4.1 \text{ kWh} \cdot 0.9}{0.8 \text{ kW}} > 4 \text{ h}$$
-        \textit{(Considerando consumo medio inferiore al picco)}
+        \vspace{0.1cm}
+        \begin{block}{Verifica Autonomia}
+            $$E_{disponibile} = 4.30 \text{ kWh} > 4 \text{ kWh (requisito)}$$
+            \textbf{Margine:} 7.5\%
 
+        \end{block}
         \column{0.4\textwidth}
         \centering
-        \includegraphics[width=0.55\textwidth]{batteria/front_view.jpeg} % Placeholder
+        \includegraphics[width=0.5\textwidth]{batteria/front_view.jpeg}
     \end{columns}
 \end{frame}
 
 % Slide 4: Selezione Motori
 \begin{frame}
     \frametitle{Selezione Motori: CFR MRT05}
-    Configurazione: \textbf{2 Ruote Motrici Sterzanti} (Motorwheels) + 2 Caster.
+    Configurazione: \textbf{2 Ruote Motrici Sterzanti} (Motorwheels) + 2 Caster (diagonali).
 
     \begin{columns}
-        \column{0.4\textwidth}
+        \column{0.45\textwidth}
+        \textbf{Specifiche per ruota:}
         \begin{itemize}
             \item \textbf{Trazione}:
                   \begin{itemize}
-                      \item Potenza: 500 W (S2-60min).
-                      \item Coppia Nominale: 37 Nm.
-                      \item Coppia Picco: 180 Nm.
+                      \item Potenza: 500 W (S2-60min)
+                      \item Coppia Nom.: 37 Nm
+                      \item Coppia Picco: 180 Nm
+                      \item Rapporto riduzione: 1:21
                   \end{itemize}
             \item \textbf{Sterzo}:
                   \begin{itemize}
-                      \item Potenza: 300 W.
-                      \item Coppia: 35 Nm.
+                      \item Potenza: 300 W
+                      \item Coppia: 34 Nm
+                      \item Rapporto riduzione: 1:45.56
                   \end{itemize}
+            \item \textbf{Encoder}: SIN/COS (FTS1)
         \end{itemize}
 
         \column{0.5\textwidth}
         \begin{block}{Verifica Coppia}
-            Coppia alla ruota richiesta in salita ($r=0.15$ m):
-            $$C_{req} = F_{salita} \cdot r / 2 \approx 1078 \cdot 0.15 / 2 \approx 81 \text{ Nm}$$
-            $$81 \text{ Nm} < 180 \text{ Nm (Picco)} \implies \textbf{OK}$$
+            Raggio ruota: $r = 0.099$ m
+
+            \textbf{Piano:}
+            $$\tau_{req} = \frac{F_{tot} \cdot r}{2} = \frac{627 \cdot 0.099}{2} \approx 31 \text{ Nm}$$
+            $$\tau_{disp} = 2 \times 37 = 74 \text{ Nm} \implies \textbf{Margine 18\%}$$
+
+            \textbf{Salita 10\%:}
+            $$\tau_{req} = \frac{1600 \cdot 0.099}{2} \approx 79 \text{ Nm}$$
+            $$\tau_{picco} = 2 \times 180 = 360 \text{ Nm} \implies \textbf{OK}$$
         \end{block}
     \end{columns}
 \end{frame}
@@ -105,38 +149,164 @@
     \end{columns}
 
 \end{frame}
-% Slide 5: Architettura Hardware
+% Slide 5: Architettura Hardware - Parte 1
 \begin{frame}
-    \frametitle{Architettura Hardware e Sensori}
+    \frametitle{Architettura Hardware: Computazione e Sensoristica}
     \begin{itemize}
-        \item \textbf{Computer di Bordo}: LattePanda Sigma (x86, 32GB RAM) per SLAM e High-Level Control.
-        \item \textbf{Sensori}:
+        \item \textbf{Computer di Bordo}: LattePanda Sigma
               \begin{itemize}
-                  \item LiDAR: \textbf{Livox Mid-360} (3D, FOV 360x59).
-                  \item IMU: Integrata nel LiDAR.
+                  \item Intel Core i5-1340P (12 core, 16 thread)
+                  \item 32GB RAM LPDDR5-6400
+                  \item Ubuntu 24.04 + ROS 2 Jazzy
               \end{itemize}
-        \item \textbf{Azionamenti}: Driver Microphase MiniTraction Power.
-        \item \textbf{Comunicazioni}: Adattatore Waveshare USB-CAN-A
+        \item \textbf{LiDAR}: Livox Mid-360
+              \begin{itemize}
+                  \item FOV: 360° × 59° (-7° a +52°)
+                  \item 200k pts/s, portata 70m
+                  \item IMU 6-assi integrata (ICM40609)
+              \end{itemize}
+        \item \textbf{Encoder}: SIN/COS (FTS1) integrati nelle motoruote
+        \item \textbf{Sonde Temperatura}: RTD (STS1) per monitoraggio termico motori
     \end{itemize}
 \end{frame}
+
+% Slide 6: Architettura Hardware - Parte 2
 \begin{frame}
-    \frametitle{Architettura Hardware e Sensori}
+    \frametitle{Architettura Hardware: Alimentazione e Controllo}
+    \begin{itemize}
+        \item \textbf{Driver Motori}: MicroPhase Mini-Traction Power (4×)
+              \begin{itemize}
+                  \item Supporto CANopen CiA 402
+                  \item 48V, 75A continua, 120A boost (5s)
+                  \item Controllo motori PMAC
+              \end{itemize}
+        \item \textbf{Comunicazione}: Waveshare USB-CAN-A
+              \begin{itemize}
+                  \item CAN 2.0A/B, velocità fino a 1 Mbps
+                  \item Resistenza terminazione 120$\Omega$ commutabile
+              \end{itemize}
+        \item \textbf{Convertitori DC-DC}: Meanwell
+              \begin{itemize}
+                  \item SD-25B-12: 48V → 12V, 25W (LiDAR)
+                  \item SD-100D-12: 48V → 12V, 102W (SBC)
+              \end{itemize}
+        \item \textbf{Caricabatterie}: Zivan NG3
+              \begin{itemize}
+                  \item 48V, 60A configurabile, profilo CC-CV per LiFePO4
+                  \item Comunicazione CAN con BMS, tempo ricarica: 2-3h
+              \end{itemize}
+    \end{itemize}
+\end{frame}
+
+% Slide 7: Foto Componenti Hardware
+\begin{frame}
+    \frametitle{Componenti Hardware}
     \begin{columns}
         \column{0.3\textwidth}
         \centering
-        \includegraphics[width=0.8\textwidth]{img/3/lattepanda_sigma2.png}
+        \textbf{LattePanda Sigma}
+
+        \includegraphics[width=0.7\textwidth]{img/3/lattepanda_sigma2.png}
+
+        \vspace{0.3cm}
+        \textbf{Driver Mini-Traction Power}
+
+        \includegraphics[width=0.7\textwidth]{img/3/mini-traction-power.png}
 
         \column{0.3\textwidth}
         \centering
+        \textbf{Livox Mid-360}
+
         \includegraphics[width=0.6\textwidth]{img/3/livox_mid360.png}
-    \end{columns}
-    \begin{columns}
-        \column{0.3\textwidth}
-        \centering
-        \includegraphics[width=0.8\textwidth]{img/3/mini-traction-power.png}
 
-        \column{0.3\textwidth}
-        \centering
+        \vspace{0.3cm}
+        \textbf{USB-CAN-A Adapter}
+
         \includegraphics[width=0.6\textwidth]{img/3/usb_can_a.jpg}
     \end{columns}
+\end{frame}
+
+% Slide 7: Telaio
+\begin{frame}
+    \frametitle{Telaio e Struttura Meccanica}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \textbf{Caratteristiche:}
+        \begin{itemize}
+            \item Profili acciaio $30 \times 30 \times 2.6$ mm
+            \item Rinforzi $20 \times 20 \times 2$ mm
+            \item Dimensioni: $1.8 \times 1.0$ m
+            \item Piastre montaggio 5 mm
+            \item Trattamento: zincatura
+        \end{itemize}
+
+        \vspace{0.3cm}
+        \textbf{Progettazione:}
+        \begin{itemize}
+            \item CAD: SolidWorks
+            \item Analisi FEM: FASTRAN
+            \item Verifica deformazioni sotto carico
+        \end{itemize}
+
+        \column{0.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{telaio/disegno_side.png}
+    \end{columns}
+\end{frame}
+
+% Slide 8: Analisi FEM
+\begin{frame}
+    \frametitle{Analisi agli Elementi Finiti (FEM)}
+    \textbf{Verifica strutturale} con software FASTRAN sotto carico 1000 kg.
+
+    \vspace{0.3cm}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \centering
+        \textbf{Mappa delle Deformazioni}
+
+        \includegraphics[width=0.8\textwidth]{telaio/fem_telaio_dettaglio_3}
+
+        \column{0.5\textwidth}
+        \centering
+        \textbf{Mappa delle Deformazioni}
+
+        \includegraphics[width=0.9\textwidth]{telaio/fem_telaio_dettaglio_2}
+    \end{columns}
+
+    \vspace{0.3cm}
+    \begin{block}{Risultati}
+        Deformazioni e tensioni entro limiti di sicurezza. Zone critiche localizzate nei punti di giunzione (artefatti mesh).
+    \end{block}
+\end{frame}
+
+% Slide 9: Analisi Costi
+\begin{frame}
+    \frametitle{Analisi dei Costi}
+    \begin{table}[htbp]
+        \centering
+        \small
+        \begin{tabular}{|l|r|}
+            \hline
+            \textbf{Componente}             & \textbf{Costo (€)} \\
+            \hline
+            Motoruote CFR MRT05 (2×)        & 5.480              \\
+            Driver Mini-Traction Power (4×) & 1.640              \\
+            Batteria FlashBattery           & 3.950              \\
+            Caricabatterie Zivan NG3        & 355                \\
+            LattePanda Sigma                & 563                \\
+            Livox Mid-360                   & 659                \\
+            Telaio, lamierati e caster      & 2.356              \\
+            Cablaggi e messa in opera       & 1.800              \\
+            Accessori (DC-DC, USB-CAN, SSD) & 429                \\
+            \hline
+            \textbf{Totale}                 & \textbf{17.232}    \\
+            \hline
+        \end{tabular}
+    \end{table}
+
+    \vspace{0.3cm}
+    \begin{block}{Considerazioni}
+        Costo contenuto rispetto a soluzioni commerciali (ordine di grandezza inferiore). Dimostratore tecnologico economico per validazione concetto.
+    \end{block}
 \end{frame}

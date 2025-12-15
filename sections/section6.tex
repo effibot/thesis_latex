@@ -1,83 +1,70 @@
-% Sezione 6: Sviluppi Futuri
+% Sezione 6: Conclusioni e Sviluppi Futuri
 \section{Conclusioni e Sviluppi Futuri}
 
+
 \begin{frame}
-    \frametitle{Risultati Raggiunti}
-    \begin{block}{Progettazione Completa AMR}
-        \begin{itemize}
-            \item Requisiti: 1000 kg capacità, 1 m/s, 4h autonomia, €15k budget
-            \item Configurazione 2 motorwheels + 2 caster (diagonali)
-            \item Componenti: CFR MRT05, FlashBattery LiFePO4, Livox Mid-360, LattePanda Sigma
-            \item Verifiche energetiche: motori 18\% margine piano, batteria 7.5\% margine
-        \end{itemize}
-    \end{block}
-
-    \begin{block}{Modellazione e Controllo}
-        \begin{itemize}
-            \item Modello Bicycle: singolarità su crab/spin (FAIL)
-            \item Modello Bisteer: vincoli non-olonomi, least-squares, nessuna singolarità
-            \item Simulazioni: RMSE < 1.5 cm su 4 traiettorie (straight, arc, crab, spin)
-            \item PID+Feedforward: riduzione RMSE ~30\%, settling time < 2s
-        \end{itemize}
-    \end{block}
-
-    \begin{block}{Integrazione Tecnologie}
-        \begin{itemize}
-            \item FAST-LIO 2 (iEKF + ikd-Tree) per SLAM > 100 Hz
-            \item CANopen CiA 402 per controllo deterministic motori (PDO, heartbeat)
-        \end{itemize}
-    \end{block}
+    \frametitle{Conclusioni}
 \end{frame}
-
+\begin{frame}
+    \frametitle{Stato Attuale}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \begin{itemize}
+                \item Libreria di comunicazione con adattatore USB-CAN-A ampiamente testata.
+                \item Architettura software definita e parzialmente implementata.
+                      \begin{itemize}
+                          \item Mancanti: Nodi ROS2 per generazione traiettorie e invio comandi.
+                      \end{itemize}
+                \item Acquisto di tutto l'hardware elencato completato, in attesa di messa in opera.
+                      \begin{itemize}
+                          \item I test di comunicazione con gli inverter sono stati effettuati su un banco di prova.
+                      \end{itemize}
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.4\textwidth]{img/banco_prova.jpeg}
+                \caption{Banco di test per una motoruota.}
+            \end{figure}
+            \vspace{-1cm}
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.55\textwidth]{img/carrello.jpeg}
+                \caption{Carrello e lamiere}
+            \end{figure}
+        \end{column}
+    \end{columns}
+\end{frame}
 \begin{frame}
     \frametitle{Sviluppi Futuri}
     \begin{enumerate}
         \item \textbf{Implementazione Software}
               \begin{itemize}
-                  \item Integrazione ROS 2 per architettura modulare
-                  \item Deployment algoritmo FAST-LIO 2 su LattePanda Sigma
-                  \item Interfaccia CANopen per controllo motori in tempo reale
+                  \item Integrazione stack software completo su robot fisico,
+                  \item Assemblaggio e cablaggio dei componenti hardware.
               \end{itemize}
 
         \item \textbf{Validazione Sperimentale}
               \begin{itemize}
-                  \item Test su campo presso stabilimento Daikin Ariccia
-                  \item Misurazione prestazioni: precisione tracking, autonomia, affidabilità
-                  \item Ottimizzazione parametri controllo su dati reali
+                  \item Test su campo presso stabilimento Daikin Ariccia,
+                  \item Misurazione prestazioni: precisione tracking, autonomia, affidabilità,
+                  \item Ottimizzazione parametri controllo su dati reali,
               \end{itemize}
 
         \item \textbf{Estensioni}
               \begin{itemize}
-                  \item Fleet management per coordinamento multi-robot
-                  \item Integrazione con MES aziendale per pianificazione trasporti
-                  \item Sensori addizionali: telecamere RGB-D, safety laser scanner
+                  \item Fleet management per coordinamento multi-robot,
+                  \item Integrazione con MES aziendale per pianificazione trasporti,
+                  \item Sensori addizionali: telecamere RGB-D, safety laser scanner.
+                  \item Test di altri modelli cinematici e/o dinamici e architetture di controllo avanzate.
               \end{itemize}
     \end{enumerate}
 \end{frame}
 \begin{frame}
-    \frametitle{Conclusioni e Sviluppi Futuri}
-    \begin{columns}
-        \column{0.5\textwidth}
-        \begin{block}{Stato Attuale}
-            \begin{itemize}
-                \item Definizione requisiti e componenti completata.
-                \item Analisi cinematica e scelta algoritmi (FAST-LIO 2) effettuata.
-                \item Acquisizione hardware in corso.
-            \end{itemize}
-        \end{block}
-
-        \column{0.5\textwidth}
-        \begin{block}{Prossimi Passi}
-            \begin{enumerate}
-                \item \textbf{Assemblaggio}: Costruzione telaio e cablaggio elettrico.
-                \item \textbf{Integrazione Software}: Setup ROS 2 e driver CANopen.
-                \item \textbf{Test in Campo}:
-                \begin{itemize}
-                    \item Mapping dello stabilimento di Ariccia.
-                    \item Test di navigazione con ostacoli dinamici.
-                \end{itemize}
-                \item \textbf{Integrazione WMS}: Interfacciamento con gestionale di magazzino.
-            \end{enumerate}
-        \end{block}
-    \end{columns}
+    \frametitle{Grazie per l'attenzione!}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.4\textwidth]{img/3/mockup_agv.jpeg}
+    \end{figure}
 \end{frame}

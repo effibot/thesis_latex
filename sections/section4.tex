@@ -8,27 +8,28 @@
     \vspace{0.3cm}
 
     \textbf{Equazioni Cinematiche}
-    \begin{equation*}
+    \begin{equation}
         \begin{cases}
             \dot{x}      = v \cos(\theta+\beta) \\
             \dot{y}      = v \sin(\theta+\beta) \\
             \dot{\theta} = \frac{v\cos(\beta)}{l_f+l_r}\left(\tan(\delta_f)-\tan(\delta_r)\right)
         \end{cases}
-    \end{equation*}
+    \end{equation}
 
     dove:
-    \begin{align*}
+    \begin{align}
         v     & =  \frac{r(\omega_f \cos\delta_f + \omega_r \cos\delta_r)}{2\cos(\beta)}                                    \\
         \beta & =  \tan^{-1}\left(\frac{l_f \tan(\delta_r) + l_r \tan(\delta_f)}{l_f + l_r}\right) \quad \text{(side-slip)}
-    \end{align*}
+    \end{align}
 
     \vspace{0.2cm}
 \end{frame}
 \begin{frame}
+    \frametitle{Modello a Biciclo Sterzante: Osservazioni}
     \begin{block}{Vantaggi}
         \begin{itemize}
-            \item Testato in letteratura.
-            \item Modello dinamico disponibile e controllato con successo con LQR.
+            \item Testato in letteratura\footnote{Tourajizadeh et al., ``Modeling and Optimal Control of 4 Wheel Steering Vehicle Using LQR'', 2020; De Luca et al., ``Feedback Control of a Nonholonomic Car-like Robot'', 1998}.
+            \item Modello dinamico studiato (controllabile con LQR).
         \end{itemize}
     \end{block}
     \begin{alertblock}{Svantaggi: Singolarità}
@@ -46,12 +47,12 @@
     \vspace{0.2cm}
 
     Velocità punto contatto ruota nel body frame:
-    \begin{equation*}
+    \begin{equation}
         \mathbf{v}_i^b = \begin{bmatrix}
             \dot{x}_c \mp \dot{\theta}\frac{W}{2} \\
             \dot{y}_c \pm \dot{\theta}\frac{L}{2}
         \end{bmatrix}
-    \end{equation*}
+    \end{equation}
 
     \textbf{Versori}: normale $\mathbf{n}_i = \begin{bmatrix}
             -\sin(\delta_i) \\
@@ -62,16 +63,16 @@
         \end{bmatrix}$
 
     \textbf{Condizione di non slittamento}: $\mathbf{n}_i^T \mathbf{v}_i^b = 0$
-    \begin{equation*}
+    \begin{equation}
         -\sin(\delta_i)\left(\dot{x}_c \mp \dot{\theta}\frac{W}{2}\right) + \cos(\delta_i)\left(\dot{y}_c \pm \dot{\theta}\frac{L}{2}\right) = 0
-    \end{equation*}
+    \end{equation}
 
     \vspace{0.1cm}
 
     \textbf{Vincolo di puro rotolamento}: $\mathbf{u}_i^T \mathbf{v}_i^b = r\omega_i$
-    \begin{equation*}
+    \begin{equation}
         \cos(\delta_i)\left(\dot{x}_c \mp \dot{\theta}\frac{W}{2}\right) + \sin(\delta_i)\left(\dot{y}_c \pm \dot{\theta}\frac{L}{2}\right) = r\omega_i
-    \end{equation*}
+    \end{equation}
 
     \vspace{0.2cm}
 
@@ -82,12 +83,12 @@
     \frametitle{Cinematica Diretta: Matrice dei Vincoli Estesa}
     \textbf{Sistema sovradeterminato} (4 equazioni, 3 incognite):
 
-    \begin{equation*}
+    \begin{equation}
         \mathbf{A}_{ext}^T \dot{\mathbf{q}} = \mathbf{b}
-    \end{equation*}
+    \end{equation}
 
     dove:
-    \begin{equation*}
+    \begin{equation}
         \mathbf{A}_{ext}^T = \begin{bmatrix}
             -\sin(\delta_f) & \cos(\delta_f) & \frac{W}{2}\sin(\delta_f) - \frac{L}{2}\cos(\delta_f)  \\
             -\sin(\delta_r) & \cos(\delta_r) & -\frac{W}{2}\sin(\delta_r) + \frac{L}{2}\cos(\delta_r) \\
@@ -98,19 +99,19 @@
         \mathbf{b} = \begin{bmatrix}
             0 \\ 0 \\ r\omega_f \\ r\omega_r
         \end{bmatrix}
-    \end{equation*}
+    \end{equation}
 
     \textbf{Soluzione ai minimi quadrati} (pseudoinversa di Moore-Penrose):
-    \begin{equation*}
+    \begin{equation}
         \dot{\mathbf{q}} = \mathbf{A}_{ext}^\dagger \mathbf{b} = \left(\mathbf{A}_{ext}^T \mathbf{A}_{ext}\right)^{-1} \mathbf{A}_{ext}^T \mathbf{b}
-    \end{equation*}
+    \end{equation}
 \end{frame}
 
 \begin{frame}
     \frametitle{Cinematica Diretta: Forma Compatta}
     \textbf{Soluzione finale} nel body frame:
 
-    \begin{equation*}
+    \begin{equation}
         \begin{bmatrix}
             \dot{x}_c \\ \dot{y}_c \\ \dot{\theta}
         \end{bmatrix}
@@ -123,27 +124,27 @@
         \begin{bmatrix}
             \omega_f \\ \omega_r
         \end{bmatrix}
-    \end{equation*}
+    \end{equation}
 
     dove i coefficienti $a_{13}$, $a_{23}$ dipendono da $\delta_f$, $\delta_r$, $L$, $W$:
-    \begin{align*}
+    \begin{align}
         a_{13} & = \frac{2(L\sin(\delta_f) - W\cos(\delta_f))}{L^2 + W^2} \\
         a_{23} & = \frac{2(W\cos(\delta_r) - L\sin(\delta_r))}{L^2 + W^2}
-    \end{align*}
+    \end{align}
 \end{frame}
 \begin{frame}
+    \frametitle{Modello a Doppia Ruota Sterzante}
     \begin{block}{Vantaggi}
         \begin{itemize}
-            \item Trasformabile facilmente in frame globale e viceversa (pre-mnoltiplicando $R(\theta)$/$R^T(\theta)$)
             \item \textbf{Nessuna singolarità cinematica} per qualsiasi $\delta_f, \delta_r$ (Pseudoinversa mai singolare)
             \item Gestisce \textbf{crab} ($\dot{x}_c=0$, $\dot{y}_c\neq0$) e \textbf{spin} ($\dot{x}_c=\dot{y}_c=0$, $\dot{\theta}\neq0$)
         \end{itemize}
     \end{block}
     \begin{alertblock}{Svantaggi}
         \begin{itemize}
-            \item No modellazione dinamica (forze, inerzie)
-            \item No modellazione ruote libere
-            \item Soluzione ai minimi quadrati: possibilità di rompere vincoli non-olonomi
+            \item No modellazione dinamica (forze, inerzie).
+            \item No modellazione ruote libere.
+            \item Soluzione ai minimi quadrati: possibilità di violare vincoli non-olonomi.
         \end{itemize}
     \end{alertblock}
 \end{frame}
@@ -175,7 +176,7 @@
         \dot{\theta} R_i = r\omega_i \quad \Rightarrow \quad R_r \omega_f = R_f \omega_r
     \end{equation}
 
-    \small{Caso $\delta_f \parallel \delta_r$: ICR $\to \infty$, traslazione pura con $\omega_f = \omega_r$}
+    \small{Caso $\delta_f= \delta_r$: ICR $\to \infty$, traslazione pura con $\omega_f = \omega_r$}
 \end{frame}
 
 \begin{frame}
@@ -309,7 +310,7 @@
     \frametitle{Risultati Feedforward: Traiettoria Arc}
     \begin{figure}
         \centering
-        \includegraphics[width=0.85\textwidth]{4/curved_east_to_north_feedforward_bicycle.png}
+        \includegraphics[width=0.8\textwidth]{4/curved_east_to_north_feedforward_bicycle.png}
         \caption{Modello Bicycle - Traiettoria circolare (Feedforward)}
     \end{figure}
 \end{frame}
@@ -318,7 +319,7 @@
     \frametitle{Risultati Feedforward: Traiettoria Arc}
     \begin{figure}
         \centering
-        \includegraphics[width=0.85\textwidth]{4/curved_east_to_north_feedforward_bisteer.png}
+        \includegraphics[width=0.8\textwidth]{4/curved_east_to_north_feedforward_bisteer.png}
         \caption{Modello Bisteer - Traiettoria circolare (Feedforward)}
     \end{figure}
 \end{frame}
@@ -358,7 +359,7 @@
         \begin{itemize}
             \item Bicycle FALLISCE su Crab e Spin (singolarità)
             \item Bisteer gestisce tutte le manovre
-            \item Errori elevati per assenza feedback
+            \item Errori elevati per assenza di feedback
         \end{itemize}
     \end{columns}
 \end{frame}
@@ -408,20 +409,18 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Risultati PID+FF: Traiettoria Arc}
+    \frametitle{Risultati PID+FF: Traiettoria Arc -- Modello Biciclo}
     \begin{figure}
         \centering
-        \includegraphics[width=0.85\textwidth]{4/curved_east_to_north_pid_bicycle.png}
-        \caption{Modello Bicycle - Traiettoria circolare (PID+FF)}
+        \includegraphics[width=\textwidth]{4/curved_east_to_north_pid_bicycle.png}
     \end{figure}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Risultati PID+FF: Traiettoria Arc}
+    \frametitle{Risultati PID+FF: Traiettoria Arc -- Modello Doppio Sterzo}
     \begin{figure}
         \centering
-        \includegraphics[width=0.85\textwidth]{4/curved_east_to_north_pid_bisteer.png}
-        \caption{Modello Bisteer - Traiettoria circolare (PID+FF)}
+        \includegraphics[width=\textwidth]{4/curved_east_to_north_pid_bisteer.png}
     \end{figure}
 \end{frame}
 

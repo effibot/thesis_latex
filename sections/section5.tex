@@ -1,1 +1,106 @@
 \section{Architettura Software e Comunicazione}
+
+\begin{frame}
+    \frametitle{Problema di Integrazione Hardware-Software}
+
+    \textbf{Vincolo Hardware}: Waveshare USB-CAN-A usa \textcolor{red}{protocollo seriale proprietario}
+    \begin{itemize}
+        \item Non compatibile con SocketCAN Linux (e stack \texttt{ros2\_canopen}).
+        \item Aperto e documentato tramite demo ufficiale.
+    \end{itemize}
+
+    \vspace{0.3cm}
+
+    \textbf{Requisito Software}: Integrazione con ROS2 per controllo robot
+    \begin{itemize}
+        \item Per sviluppo algoritmi di navigazione e controllo (es \textit{FastLIO2}, \textit{Nav2}, \textit{teleop}).
+        \item Necessità comunicazione real-time con inverter motori.
+    \end{itemize}
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{img/comm/comm_arch_problem.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Architettura Software: SocketCAN Bridge}
+    \vspace{-2cm}
+    \begin{columns}
+
+        \column{0.6\textwidth}
+        \textbf{Bridge}: Architettura a livelli per integrazione trasparente
+        \begin{enumerate}
+            \item \textbf{ROS2/APP Layer}: Controllo, SLAM, navigazione.
+            \item \textbf{SocketCAN}: Interfaccia CAN nativa kernel Linux.
+            \item \textbf{Bridge Software}: Traduzione bidirezionale tra SocketCAN e Frame Protocol (libreria \texttt{waveshare\_cpp}).
+            \item \textbf{Waveshare USB-CAN-A}: Adattatore USB-CAN.
+            \item \textbf{CAN Bus}: Comunicazione con dispositivi CANopen.
+        \end{enumerate}
+        \column{0.4\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=\textwidth]{img/comm/comm_arch_sol.pdf}
+        \end{figure}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Libreria \texttt{waveshare\_cpp}}
+
+    \textbf{Scopo}: Gestione protocollo proprietario USB-CAN-A (Waveshare) per (de)serializzare frame CAN su USB.
+
+    \vspace{0.4cm}
+
+    \textbf{Funzionalità principali}:
+    \begin{itemize}
+        \item \textbf{Encoding/decoding frame CAN}
+              \begin{itemize}
+                  \item Standard ID (11-bit) ed Extended ID (29-bit).
+                  \item Payload fino a 8 byte per frame.
+              \end{itemize}
+        \item \textbf{Configurazione adapter e interfaccia seriale}
+              \begin{itemize}
+                  \item Baud rate CAN bus (50 kbps -- 1 Mbps).
+                  \item Filtri e maschere per ricezione ID-based.
+              \end{itemize}
+        \item \textbf{Gestione thread-safe}
+              \begin{itemize}
+                  \item Accesso concorrente lettura/scrittura.
+                  \item Sincronizzazione automatica
+              \end{itemize}
+    \end{itemize}
+
+    \vspace{0.4cm}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Bridge USB $\leftrightarrow$ SocketCAN}
+    \begin{itemize}
+        \item Architettura a tre thread:
+              \begin{itemize}
+                  \item \textbf{Thread principale}: Inizializza adapter e socket CAN virtuale, avvia thread di lettura/scrittura.
+                  \item \textbf{Thread di lettura}: Legge dati da USB, decodifica frame Waveshare estraendone i messaggi CAN e li invia alla socket.
+                  \item \textbf{Thread di scrittura}: Riceve frame CAN dalla socket, li codifica in un frame Waveshare e li invia a USB.
+              \end{itemize}
+    \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{img/comm/bridge_scheme.pdf}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Stack Completo di Comunicazione e Controllo}
+    \begin{itemize}
+        \item \textbf{Ref. Generator}: nodo ROS2 per generare riferimenti di velocità e sterzo.
+        \item $C(q, \dot{q},u)$: nodo ROS2 che implementa il controllo del modello cinematico (PID+FF).
+        \item \textbf{Bridge + waveshare\_cpp}: interfaccia tra ROS2 e hardware CANopen.
+        \item \textbf{Driver + Motori}: controllo a basso livello.
+        \item \textbf{LiDAR + SLAM}: mappatura e localizzazione.
+    \end{itemize}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{img/comm/stack_final.pdf}
+    \end{figure}
+\end{frame}

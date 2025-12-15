@@ -173,9 +173,9 @@ Le posizioni delle ruote motrici nel sistema di riferimento locale al robot sono
 \end{align}
 Considerando che le ruote motrici non si possono muovere rispetto al loro punto di montaggio, possiamo dire che la velocità di ogni ruota motrice nel sistema locale sarà data da
 \begin{equation}\label{eq:wheel_vel_general}
-    v_i^b = v_c + \omega \times p_i^b \quad , \quad i \in \{f,r\},
+    v_i^b = v_c^b + \omega \times p_i^b \quad , \quad i \in \{f,r\},
 \end{equation}
-dove $v_c = [\dot{x}_c, \dot{y}_c]^T$ è la velocità lineare del centro del veicolo nel sistema di riferimento locale, e $\omega = [0, 0, \dot{\theta}]^T$ è la velocità angolare del veicolo.
+dove $v_c^b = [\dot{x}_c^b, \dot{y}_c^b,0]^T$ è la velocità lineare del centro del veicolo nel sistema di riferimento locale, e $\omega = [0, 0, \dot{\theta}]^T$ è la velocità angolare del veicolo.
 
 Esplicitando il prodotto vettoriale e considerando che la velocità angolare $\dot{\theta}$ è diretta lungo l'asse verticale
 \begin{equation}\label{eq:cross_product}
@@ -196,15 +196,17 @@ Esplicitando il prodotto vettoriale e considerando che la velocità angolare $\d
 Sostituendo le posizioni delle ruote motrici dalle \cref{eq:pfb,eq:prb}, si ottengono le velocità delle ruote nel sistema di riferimento locale:
 \begin{align}
     v_f^b & = \begin{bmatrix}
-                  \dot{x}_c - \dot{\theta} \frac{W}{2} \\
-                  \dot{y}_c + \dot{\theta} \frac{L}{2}
+                  \dot{x}_c^b - \dot{\theta} \frac{W}{2} \\
+                  \dot{y}_c^b + \dot{\theta} \frac{L}{2} \\
+                  0
               \end{bmatrix}, \label{eq:vfb} \\
     v_r^b & = \begin{bmatrix}
-                  \dot{x}_c + \dot{\theta} \frac{W}{2} \\
-                  \dot{y}_c - \dot{\theta} \frac{L}{2}
+                  \dot{x}_c^b + \dot{\theta} \frac{W}{2} \\
+                  \dot{y}_c^b - \dot{\theta} \frac{L}{2} \\
+                  0
               \end{bmatrix}.\label{eq:vrb}
 \end{align}
-
+Da questo punto in poi, poché il moto si svolge nel piano orizzontale, si considerano solo le componenti $x$ e $y$ delle velocità delle ruote motrici.
 \subsubsection{Vincoli di non slittamento}
 Il primo vincolo fondamentale per un robot mobile è quello di evitare lo slittamento laterale delle ruote. Questo significa che la componente della velocità della ruota perpendicolare alla direzione di avanzamento deve essere nulla. In altri termini, la velocità della ruota deve essere sempre tangente al piano della ruota stessa.
 
@@ -223,8 +225,8 @@ Il vincolo di non slittamento può quindi essere espresso come
 
 Sostituendo le espressioni delle velocità delle ruote dalle \cref{eq:vfb,eq:vrb} e del versore normale dall'\cref{eq:normal_versor}, si ottiene
 \begin{align}
-    -\sin(\delta_f)\left(\dot{x}_c - \dot{\theta} \frac{W}{2}\right) + \cos(\delta_f)\left(\dot{y}_c + \dot{\theta} \frac{L}{2}\right) & = 0, \label{eq:nonslip_f} \\
-    -\sin(\delta_r)\left(\dot{x}_c + \dot{\theta} \frac{W}{2}\right) + \cos(\delta_r)\left(\dot{y}_c - \dot{\theta} \frac{L}{2}\right) & = 0. \label{eq:nonslip_r}
+    -\sin(\delta_f)\left(\dot{x}_c^b - \dot{\theta} \frac{W}{2}\right) + \cos(\delta_f)\left(\dot{y}_c^b + \dot{\theta} \frac{L}{2}\right) & = 0, \label{eq:nonslip_f} \\
+    -\sin(\delta_r)\left(\dot{x}_c^b + \dot{\theta} \frac{W}{2}\right) + \cos(\delta_r)\left(\dot{y}_c^b - \dot{\theta} \frac{L}{2}\right) & = 0. \label{eq:nonslip_r}
 \end{align}
 
 È ora possibile riscrivere questi vincoli in forma matriciale come $A^\top(u)\dot{q} = 0$, dove $\dot{q} = [\dot{x}_c, \dot{y}_c, \dot{\theta}]^T$ è il vettore delle velocità generalizzate nel sistema di riferimento globale. La matrice dei vincoli è data da
@@ -265,8 +267,8 @@ Il vincolo di puro rotolamento diventa quindi
 
 Esplicitando per entrambe le ruote, si ha
 \begin{align}
-    \left(\dot{y}_c + \dot{\theta} \frac{L}{2}\right) \sin(\delta_f) + \left(\dot{x}_c - \dot{\theta} \frac{W}{2}\right) \cos(\delta_f) & = r \omega_f, \label{eq:rolling_f} \\
-    \left(\dot{y}_c - \dot{\theta} \frac{L}{2}\right) \sin(\delta_r) + \left(\dot{x}_c + \dot{\theta} \frac{W}{2}\right) \cos(\delta_r) & = r \omega_r. \label{eq:rolling_r}
+    \left(\dot{y}_c^b + \dot{\theta} \frac{L}{2}\right) \sin(\delta_f) + \left(\dot{x}_c^b - \dot{\theta} \frac{W}{2}\right) \cos(\delta_f) & = r \omega_f, \label{eq:rolling_f} \\
+    \left(\dot{y}_c^b - \dot{\theta} \frac{L}{2}\right) \sin(\delta_r) + \left(\dot{x}_c^b + \dot{\theta} \frac{W}{2}\right) \cos(\delta_r) & = r \omega_r. \label{eq:rolling_r}
 \end{align}
 
 \subsubsection{Matrice estesa dei vincoli}
@@ -407,7 +409,7 @@ dove $s_f$ e $s_r$ sono delle variabili scalari che rappresentano la distanza lu
 \end{equation}
 Risolvendo il sistema di equazioni rispetto a $s_f$ e $s_r$, si hanno
 \begin{align}
-    s_f & =  \frac{(p_{f_x}-p_{r_x})\cos(\delta_r)+(p_{f_y}-p_{r_y})\sin(\delta_r)}{\sin(\delta_f-\delta_r)},\label{eq:sf}   \\
+    s_f & =  \frac{(p_{f_x}-p_{r_x})\cos(\delta_r)+(p_{f_y}-p_{r_y})\sin(\delta_r)}{\sin(\delta_f-\delta_r)},\label{eq:sf}  \\
     s_r & = \frac{(p_{f_x} - p_{r_x})\cos(\delta_f)+(p_{f_y}-p_{r_y})\sin(\delta_f)}{\sin(\delta_f-\delta_r)}.\label{eq:sr}
 \end{align}
 Si può osservare che, poiché in un moto generico il veicolo si muove ruotando attorno all'ICR, il punto di contatto di ciascuna ruota con il suolo deve appartenere ad una circonferenza centrata nell'ICR con raggio pari alla distanza tra tale punto di contatto e l'ICR stesso. Questo implica che, denotando con $R_f$ ed $R_r$ i raggi delle circonferenze per la ruota anteriore e posteriore, si ha che
@@ -942,6 +944,6 @@ L'introduzione del controllore PID in feedback ha portato a miglioramenti signif
 \begin{note}
     Si può notare in \cref{fig:spin_pid_simulation_results} come ci sia un rumore molto evidente nelle velocità del robot, probabilmente dovuti a fenomini di errore numerico, visto che la loro scale è di $10^{-17}$. Questo non influenza però le prestazioni di tracking, che risultano comunque ottimali.
 \end{note}
-In conclusione, l'analisi delle simulazioni in feedback conferma la validità del modello a doppia ruota sterzante sopra a quello del biciclo sterzante per l'applicazione considerata, specialmente a fronte della maggior versatilità. 
+In conclusione, l'analisi delle simulazioni in feedback conferma la validità del modello a doppia ruota sterzante sopra a quello del biciclo sterzante per l'applicazione considerata, specialmente a fronte della maggior versatilità.
 
 Questo implica che, sebbene il modello cinematico descritto da \cite{tourajizadeh2020fourwheel} sia valido per rappresentare il comportamento di veicoli a quattro ruote sterzanti, il modello proposto in questo lavoro offre un'alternativa più semplice e diretta per la modellazione e il controllo di tali veicoli, pur rappresentando una grande approssimazione della realtà.

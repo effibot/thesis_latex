@@ -1,0 +1,103 @@
+\chapter{Conclusioni e sviluppi futuri}
+\label{chap:conclusioni}
+
+Questo lavoro di tesi ha affrontato la progettazione e lo sviluppo di un veicolo autonomo a guida automatica per la movimentazione di materiali all'interno dell'ambiente industriale dello stabilimento Daikin Applied Europe di Ariccia. L'obiettivo principale è stato quello di creare un dimostratore tecnologico economico in grado di validare l'applicabilità di tecnologie robotiche avanzate in un contesto produttivo caratterizzato da layout variabili, ostacoli dinamici e necessità logistiche complesse tipiche della produzione make-to-order.
+
+Il progetto ha coperto tutte le fasi principali dello sviluppo di un sistema robotico mobile: dall'analisi dei requisiti e la selezione dei componenti hardware, alla modellazione cinematica e alla sintesi di leggi di controllo, fino all'implementazione dell'architettura software per la comunicazione e l'integrazione con l'ecosistema ROS 2.
+
+\section{Risultati raggiunti}
+
+I principali risultati conseguiti durante il lavoro di tesi possono essere sintetizzati come segue.
+
+\subsection{Analisi e progettazione del sistema}
+
+È stata condotta un'analisi approfondita dei requisiti per il veicolo autonomo, considerando le specificità dell'ambiente industriale target. Questo ha portato alla definizione di specifiche tecniche dettagliate in termini di capacità di carico (1000 kg), velocità massima (1 m/s), autonomia operativa (4 ore), e manovrabilità (traslazioni rettilinee, curve, rotazioni sul posto, traslazioni laterali).
+
+La selezione dei componenti hardware è stata effettuata con un criterio di ottimizzazione del rapporto costo-prestazioni, privilegiando soluzioni economiche e ampiamente disponibili che mantenessero comunque caratteristiche adeguate per un dimostratore tecnologico. Questo approccio ha permesso di contenere i costi complessivi del progetto pur garantendo funzionalità complete.
+
+\subsection{Modellazione cinematica e controllo}
+
+È stato sviluppato e validato in simulazione un modello cinematico per il veicolo a doppia ruota sterzante indipendente. Il modello è stato confrontato con l'approccio semplificato a biciclo, evidenziando vantaggi e limitazioni di ciascuna soluzione. In particolare, il modello bisteer ha mostrato maggiore accuratezza nella rappresentazione del comportamento reale del veicolo durante manovre complesse come rotazioni sul posto e traslazioni laterali.
+
+Sono state progettate e testate leggi di controllo in retroazione basate su controllori PID con azione feedforward per il tracking di traiettorie. Le simulazioni hanno dimostrato l'efficacia dell'approccio proposto nel garantire inseguimento accurato dei riferimenti di velocità e orientamento.
+
+\subsection{Architettura software e comunicazione}
+
+È stata progettata e implementata un'architettura software modulare per l'integrazione del veicolo con lo stack ROS 2. Il contributo principale in questo ambito riguarda lo sviluppo di una soluzione al problema di incompatibilità tra il protocollo proprietario dell'adattatore USB-CAN utilizzato (Waveshare USB-CAN-A) e l'interfaccia SocketCAN standard richiesta dai pacchetti ROS 2.
+
+La soluzione adottata si basa su un'architettura a tre livelli:
+\begin{itemize}
+    \item Una libreria C++17 (\texttt{waveshare\_cpp}) che implementa la gestione completa del protocollo proprietario, con particolare attenzione alla testabilità tramite dependency injection e alla thread-safety per applicazioni real-time.
+    \item Un bridge software (\texttt{usb\_can\_bridge}) che traduce bidirezionalmente i messaggi tra protocollo Waveshare e SocketCAN, esponendo l'adattatore come se fosse un dispositivo CAN nativo del kernel Linux.
+    \item L'integrazione con lo stack ROS 2, che può utilizzare interfacce standard senza consapevolezza del protocollo sottostante.
+\end{itemize}
+
+Questa architettura garantisce trasparenza, riusabilità e manutenibilità, permettendo inoltre di sostituire facilmente l'hardware di comunicazione senza modifiche al software applicativo.
+
+\subsection{Stato attuale del progetto}
+
+Al termine del lavoro di tesi, il progetto si trova nelle seguenti condizioni:
+
+\begin{itemize}
+    \item \textbf{Software}: la libreria di comunicazione con l'adattatore USB-CAN-A è stata completamente sviluppata e testata con una suite di 132 unit test. L'architettura software è definita e il bridge USB-SocketCAN è implementato e funzionante. Mancano i nodi ROS 2 per la generazione di traiettorie e l'invio di comandi ai motori, che rappresentano lo sviluppo naturale del lavoro svolto.
+
+    \item \textbf{Hardware}: tutto l'hardware necessario (motori brushless, inverter, sensori LiDAR e IMU, batteria, telaio, adattatore USB-CAN) è stato acquistato. Sono stati effettuati test di comunicazione con gli inverter su un banco di prova dedicato per validare il protocollo di comunicazione e verificare il corretto funzionamento dei componenti. Il veicolo è in attesa di assemblaggio finale e messa in opera.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{banco_prova.jpeg}
+        \caption{Banco di prova per test di comunicazione con una motoruota}
+        \label{fig:banco_prova}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{carrello.jpeg}
+        \caption{Telaio del veicolo e componenti strutturali acquistati.}
+        \label{fig:carrello}
+    \end{minipage}
+\end{figure}
+
+\section{Sviluppi futuri}
+
+Il completamento del progetto e la sua evoluzione verso un sistema operativo richiedono ulteriori attività che possono essere raggruppate in tre categorie principali.
+
+\subsection{Implementazione e integrazione}
+
+Il prossimo passo immediato consiste nell'assemblaggio completo del veicolo e nel cablaggio di tutti i componenti hardware. Questo include il montaggio meccanico delle motoruote sul telaio, l'installazione del sistema di alimentazione, il posizionamento dei sensori (LiDAR, IMU) e la realizzazione del cablaggio per la comunicazione CAN e l'alimentazione.
+
+Dal punto di vista software, sarà necessario completare lo stack ROS 2 con i nodi mancanti per la generazione di traiettorie, l'interfacciamento con i driver dei motori tramite protocollo CAN, e l'integrazione degli algoritmi di controllo sviluppati e validati in simulazione. Questo permetterà di chiudere il ciclo di controllo e abilitare la navigazione autonoma del veicolo.
+
+\subsection{Validazione sperimentale}
+
+Una volta completato l'assemblaggio e l'integrazione software, sarà fondamentale condurre una campagna di test su campo presso lo stabilimento Daikin di Ariccia. Questa fase permetterà di:
+
+\begin{itemize}
+    \item Validare il comportamento del veicolo in condizioni reali, confrontando le prestazioni misurate con quelle previste dalle simulazioni.
+    \item Misurare parametri chiave come precisione nel tracking delle traiettorie, autonomia operativa effettiva, affidabilità della comunicazione e robustezza del sistema di localizzazione.
+    \item Ottimizzare i parametri dei controllori sulla base dei dati sperimentali, tenendo conto di effetti non modellati come attriti variabili, deformazioni del telaio, e caratteristiche reali degli attuatori.
+    \item Valutare l'interazione del veicolo con l'ambiente produttivo reale, inclusa la capacità di evitare ostacoli dinamici (operatori, carrelli) e di operare in spazi ristretti tipici dell'ambiente industriale.
+\end{itemize}
+
+\subsection{Estensioni e miglioramenti}
+
+Una volta validato il dimostratore tecnologico, esistono diverse direzioni per l'evoluzione del sistema verso una soluzione industriale completa:
+
+\begin{itemize}
+    \item \textbf{Fleet management}: sviluppo di un sistema di gestione di flotte multi-robot per il coordinamento di più veicoli autonomi operanti contemporaneamente nello stabilimento. Questo richiede algoritmi per la pianificazione delle missioni, la risoluzione di conflitti e deadlock, e l'ottimizzazione delle risorse.
+
+    \item \textbf{Integrazione con sistemi aziendali}: collegamento del sistema di fleet management con il Manufacturing Execution System (MES) e l'Enterprise Resource Planning (ERP) aziendali per automatizzare completamente il processo di movimentazione materiali, dalla richiesta alla consegna, con tracciabilità completa.
+
+    \item \textbf{Sensoristica avanzata}: integrazione di sensori addizionali per migliorare sicurezza e robustezza. Questo include telecamere RGB-D per la percezione tridimensionale dell'ambiente, safety laser scanner certificati per applicazioni industriali, e sensori di prossimità per la rilevazione di ostacoli a bassa quota.
+
+    \item \textbf{Algoritmi di controllo avanzati}: sperimentazione con modelli cinematici alternativi, inclusione di effetti dinamici (inerzia, forze di contatto), e implementazione di architetture di controllo più sofisticate come Model Predictive Control (MPC) per migliorare le prestazioni in termini di precisione e velocità di risposta.
+\end{itemize}
+
+\section{Considerazioni finali}
+
+Il lavoro svolto ha dimostrato la fattibilità tecnica ed economica di sviluppare un veicolo autonomo per applicazioni industriali utilizzando componenti commerciali e soluzioni software open-source. L'approccio metodologico seguito, basato su una chiara separazione tra modellazione, simulazione, implementazione software e validazione hardware, ha permesso di ottenere risultati robusti e facilmente estendibili.
+
+Il progetto rappresenta un primo passo concreto verso l'automazione della logistica interna presso lo stabilimento Daikin, con potenziali benefici in termini di riduzione dei costi operativi, aumento dell'efficienza produttiva, e miglioramento delle condizioni di lavoro degli operatori. Gli sviluppi futuri individuati tracciano una roadmap chiara per la trasformazione del dimostratore in un sistema operativo pronto per l'impiego industriale.

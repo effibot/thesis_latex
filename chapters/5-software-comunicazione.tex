@@ -1,0 +1,363 @@
+\chapter{Architettura software e somunicazione}
+\label{chap:software-comunicazione}
+
+In questo capitolo viene descritta l'architettura software sviluppata per integrare tutto l'hardware caratterizzante il veicolo all'interno dell'ecosistema ROS 2, risolvendo il problema di compatibilità tra il protocollo proprietario dell'adattatore USB-CAN utilizzato e gli standard di comunicazione richiesti: comunicazione con protocollo CANOpen. Dopo aver descritto il problema di integrazione hardware-software, viene presentata la soluzione architetturale adottata, basata su un bridge di traduzione tra protocolli, e ne vengono dettagliate le componenti principali: la libreria di gestione del protocollo Waveshare e il bridge USB-SocketCAN.
+
+\section{Problema di integrazione hardware-software}
+
+Il sistema di controllo del veicolo si basa su una rete CANopen per la gestione degli azionamenti elettrici (motori di trazione e sterzo). Come indicato nella \cref{subsec:waveshare}, al fine di connettere il computer di bordo con i dispositiv CAN è stato scelto un dispositivo economico e ampiamente disponibile che permette di collegare il computer al bus CAN tramite porta USB.
+
+Tuttavia, a differenza della maggior parte degli adattatori USB-CAN professionali (come Peak PCAN-USB o Kvaser), il dispositivo Waveshare non è compatibile con \textbf{SocketCAN}, l'interfaccia CAN nativa del kernel Linux.
+
+\begin{note}
+    SocketCAN è il sottosistema del kernel Linux che implementa i protocolli CAN (Controller Area Network) come interfacce di rete standard. Permette di utilizzare le stesse API socket utilizzate per le comunicazioni di rete (TCP/IP) anche per i dispositivi CAN, garantendo un'interfaccia uniforme e semplificando lo sviluppo di applicazioni.
+\end{note}
+
+L'adattatore Waveshare USB-CAN-A utilizza invece un \textbf{protocollo seriale proprietario}, documentato dal produttore, che incapsula i messaggi CAN in frame seriali con una struttura specifica. Questa scelta, pur mantenendo bassi i costi del dispositivo, introduce una problematica: i messaggi accettati dai driver e dal BMS di batteria sono messaggi CAN il cui contenuto è conforme allo standard applicativo di più alto livello e accettano messaggi conformi a tale standad. Inoltre, in prospettiva di utilizzo di pacchetti ROS 2 esistenti per la gestione di dispositivi CANopen (come \texttt{ros2\_canopen}), o più in generale per l'integrazione di ulteriori dispositivi CAN, è preferibile predisporre un'interfaccia basata su uno standard comune.
+
+I requisiti software per il sistema di controllo del veicolo sono i seguenti.
+\begin{itemize}
+    \item \textbf{Integrazione con ROS 2}: lo stack software del robot si basa su ROS 2 per la gestione dei nodi di controllo, navigazione e localizzazione. Le interfacce usate devono essere compatibili con gli standard del framework per future integrazioni di pacchetti esistenti (come \texttt{Nav2}, \texttt{ros2\_control}).
+    \item \textbf{Accesso SocketCAN}: Lo scambio di messaggi tra lo strato applicativo e l'hardware CAN deve avvenire tramite interfaccia SocketCAN, in modo da poter utilizzare driver e librerie esistenti senza modifiche.
+    \item \textbf{Comunicazione real-time}: il controllo degli azionamenti richiede latenze predicibili e basse (dell'ordine del millisecondo) per garantire prestazioni adeguate.
+    \item \textbf{Affidabilità}: il sistema deve gestire correttamente errori di comunicazione, disconnessioni e stati anomali dei dispositivi.
+\end{itemize}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{comm/comm_arch_problem.pdf}
+    \caption{Rappresentazione del problema di integrazione: l'hardware (motori CAN e adattatore USB) utilizza un protocollo proprietario, mentre lo stack software ROS 2 richiede interfacce SocketCAN standard. È necessario un layer intermedio per colmare questa incompatibilità.}
+    \label{fig:problema_integrazione}
+\end{figure}
+
+La soluzione a questo problema di incompatibilità consiste nell'implementazione di un \textbf{bridge software} che traduca in modo bidirezionale i messaggi tra il protocollo proprietario Waveshare (su porta seriale USB) e il protocollo SocketCAN standard. Questo approccio permette di mantenere l'intero stack software esistente inalterato, esponendo virtualmente l'adattatore Waveshare come se fosse un dispositivo SocketCAN nativo.
+
+\section{Architettura a livelli}
+
+L'architettura software sviluppata si articola su tre livelli principali, ciascuno con responsabilità ben definite:
+
+\begin{enumerate}
+    \item \textbf{Livello Protocollo}: libreria C++ \texttt{waveshare\_cpp} che implementa il protocollo seriale proprietario dell'adattatore Waveshare USB-CAN-A, permettendo di serializzare e deserializzare i frame CAN incapsulati all'interno dei frame Waveshare.
+    \item \textbf{Livello Bridge}: applicazione \texttt{usb\_can\_bridge} che traduce bidirezionalmente tra protocollo Waveshare (porta seriale USB) e SocketCAN (interfaccia virtuale).
+    \item \textbf{Livello Applicazione}: stack ROS 2 con nodi per le operazioni teleoperate, per l'elaborazione dei comandi di controllo, per l'esecuzione dell'algoritmo di SLAM e qualsiasi altra funzionalità di alto livello come un visualizzatore (RViz) o un'interfaccia utente.
+\end{enumerate}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.3\textwidth]{5/comm_arch_sol_crop}
+    \caption{Architettura software a livelli. Il bridge USB-SocketCAN funge da layer di traduzione tra il protocollo proprietario e lo stack applicativo ROS 2, esponendo un'interfaccia SocketCAN virtuale.}
+    \label{fig:architettura_livelli}
+\end{figure}
+
+Questa architettura modulare presenta diversi vantaggi.
+\begin{itemize}
+    \item \textbf{Separazione delle responsabilità}: ogni livello ha un compito specifico e ben definito.
+    \item \textbf{Riusabilità}: la libreria \texttt{waveshare\_cpp} può essere utilizzata in altri progetti che necessitano di interfacciarsi con lo stesso hardware.
+    \item \textbf{Testabilità}: ogni componente può essere testato indipendentemente tramite dependency injection e mock objects.
+    \item \textbf{Manutenibilità}: modifiche a un livello non impattano gli altri, purché le interfacce rimangano compatibili.
+    \item \textbf{Trasparenza}: lo stack applicativo ROS 2 non è consapevole dell'esistenza del protocollo proprietario e utilizza interfacce standard.
+\end{itemize}
+
+Nei paragrafi successivi vengono descritti in dettaglio il protocollo Waveshare, l'implementazione della libreria e del bridge, e infine l'integrazione con lo stack completo di controllo e comunicazione.
+
+\section{Protocollo Waveshare USB-CAN-A}
+\label{sec:protocollo_waveshare}
+
+Il protocollo utilizzato dall'adattatore Waveshare USB-CAN-A è un protocollo seriale proprietario documentato dal produttore. Il protocollo incapsula i messaggi CAN in frame seriali con una struttura definita, permettendo la configurazione del dispositivo e lo scambio di dati CAN su una connessione seriale USB.
+
+\subsection{Caratteristiche del protocollo}
+
+Il protocollo supporta le seguenti funzionalità.
+\begin{itemize}
+    \item \textbf{CAN 2.0A e CAN 2.0B}: supporto sia per identificatori standard a 11 bit (CAN 2.0A) che per identificatori estesi a 29 bit (CAN 2.0B).
+    \item \textbf{Data e Remote frame}: possibilità di inviare sia frame dati che frame remoti (utilizzati per richiedere trasmissione di dati da altri nodi).
+    \item \textbf{Payload fino a 8 byte}: come da specifica CAN, ogni frame può contenere fino a 8 byte di dati.
+    \item \textbf{Configurazione adattatore}: impostazione di baud rate CAN (da 5 kbps a 1 Mbps), modalità operativa (normale, loopback, silent), filtri e maschere per la ricezione selettiva.
+    \item \textbf{Baud rate seriale}: configurazione del baud rate della porta seriale (da 9600 bps a 2 Mbps), indipendente dal baud rate CAN.
+\end{itemize}
+
+Il protocollo definisce tre tipologie di frame, ciascuna con una struttura specifica.
+
+\subsection{Tipologie di frame}
+
+\subsubsection{Fixed Frame}
+
+I \textbf{Fixed Frame} hanno dimensione fissa di 20 byte e sono utilizzati sia per la configurazione dell'adattatore che per lo scambio di messaggi CAN. La struttura di un Fixed Frame per dati CAN è la seguente:
+
+\begin{table}[htbp]
+    \centering
+    \caption{Struttura Fixed Frame (20 byte totali).}
+    \label{tab:fixed_frame}
+    \begin{tabular}{clll}
+        \toprule
+        \textbf{Byte} & \textbf{Campo} & \textbf{Valore}             & \textbf{Descrizione}                  \\
+        \midrule
+        0             & START          & \texttt{0xAA}               & Start of transmission                 \\
+        1             & HEADER         & \texttt{0x55}               & Header del frame                      \\
+        2             & TYPE           & \texttt{0x01}               & Tipo frame (data)                     \\
+        3             & CAN\_VERSION   & \texttt{0x01}/\texttt{0x02} & Standard (11-bit) / Extended (29-bit) \\
+        4             & FORMAT         & \texttt{0x01}/\texttt{0x02} & Data frame / Remote frame             \\
+        5--8          & ID             & 4 byte                      & Identificatore CAN (little-endian)    \\
+        9             & DLC            & 0--8                        & Data Length Code                      \\
+        10--17        & DATA           & 8 byte                      & Payload (con padding se DLC $<$ 8)    \\
+        18            & RESERVED       & \texttt{0x00}               & Riservato                             \\
+        19            & CHECKSUM       & 1 byte                      & Checksum (somma byte 2--18, LSB)      \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Il campo \textbf{DLC} (Data Length Code) indica il numero di byte validi nel campo DATA. Se DLC è inferiore a 8, i byte rimanenti devono essere riempiti con zeri (\textit{padding}). Il \textbf{checksum} è calcolato come la somma di tutti i byte da TYPE (byte 2) a RESERVED (byte 18), considerando solo il byte meno significativo del risultato.
+
+I Fixed Frame sono utilizzati anche per la configurazione del dispositivo, con una struttura leggermente diversa che include campi per il baud rate CAN, i filtri e le maschere di ricezione, e la modalità operativa.
+
+\subsubsection{Variable Frame}
+
+I \textbf{Variable Frame} hanno dimensione variabile (da 5 a 15 byte) e sono utilizzati esclusivamente per lo scambio di messaggi CAN. A differenza dei Fixed Frame, non utilizzano padding e la dimensione del frame si adatta al numero effettivo di byte di dati. La struttura è la seguente:
+
+\begin{table}[htbp]
+    \centering
+    \caption{Struttura Variable Frame (5--15 byte totali).}
+    \label{tab:variable_frame}
+    \begin{tabular}{clll}
+        \toprule
+        \textbf{Byte} & \textbf{Campo} & \textbf{Valore} & \textbf{Descrizione}                \\
+        \midrule
+        0             & START          & \texttt{0xAA}   & Start of transmission               \\
+        1             & TYPE           & Variabile       & Tipo codificato (vedi sotto)        \\
+        2--3 o 2--5   & ID             & 2 o 4 byte      & ID CAN (11 o 29 bit, little-endian) \\
+        $n$ o $n+7$   & DATA           & 0--8 byte       & Payload (senza padding)             \\
+        ultimo        & END            & \texttt{0x55}   & End of transmission                 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Il campo \textbf{TYPE} nei Variable Frame ha una struttura a bit particolare:
+
+\begin{equation}
+    \text{TYPE} = \texttt{0xC0} \;\; | \;\; (\text{IsExtended} \ll 5) \;\; | \;\; (\text{Format} \ll 4) \;\; | \;\; (\text{DLC} \;\&\; \texttt{0x0F})
+\end{equation}
+
+dove:
+\begin{itemize}
+    \item I due bit più significativi sono sempre \texttt{11} (costante \texttt{0xC0}).
+    \item \textbf{IsExtended} (bit 5): indica se l'ID è esteso (29 bit) o standard (11 bit).
+    \item \textbf{Format} (bit 4): indica se è un data frame o remote frame.
+    \item \textbf{DLC} (bit 3--0): numero di byte di dati (0--8).
+\end{itemize}
+
+I Variable Frame sono preferiti per la comunicazione in banda, poiché riducono l'overhead evitando il padding. Non utilizzano checksum, affidandosi ai meccanismi di rilevamento errori del protocollo CAN stesso.
+
+\subsubsection{Config Frame}
+
+I \textbf{Config Frame} hanno dimensione fissa di 20 byte e sono utilizzati esclusivamente per configurare i parametri operativi dell'adattatore USB-CAN. Devono essere inviati prima di iniziare qualsiasi trasmissione di dati CAN. La struttura include campi per:
+
+\begin{itemize}
+    \item \textbf{Baud rate CAN}: valore da \texttt{0x01} a \texttt{0x0C}, corrispondente a velocità da 5 kbps a 1 Mbps.
+    \item \textbf{Filtro e maschera ID}: permettono la ricezione selettiva di messaggi CAN basata sull'identificatore.
+    \item \textbf{Modalità operativa}: normale, loopback, silent (solo ascolto), o silent-loopback.
+    \item \textbf{Ritrasmissione automatica}: abilita o disabilita la ritrasmissione automatica in caso di mancato acknowledge.
+\end{itemize}
+
+La configurazione tipica per il veicolo utilizza modalità normale, baud rate CAN a 1 Mbps, baud rate seriale a 2 Mbps, e ritrasmissione automatica abilitata.
+
+\section{Libreria \texttt{waveshare\_cpp}}
+\label{sec:libreria_waveshare}
+
+La libreria \texttt{waveshare\_cpp} è una libreria C++17 che implementa la gestione completa del protocollo Waveshare descritto nella sezione precedente. La libreria fornisce classi per la costruzione, serializzazione, deserializzazione e validazione dei frame, oltre a un'interfaccia thread-safe per la comunicazione con l'adattatore USB.
+
+\subsection{Architettura della libreria}
+
+La libreria è organizzata secondo un design modulare e orientato agli oggetti, con le seguenti componenti principali.
+
+\begin{itemize}
+    \item \textbf{Classi Frame}: \texttt{FixedFrame}, \texttt{VariableFrame} e \texttt{ConfigFrame} rappresentano i tre tipi di frame del protocollo. Ogni classe implementa metodi per la serializzazione (\texttt{to\_bytes()}) e la deserializzazione (\texttt{from\_bytes()}).
+    \item \textbf{FrameBuilder}: interfaccia fluent per la costruzione type-safe dei frame, con validazione a compile-time dei parametri richiesti.
+    \item \textbf{USBAdapter}: classe che gestisce la comunicazione con la porta seriale, fornendo un'API ad alto livello per l'invio e la ricezione di frame.
+    \item \textbf{Helper classes}: forniscono funzioni di utilità per il calcolo dei checksum, la codifica/decodifica del campo TYPE, e la conversione tra frame Waveshare e strutture \texttt{can\_frame} di SocketCAN.
+    \item \textbf{Interfacce astratte}: \texttt{ISerialPort} e \texttt{ICANSocket} permettono dependency injection per il testing senza hardware reale.
+    \item \textbf{Gestione degli errori}: gerarchia di eccezioni personalizzate per una gestione degli errori robusta e specifica.
+\end{itemize}
+
+\subsection{Costruzione e validazione dei frame}
+
+La costruzione dei frame utilizza il pattern \textit{builder} per garantire che tutti i campi obbligatori siano specificati prima della creazione dell'oggetto. Questo approccio, tipico della programmazione orientata agli oggetti moderna, permette una costruzione type-safe con validazione a compile-time, riducendo la possibilità di errori.
+
+La deserializzazione dei frame ricevuti dalla porta seriale avviene attraverso metodi che validano la struttura (start byte, checksum se presente, end byte) e sollevano eccezioni specifiche in caso di errori di protocollo o corruzione dei dati. Questo meccanismo permette una gestione robusta degli errori a tutti i livelli dello stack software.
+
+\subsection{Gestione della porta seriale}
+
+La classe \texttt{USBAdapter} gestisce la comunicazione con l'adattatore USB attraverso un'implementazione thread-safe basata su tre mutex indipendenti:
+
+\begin{itemize}
+    \item \texttt{state\_mutex\_}: protegge lo stato di configurazione del dispositivo (shared lock per letture concorrenti).
+    \item \texttt{write\_mutex\_}: serializza le operazioni di scrittura sulla porta seriale.
+    \item \texttt{read\_mutex\_}: serializza le operazioni di lettura dalla porta seriale.
+\end{itemize}
+
+Questo design permette operazioni di lettura e scrittura concorrenti, mentre previene deadlock grazie a un ordine di acquisizione gerarchico dei lock.
+
+L'interfaccia di \texttt{USBAdapter} fornisce metodi ad alto livello per:
+\begin{itemize}
+    \item \textbf{Configurazione}: impostazione dei parametri operativi dell'adattatore (baud rate CAN e seriale, modalità operativa, filtri).
+    \item \textbf{Invio frame}: trasmissione di messaggi CAN tramite Fixed o Variable Frame.
+    \item \textbf{Ricezione frame}: ricezione bloccante con timeout configurabile per gestire correttamente i casi in cui non arrivano messaggi.
+\end{itemize}
+
+L'utilizzo tipico prevede l'apertura della porta seriale, l'invio di un Config Frame per configurare l'adattatore, e successivamente l'invio/ricezione continua di frame dati. La configurazione utilizzata per il veicolo prevede baud rate seriale a 2 Mbps, baud rate CAN a 1 Mbps, modalità normale e ritrasmissione automatica abilitata.
+
+\subsection{Conversione tra protocolli}
+
+Una classe helper dedicata fornisce metodi per la conversione bidirezionale tra frame Waveshare e la struttura \texttt{can\_frame} utilizzata da SocketCAN. La conversione gestisce correttamente tutti i flag e le maschere necessarie:
+\begin{itemize}
+    \item Flag di identificatore esteso per distinguere tra ID standard (11 bit) e estesi (29 bit).
+    \item Flag di remote frame per frame che richiedono trasmissione dati da altri nodi.
+    \item Maschere di ID e copia del payload con gestione corretta del DLC.
+\end{itemize}
+
+Questo componente è fondamentale per il bridge, in quanto permette la traduzione trasparente tra i due formati mantenendo intatta tutta l'informazione contenuta nei messaggi CAN.
+
+\subsection{Testing e validazione}
+
+La libreria è progettata secondo principi di testabilità: tutte le dipendenze da hardware (porta seriale, socket CAN) sono iniettate attraverso interfacce astratte. Questo pattern di design, noto come \textit{dependency injection}, permette di sostituire le implementazioni reali con oggetti mock durante i test, consentendo di verificare la logica software senza necessità di hardware fisico.
+
+La suite di test della libreria include 132 unit test che coprono:
+\begin{itemize}
+    \item Serializzazione e deserializzazione di tutti i tipi di frame.
+    \item Validazione dei checksum e gestione degli errori.
+    \item Costruzione dei frame con casi validi e casi limite.
+    \item Conversione tra formati Waveshare e SocketCAN.
+    \item Gestione delle eccezioni e dei timeout.
+\end{itemize}
+
+Tutti i test sono eseguibili senza hardware, garantendo un ciclo di sviluppo rapido e robusto. Questo approccio ha permesso di identificare e correggere numerosi edge case prima del testing sull'hardware reale.
+
+\section{Bridge USB-SocketCAN}
+\label{sec:bridge_usb_socketcan}
+
+Il bridge USB-SocketCAN è un'applicazione standalone che traduce bidirezionalmente i messaggi tra l'adattatore Waveshare (tramite la libreria \texttt{waveshare\_cpp}) e un'interfaccia SocketCAN virtuale. Il bridge permette di esporre l'adattatore USB come se fosse un dispositivo CAN nativo del kernel Linux, garantendo compatibilità con tutte le applicazioni che utilizzano l'API SocketCAN standard.
+
+\subsection{Architettura del bridge}
+
+Il bridge è implementato dalla classe \texttt{SocketCANBridge} e utilizza un'architettura multi-thread con due thread indipendenti per il forwarding bidirezionale:
+
+\begin{itemize}
+    \item \textbf{Thread USB $\to$ SocketCAN}: legge frame dall'adattatore USB (tramite \texttt{USBAdapter}), li converte in strutture \texttt{can\_frame}, e li invia all'interfaccia SocketCAN.
+    \item \textbf{Thread SocketCAN $\to$ USB}: legge frame dall'interfaccia SocketCAN, li converte in \texttt{VariableFrame}, e li invia all'adattatore USB.
+\end{itemize}
+
+I due thread operano in modo completamente indipendente, senza condivisione di risorse e quindi senza necessità di sincronizzazione. Questa architettura \textit{lock-free} riduce la complessità della gestione della concorrenza e facilita la manutenzione del codice.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{comm/bridge_scheme.pdf}
+    \caption{Architettura del bridge USB-SocketCAN. I due thread di forwarding operano indipendentemente, traducendo frame in modo bidirezionale tra protocollo Waveshare e SocketCAN.}
+    \label{fig:bridge_architecture}
+\end{figure}
+
+\subsection{Configurazione del bridge}
+
+La configurazione del bridge avviene attraverso la classe \texttt{BridgeConfig}, che supporta tre modalità di caricamento:
+
+\begin{enumerate}
+    \item \textbf{File JSON}: configurazione da file, utile per configurazioni persistenti.
+    \item \textbf{Variabili d'ambiente}: permette configurazione runtime senza modificare file.
+    \item \textbf{Valori predefiniti}: configurazione di base per testing rapido.
+\end{enumerate}
+
+I parametri configurabili includono:
+\begin{itemize}
+    \item Percorso del device seriale (tipicamente \texttt{/dev/ttyUSB0} in Linux).
+    \item Baud rate della porta seriale (default: 2 Mbps) e del bus CAN (default: 1 Mbps).
+    \item Nome dell'interfaccia SocketCAN virtuale (tipicamente \texttt{vcan0} per testing o \texttt{can0} per produzione).
+    \item Modalità operativa del controller CAN (normale, loopback per test, silent per monitoraggio).
+    \item Abilitazione della ritrasmissione automatica dei frame CAN in caso di errore.
+    \item Timeout per le operazioni di lettura (tipicamente 100 ms).
+\end{itemize}
+
+La configurazione può essere specificata tramite file JSON per persistenza o tramite variabili d'ambiente per flessibilità in fase di deployment.
+
+\subsection{Setup interfaccia virtuale SocketCAN}
+
+Prima di avviare il bridge, è necessario creare e attivare un'interfaccia SocketCAN virtuale nel kernel Linux. Questo processo richiede il caricamento del modulo kernel \texttt{vcan}, la creazione dell'interfaccia virtuale con un nome specifico (tipicamente \texttt{vcan0}), e la sua attivazione.
+
+L'interfaccia virtuale si comporta come un'interfaccia CAN reale ma opera interamente in software, permettendo test e sviluppo senza hardware CAN fisico. Per l'utilizzo in produzione, il bridge si connette a questa interfaccia virtuale e inoltra i messaggi all'adattatore USB fisico, realizzando la traduzione tra i due protocolli in modo trasparente per le applicazioni.
+
+\subsection{Funzionamento del bridge}
+
+Una volta avviato, il bridge esegue le seguenti operazioni:
+
+\begin{enumerate}
+    \item \textbf{Inizializzazione}:
+          \begin{itemize}
+              \item Apertura della porta seriale USB e configurazione tramite \texttt{ConfigFrame}.
+              \item Apertura del socket SocketCAN e binding all'interfaccia virtuale.
+              \item Avvio dei due thread di forwarding.
+          \end{itemize}
+    \item \textbf{Thread USB $\to$ SocketCAN}:
+          \begin{itemize}
+              \item Ciclo continuo di lettura da USB con timeout configurabile.
+              \item Conversione da \texttt{VariableFrame} a \texttt{struct can\_frame}.
+              \item Scrittura sulla socket SocketCAN.
+              \item Aggiornamento statistiche (frame inoltrati, errori).
+          \end{itemize}
+    \item \textbf{Thread SocketCAN $\to$ USB}:
+          \begin{itemize}
+              \item Ciclo continuo di lettura dalla socket SocketCAN con timeout.
+              \item Conversione da \texttt{struct can\_frame} a \texttt{VariableFrame}.
+              \item Scrittura sulla porta USB tramite \texttt{USBAdapter}.
+              \item Aggiornamento statistiche.
+          \end{itemize}
+    \item \textbf{Gestione degli errori}:
+          \begin{itemize}
+              \item Timeout: vengono ignorati e il ciclo riprende (permettono controllo periodico dello stato).
+              \item Errori di I/O: vengono loggati ma non interrompono il bridge.
+              \item Errori critici (device disconnesso): il bridge termina con codice di errore.
+          \end{itemize}
+\end{enumerate}
+
+Il bridge fornisce anche statistiche in tempo reale accessibili tramite callback opzionali:
+\begin{itemize}
+    \item Numero di frame inoltrati in ciascuna direzione.
+    \item Numero di errori e timeout.
+    \item Rate di trasmissione (frame/secondo).
+\end{itemize}
+
+\section{Integrazione con lo stack ROS 2}
+\label{sec:integrazione_ros2}
+
+L'architettura completa del sistema di controllo integra il bridge USB-SocketCAN con lo stack ROS 2 per il controllo del veicolo e l'interfaccia con gli algoritmi di navigazione.
+
+\subsection{Stack completo di comunicazione}
+
+Lo stack software si articola come segue:
+
+\begin{enumerate}
+    \item \textbf{Hardware layer}: motori brushless con inverter CANopen, sensori (LiDAR, IMU), adattatore USB-CAN.
+    \item \textbf{Protocol layer}: libreria \texttt{waveshare\_cpp} per gestione protocollo proprietario.
+    \item \textbf{Bridge layer}: applicazione \texttt{usb\_can\_bridge} per traduzione USB $\leftrightarrow$ SocketCAN.
+    \item \textbf{Communication layer}: interfaccia SocketCAN per l'invio e la ricezione di messaggi CAN dal bus.
+    \item \textbf{Control layer}: nodi ROS 2 per controllo cinematico (PID, feedforward), generazione riferimenti, telemetria.
+    \item \textbf{Navigation layer}: pacchetti per SLAM (\texttt{fast\_lio}), path planning (\texttt{nav2}), mapping.
+\end{enumerate}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{comm/stack_final.pdf}
+    \caption{Stack completo di comunicazione e controllo. Il bridge USB-SocketCAN permette l'integrazione trasparente dell'hardware con lo stack ROS 2 standard.}
+    \label{fig:stack_completo}
+\end{figure}
+
+
+\subsection{Vantaggi dell'architettura}
+
+L'architettura sviluppata presenta i seguenti vantaggi:
+
+\begin{itemize}
+    \item \textbf{Trasparenza}: lo stack ROS 2 non è consapevole del protocollo proprietario e utilizza interfacce standard.
+    \item \textbf{Riusabilità}: il bridge può essere utilizzato con altri dispositivi Waveshare o adattato per protocolli simili.
+    \item \textbf{Flessibilità}: è possibile sostituire l'adattatore Waveshare con dispositivi SocketCAN nativi senza modificare il software applicativo.
+    \item \textbf{Testabilità}: ogni componente può essere testato indipendentemente usando mock e simulatori.
+    \item \textbf{Manutenibilità}: la separazione in layer rende semplici le modifiche e gli aggiornamenti.
+\end{itemize}
+
+In sintesi, l'architettura software sviluppata ha permesso di risolvere efficacemente il problema di integrazione hardware-software, mantenendo elevati standard di qualità del codice e testabilità.

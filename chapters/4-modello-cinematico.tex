@@ -1,85 +1,86 @@
 \chapter{Modello cinematico del robot}
 
-Come accennato nella \cref{sec:sistema_movimentazione}, il veicolo è stato progettato per essere in grado di eseguire sia manovre comuni come avanzamenti in linea retta e curve con orientamento tangenziale all'arco di curva, sia manovre più complesse come rotazioni sul posto e traslazioni laterali. Per raggiungere questo obiettivo, il sistema di movimentazione del robot è stato progettato con due ruote motrici indipendenti e due ruote castor libere di girare attorno al proprio perno verticale, disposte diagonalmente rispetto al centro geometrico del veicolo.
+Come accennato nella \cref{sec:sistema_movimentazione}, il veicolo è stato progettato per essere in grado di eseguire sia manovre comuni come avanzamenti in linea retta e curve con orientamento tangenziale all'arco di curva, sia manovre più complesse come rotazioni sul posto e traslazioni laterali. Per raggiungere questo obiettivo, il sistema di movimentazione del robot è stato progettato con due ruote motrici indipendenti e due ruote caster libere di girare attorno al proprio perno verticale, disposte diagonalmente rispetto al centro geometrico del veicolo.
 
-In \cref{fig:modello_cinematico} mostriamo una rappresentazione schematica del robot con le sole ruote attive, gli angoli di sterzo e le velocità lineari, dove il suo centro geometrico coincide con l'origine degli assi. In \cref{fig:modello_cinematico_2} riportiamo anche il caso generale in cui il veicolo è ad una certa distanza $x_c$ e $y_c$ dall'origine del sistema di riferimento globale.
+In \cref{fig:modello_cinematico} è mostrata una rappresentazione schematica del robot con le sole ruote attive, gli angoli di sterzo e le velocità lineari, dove il suo centro geometrico coincide con l'origine degli assi. In \cref{fig:modello_cinematico_2} si riporta anche il caso generale in cui il veicolo è ad una certa distanza $x_c$ e $y_c$ dall'origine del sistema di riferimento globale.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{4/schema_modello.pdf}
-    \caption{Rappresentazione schematica del modello cinematico del robot.}
+    \caption{Rappresentazione schematica del robot.}
     \label{fig:modello_cinematico}
 \end{figure}
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=\textwidth]{4/schema_modello_2.pdf}
-    \caption{Rappresentazione schematica del modello cinematico del robot in posizione generica.}
+    \caption{Rappresentazione schematica del robot in posizione generica.}
     \label{fig:modello_cinematico_2}
 \end{figure}
-\section{Cinematica Diretta}
+\section{Cinematica diretta}
 L'obiettivo di questa sezione è quello di derivare le equazioni cinematiche che descrivono il moto del veicolo, inteso come vettore di velocità generalizzate $\dot{q} = [\dot{x}, \dot{y}, \dot{\theta}]^T$, in funzione degli input di controllo, ovvero gli angoli di sterzo $\delta_f$, $\delta_r$ e le velocità angolari delle ruote motrici $\omega_f$, $\omega_r$.
 
-Per derivare le equazioni cinematiche del veicolo, facciamo le seguenti ipotesi semplificative:
+Per derivare le equazioni cinematiche del veicolo, facciamo le seguenti ipotesi semplificative.
 \begin{itemize}
     \item Le ruote motrici sono in grado di ruotare attorno al proprio asse verticale per variare l'angolo di sterzo $\delta_i,\, i\in{f,r}$.
     \item Le ruote motrici sono in grado di variare la propria velocità angolare $\omega_i,\, i\in{f,r}$ in modo indipendente.
-    \item Le ruote castor sono libere di ruotare attorno al proprio perno verticale senza attrito.
+    \item Le ruote caster sono libere di ruotare attorno al proprio perno verticale senza attrito.
     \item Le ruote sono perfettamente aderenti al terreno senza slittamenti laterali.
     \item Il veicolo si muove su un piano orizzontale senza pendenze.
-    \item Le dimensioni del veicolo sono note e costanti pari ad $L$ e $W$, con le ruote motrici montate nei punti $ (L/2, W/2) $ e $ (-L/2, -W/2) $ rispetto al centro geometrico. Conseguentemente, lo sfasamento angolare delle ruote rispetto l'asse longitudinale è dato da:
+    \item Le dimensioni del veicolo sono note e costanti pari ad $L$ e $W$, con le ruote motrici montate nei punti $ (L/2, W/2) $ e $ (-L/2, -W/2) $ rispetto al centro geometrico. Conseguentemente, lo sfasamento angolare delle ruote rispetto l'asse longitudinale è dato da
           \begin{equation}\label{eq:alpha}
-              \alpha = \atanyx{W/2}{L/2}
+              \alpha = \atanyx{W/2}{L/2}.
           \end{equation}
     \item Il centro di massa del veicolo coincide con il centro geometrico.
     \item Le forze esterne agenti sul veicolo (es. vento, urti, ecc.) sono trascurabili.
-    \item Le accelerazioni del veicolo sono moderate, permettendo di trascurare gli effetti dinamici complessi come l'inerzia delle ruote e le forze di Coriolis.
+    \item Le accelerazioni del veicolo sono moderate, permettendo di trascurare effetti dinamici complessi come l'inerzia delle ruote e le forze di Coriolis.
     \item Il veicolo è simmetrico rispetto agli assi longitudinale e trasversale.
     \item Le ruote motrici sono identiche tra loro, con lo stesso raggio $r$ e caratteristiche di attrito.
-    \item Il sistema di riferimento globale è inerziale e fisso, mentre il sistema di riferimento locale al robot si muove con esso.
+    \item Il sistema di riferimento \textit{globale} è inerziale e fisso, mentre il sistema di riferimento \textit{locale} al robot si muove con esso.
     \item Si trascurano gli effetti di deformazione delle ruote e del terreno.
     \item Si trascurano differenze legate alle geometrie delle ruote motrici che ne vincolano il montaggio nella realtà e per questo si assume che il verso di rotazione positivo delle ruote motrici sia sempre quello che produce una velocità positiva lungo l'asse longitudinale del veicolo.
 \end{itemize}
 
 Tali ipotesi sono comuni nella letteratura sui robot mobili e permettono di semplificare notevolmente l'analisi del modello cinematico. In particolare, per un robot dotato di quattro ruote indipendenti, tipicamente si considerano le ruote sullo stesso asse (quindi le due anteriori e le due posteriori) come un'unica ruota virtuale per asse, ognuna con un proprio angolo di sterzo e velocità~\cite{tourajizadeh2020fourwheel}. Questo approccio riduce il numero di variabili da considerare e semplifica le equazioni cinematiche del veicolo.
 
-Tuttavia, quando questa semplificazione viene applicata, è importante tenere conto delle possibili differenze di comportamento tra le ruote sullo stesso asse, specialmente durante manove di traslazione laterale (anche dette \textit{crab steering}) o delle rotazioni sul posto. In questi casi, i modelli spesso diventano singolari e richiedono di essere adattati per gestire correttamente tali situazioni.
+Tuttavia, quando questa semplificazione viene applicata, è importante tenere conto delle possibili differenze di comportamento tra le ruote sullo stesso asse, specialmente durante manovre di traslazione laterale (anche dette \textit{crab steering}) o delle rotazioni sul posto. In questi casi, i modelli spesso diventano singolari e richiedono di essere adattati per gestire correttamente tali situazioni.
 
 Per questo motivo, sebbene lo studio iniziale del problema sia stato condotto sul modello descritto in~\cite{tourajizadeh2020fourwheel}, si è deciso di verificare la validità di un modello più generale che invece è ottenuto tramite la trattazione classica delle equazioni di vincolo per i robot mobili~\cite{deluca1998feedback}.
-\subsection{Modello a Biciclo Sterzante}
-Vediamo quindi il modello a biciclo descritto da ~\cite{tourajizadeh2020fourwheel}, dove aggiungiamo la seguenti ipotesi:
+
+\subsection{Modello a biciclo sterzante}
+Al modello a biciclo descritto in~\cite{tourajizadeh2020fourwheel} può essere aggiunta la seguente ipotesi.
 \begin{itemize}
     \item Le ruote motrici sono approssimabili come se fossero montate lungo l'asse longitudinale del veicolo, ovvero, la motoruota anteriore è montata in $ (L/2, 0) $ e la motoruota posteriore in $ (-L/2, 0) $.
-
 \end{itemize}
-le equazioni cinematiche del veicolo sono date da:
+
+Le equazioni cinematiche del veicolo sono date da:
 
 \begin{equation}
     \label{eq:betamodel}
     \begin{cases}
-        \dot{x}      & = v \cos(\theta+\beta)                                                   \\
-        \dot{y}      & = v \sin(\theta+\beta)                                                   \\
-        \dot{\theta} & = \frac{v\cos(\beta)}{l_f+l_r}\left(\tan(\delta_f)-\tan(\delta_r)\right)
+        \dot{x}      & = v \cos(\theta+\beta),                                                   \\
+        \dot{y}      & = v \sin(\theta+\beta),                                                   \\
+        \dot{\theta} & = \frac{v\cos(\beta)}{l_f+l_r}\left(\tan(\delta_f)-\tan(\delta_r)\right),
     \end{cases}
 \end{equation}
 
-dove:
+dove
 \begin{align}
-    v     & =  \frac{v_f \cos(\delta_f) + v_r \cos(\delta_r)}{2\cos(\beta)} \label{eq:v_betamodel}                       \\
-    \beta & =  \tan^{-1}\left(\frac{l_f \tan(\delta_r) + l_r \tan(\delta_f)}{l_f + l_r}\right) \label{eq:beta_betamodel}
+    v     & =  \frac{v_f \cos(\delta_f) + v_r \cos(\delta_r)}{2\cos(\beta)}, \label{eq:v_betamodel}                       \\
+    \beta & =  \tan^{-1}\left(\frac{l_f \tan(\delta_r) + l_r \tan(\delta_f)}{l_f + l_r}\right), \label{eq:beta_betamodel}
 \end{align}
 
-Rappresentano rispettivamente velocità del centro del robot e angolo di \textit{side-slip}, ovvero, l'angolo tra la direzione di avanzamento del veicolo descritta dal vettore velocità e l'asse longitudinale del robot.
+rappresentano rispettivamente velocità del centro del robot e angolo di \textit{side-slip}, ovvero l'angolo tra la direzione di avanzamento del veicolo descritta dal vettore velocità e l'asse longitudinale del robot.
 
-In queste equazioni, $l_f$ e $l_r$ rappresentano rispettivamente la distanza tra il centro del veicolo e l'asse anteriore e posteriore delle ruote motrici, mentre $v_f$ e $v_r$ sono le velocità lineari delle ruote motrici anteriori e posteriori, per cui chiaramente valgono:
+In queste equazioni, $l_f$ e $l_r$ rappresentano rispettivamente la distanza tra il centro del veicolo e l'asse anteriore e posteriore delle ruote motrici, mentre $v_f$ e $v_r$ sono le velocità lineari delle ruote motrici anteriori e posteriori, per cui chiaramente valgono
 \begin{equation}\label{eq:tan_vel}
     v_f = r \omega_f \quad , \quad v_r = r \omega_r
 \end{equation}
 dove $r$ è il raggio delle ruote motrici e $\omega_f$, $\omega_r$ sono le velocità angolari delle ruote motrici anteriori e posteriori.
 
-Si può vedere poi che sostituendo le \cref{eq:v_betamodel,eq:beta_betamodel} nella \cref{eq:betamodel}, si può ottenere un sistema matriciale del tipo $\dot{q} = J(q,u)u$, per mettere in relazione le velocità lineare e angolare del robot ($\dot{q}$) con le velocità angolari delle ruote motrici e gli angoli di sterzo ($u$). In particolare, scrivendo $J(q,u)$ come:
-\begin{equation*}
+Si può vedere poi che sostituendo le \cref{eq:v_betamodel,eq:beta_betamodel} nella \cref{eq:betamodel}, si può ottenere un sistema matriciale del tipo $\dot{q} = J(q,u)u$, per mettere in relazione le velocità generalizzate del robot ($\dot{q}$) con le velocità angolari delle ruote motrici e gli angoli di sterzo ($u$). In particolare, scrivendo $J(q,u)$ come
+\begin{equation}
     J(q,u) = R(\theta)\hat{J}(u)
-\end{equation*}
-dove $R(\theta)$ è la matrice di rotazione tra il sistema di riferimento globale e quello locale al robot descritta da:
+\end{equation}
+dove $R(\theta)$ è la matrice di rotazione tra il sistema di riferimento globale e quello locale al robot descritta da
 \begin{equation}\label{eq:Rtheta}
     R(\theta) = \begin{bmatrix}
         \cos(\theta) & -\sin(\theta) & 0 \\
@@ -87,20 +88,20 @@ dove $R(\theta)$ è la matrice di rotazione tra il sistema di riferimento global
         0            & 0             & 1
     \end{bmatrix}
 \end{equation}
-e $\hat{J}(u)$ è la matrice jacobiana del sistema nel sistema di riferimento locale al robot, data da:
+e $\hat{J}(u)$ è la matrice jacobiana del sistema nel sistema di riferimento locale al robot, data da
 \begin{equation}\label{eq:Jhat}
     \hat{J}(u) = \frac{r}{2}\begin{bmatrix}
         cos(\delta_f)                          & cos(\delta_r)                          \\
         \cos(\delta_f)\tan(\beta)              & \cos(\delta_r)\tan(\beta)              \\
         \frac{\cos(\delta_f)}{l}(\Delta_{tan}) & \frac{\cos(\delta_r)}{l}(\Delta_{tan})
-    \end{bmatrix}
+    \end{bmatrix},
 \end{equation}
-dove abbiamo definito:
+dove
 \begin{align}
-    l            & =  l_f + l_r \label{eq:l}                             \\
-    \Delta_{tan} & =  \tan(\delta_f) - \tan(\delta_r)\label{eq:deltatan}
+    l            & =  l_f + l_r, \label{eq:l}                             \\
+    \Delta_{tan} & =  \tan(\delta_f) - \tan(\delta_r),\label{eq:deltatan}
 \end{align}
-In questo modo, si ottiene una rappresentazione compatta del modello cinematico, che può essere utile per l'implementazione del controllo.
+si ottiene una rappresentazione compatta del modello cinematico, che può essere utile per l'implementazione del controllo.
 \begin{equation}
     \begin{bmatrix}
         \dot{x} \\
@@ -117,44 +118,43 @@ In questo modo, si ottiene una rappresentazione compatta del modello cinematico,
     \begin{bmatrix}
         \omega_f \\
         \omega_r \\
-    \end{bmatrix}
+    \end{bmatrix},
 \end{equation}
 con
 \begin{align}
-    \bar{J}_1    & = \cos(\theta)-\sin(\theta)(\Sigma_{tan}) \label{eq:Jbar1}             \\
-    \bar{J}_2    & = \sin(\theta)+\cos(\theta)(\Sigma_{tan}) \label{eq:Jbar2}             \\
-    \Sigma_{tan} & = \frac{l_r \tan(\delta_f) + l_f \tan(\delta_r)}{l}\label{eq:Sigmatan}
+    \bar{J}_1    & = \cos(\theta)-\sin(\theta)(\Sigma_{tan}), \label{eq:Jbar1}             \\
+    \bar{J}_2    & = \sin(\theta)+\cos(\theta)(\Sigma_{tan}), \label{eq:Jbar2}             \\
+    \Sigma_{tan} & = \frac{l_r \tan(\delta_f) + l_f \tan(\delta_r)}{l}.\label{eq:Sigmatan}
 \end{align}
 Osservando l'\cref{eq:beta_betamodel}, si nota che l'angolo di side-slip $\beta$ si comporta come una media pesata delle tangenti dell'angolo di sterzo. Questo implica che, se uno dei due angoli di sterzo è pari a $\pi/2$, l'angolo di side-slip è infinito e quindi tutto il modello perde di significato.
 
 Analogamente, si può osservare che, per ottenere una rotazione sul posto, sarebbe necessario imporre che le velocità lungo gli assi $x$ e $y$ siano nulle, ma se ciò fosse vero per angoli $\theta$ e $\beta$ tali per cui la loro somma non è un multiplo di $\pi/2$, allora la velocità $v$ dovrebbe essere nulla, il che implicherebbe che entrambe le velocità delle ruote motrici siano nulle, rendendo impossibile la rotazione.
 
 \begin{note}
-    Questo comportamento evidenzia una limitazione del modello a biciclo, che non è in grado di gestire correttamente parte delle manovre che vogliamo richiedere, come le traslazioni laterali e le rotazioni sul posto.
+    Questo comportamento evidenzia una limitazione del modello a biciclo, che non è in grado di gestire correttamente parte delle manovre richieste, come le traslazioni laterali e le rotazioni sul posto.
 \end{note}
 
-\subsection{Modello a Doppia Ruota Sterzante}
+\subsection{Modello a doppia ruota sterzante}
+Il modello proposto di seguito, derivato tramite l'analisi dei vincoli non olonomi del veicolo, è in grado di gestire correttamente tutte le manovre desiderate senza incorrere in singolarità, a patto di risolvere ai minimi quadrati un sistema di equazioni sovradeterminato.
 
-Il modello proposto di seguito, derivato tramite l'analisi dei vincoli non olonomi del veicolo, è in grado di gestire correttamente tutte le manovre desiderate senza incorrere in singolarità, a patto di risolvere ai minimi quadrati un sistema sovradeterminato di equazioni.
-
-Consideriamo quindi lo schema di sistemi di riferimento descritto da \cref{fig:modello_cinematico}, dove per semplicità non sono riportare le ruote castor e viene considerato il robot orientato in modo concorde con l'asse $x$ del sistema di riferimento globale per semplicità.
+Si consideri quindi lo schema di sistemi di riferimento descritto da \cref{fig:modello_cinematico}, dove per semplicità non sono riportare le ruote caster e viene considerato il robot orientato in modo concorde con l'asse $x$ del sistema di riferimento globale.
 \begin{note}
-    Si può osservare che i due sistemi di riferimento possono essere collegati tramite la matrice di rotazione $R(\theta)$ definita in \cref{eq:Rtheta}, pertanto, tutte le equazioni possono essere considerate invarianti rispetto all'orientamento del robot.
+    Si può osservare che i due sistemi di riferimento possono essere collegati tramite la matrice di rotazione $R(\theta)$ definita in \cref{eq:Rtheta}.
 \end{note}
-Oltre alle variabili già definite nel modello a biciclo sterzante, definiamo:
+Oltre alle variabili già definite nel modello a biciclo sterzante, si definiscono
 \begin{itemize}
-    \item $x_c, y_c$ le coordinate del centro del veicolo nel sistema di riferimento globale.
-    \item $\theta$ l'angolo di orientamento del veicolo rispetto l'asse $x$ del sistema di riferimento globale.
-    \item $v_c$ la velocità lineare del centro del veicolo.
-    \item $\dot{\theta}$ la velocità angolare del veicolo attorno all'asse verticale che passa per il centro del veicolo.
-    \item $p_i^b$ la posizione della ruota motrice $i$ nel sistema di riferimento locale al robot, con $i \in \{f,r\}$, dove $b$ sta per \textit{body-frame}.
-    \item $d$ la distanza tra il centro del veicolo e il punto di montaggio delle ruote motrici:
+    \item $x_c, y_c$ le coordinate del centro del veicolo nel sistema di riferimento globale;
+    \item $\theta$ l'angolo di orientamento del veicolo rispetto l'asse $x$ del sistema di riferimento globale;
+    \item $v_c$ la velocità lineare del centro del veicolo nel sistema di riferimento globale;
+    \item $\dot{\theta}$ la velocità angolare del veicolo attorno all'asse verticale che passa per il centro del veicolo;
+    \item $p_i^b$ la posizione della ruota motrice $i$ nel sistema di riferimento locale al veicolo, con $i \in \{f,r\}$;
+    \item $d$ la distanza tra il centro del veicolo e il punto di montaggio delle ruote motrici
           \begin{equation}\label{eq:wheeldist}
-              d = \sqrt{\left(\frac{L}{2}\right)^2 + \left(\frac{W}{2}\right)^2}
+              d = \sqrt{\left(\frac{L}{2}\right)^2 + \left(\frac{W}{2}\right)^2};
           \end{equation}
     \item $\alpha$ l'angolo tra l'asse longitudinale del veicolo e la linea che congiunge il centro del veicolo con il punto di montaggio delle ruote motrici, definito in \cref{eq:alpha}.
 \end{itemize}
-Le posizioni delle ruote motrici nel sistema di riferimento locale al robot sono quindi date da:
+Le posizioni delle ruote motrici nel sistema di riferimento locale al robot sono quindi date da
 \begin{align}
     p_f^b & = d\begin{bmatrix}
                    \cos(\alpha) \\
@@ -162,22 +162,22 @@ Le posizioni delle ruote motrici nel sistema di riferimento locale al robot sono
                \end{bmatrix} = \begin{bmatrix}
                                    \frac{L}{2} \\
                                    \frac{W}{2}
-                               \end{bmatrix}  \label{eq:pfb} \\
+                               \end{bmatrix},  \label{eq:pfb} \\
     p_r^b & = -d\begin{bmatrix}
                     \cos(\alpha) \\
                     \sin(\alpha)
                 \end{bmatrix} = \begin{bmatrix}
                                     -\frac{L}{2} \\
                                     -\frac{W}{2}
-                                \end{bmatrix} \label{eq:prb}
+                                \end{bmatrix}. \label{eq:prb}
 \end{align}
-Considerando che le ruote motrici non si possono muovere rispetto al loro punto di montaggio, possiamo dire che la velocità di ogni ruota motrice sarà data da:
+Considerando che le ruote motrici non si possono muovere rispetto al loro punto di montaggio, possiamo dire che la velocità di ogni ruota motrice nel sistema locale sarà data da
 \begin{equation}\label{eq:wheel_vel_general}
-    v_i^b = v_c + \omega \times p_i^b \quad , \quad i \in \{f,r\}
+    v_i^b = v_c + \omega \times p_i^b \quad , \quad i \in \{f,r\},
 \end{equation}
 dove $v_c = [\dot{x}_c, \dot{y}_c]^T$ è la velocità lineare del centro del veicolo nel sistema di riferimento locale, e $\omega = [0, 0, \dot{\theta}]^T$ è la velocità angolare del veicolo.
 
-Esplicitando il prodotto vettoriale e considerando che la velocità angolare $\dot{\theta}$ è diretta lungo l'asse verticale, otteniamo:
+Esplicitando il prodotto vettoriale e considerando che la velocità angolare $\dot{\theta}$ è diretta lungo l'asse verticale
 \begin{equation}\label{eq:cross_product}
     \omega \times p_i^b = \dot{\theta} \begin{bmatrix}
         0 \\
@@ -191,127 +191,127 @@ Esplicitando il prodotto vettoriale e considerando che la velocità angolare $\d
         -p_{i_y} \\
         p_{i_x}  \\
         0
-    \end{bmatrix}
+    \end{bmatrix}.
 \end{equation}
-Sostituendo le posizioni delle ruote motrici dalle \cref{eq:pfb,eq:prb}, otteniamo le velocità delle ruote nel sistema di riferimento locale:
+Sostituendo le posizioni delle ruote motrici dalle \cref{eq:pfb,eq:prb}, si ottengono le velocità delle ruote nel sistema di riferimento locale:
 \begin{align}
     v_f^b & = \begin{bmatrix}
                   \dot{x}_c - \dot{\theta} \frac{W}{2} \\
                   \dot{y}_c + \dot{\theta} \frac{L}{2}
-              \end{bmatrix} \label{eq:vfb} \\
+              \end{bmatrix}, \label{eq:vfb} \\
     v_r^b & = \begin{bmatrix}
                   \dot{x}_c + \dot{\theta} \frac{W}{2} \\
                   \dot{y}_c - \dot{\theta} \frac{L}{2}
-              \end{bmatrix}\label{eq:vrb}
+              \end{bmatrix}.\label{eq:vrb}
 \end{align}
 
-\subsubsection{Vincoli di Non Slittamento}
+\subsubsection{Vincoli di non slittamento}
 Il primo vincolo fondamentale per un robot mobile è quello di evitare lo slittamento laterale delle ruote. Questo significa che la componente della velocità della ruota perpendicolare alla direzione di avanzamento deve essere nulla. In altri termini, la velocità della ruota deve essere sempre tangente al piano della ruota stessa.
 
-Per esprimere matematicamente questo vincolo, è necessario individuare il versore perpendicolare all'asse di rotazione della ruota. Dato che l'angolo di sterzo $\delta_i$ è definito come l'angolo tra l'asse della ruota e l'asse longitudinale del robot (positivo in senso antiorario), il versore perpendicolare all'asse della ruota nel sistema di riferimento locale è dato da:
+Per esprimere matematicamente questo vincolo, è necessario individuare il versore perpendicolare all'asse di rotazione della ruota. Dato che l'angolo di sterzo $\delta_i$ è definito come l'angolo tra l'asse della ruota e l'asse longitudinale del robot (positivo in senso antiorario), il versore perpendicolare all'asse della ruota nel sistema di riferimento locale è dato da
 \begin{equation}\label{eq:normal_versor}
     n_i = \begin{bmatrix}
         -\sin(\delta_i) \\
         \cos(\delta_i)
-    \end{bmatrix} \quad , \quad i \in \{f,r\}
+    \end{bmatrix} \quad , \quad i \in \{f,r\}.
 \end{equation}
 
-Il vincolo di non slittamento può quindi essere espresso come:
+Il vincolo di non slittamento può quindi essere espresso come
 \begin{equation}\label{eq:nonslip_constraint}
-    n_i^T v_i^b = 0 \quad , \quad i \in \{f,r\}
+    n_i^T v_i^b = 0 \quad , \quad i \in \{f,r\}.
 \end{equation}
 
-Sostituendo le espressioni delle velocità delle ruote dalle \cref{eq:vfb,eq:vrb} e del versore normale dall'\cref{eq:normal_versor}, otteniamo:
+Sostituendo le espressioni delle velocità delle ruote dalle \cref{eq:vfb,eq:vrb} e del versore normale dall'\cref{eq:normal_versor}, si ottiene
 \begin{align}
-    -\sin(\delta_f)\left(\dot{x}_c - \dot{\theta} \frac{W}{2}\right) + \cos(\delta_f)\left(\dot{y}_c + \dot{\theta} \frac{L}{2}\right) & = 0 \label{eq:nonslip_f} \\
-    -\sin(\delta_r)\left(\dot{x}_c + \dot{\theta} \frac{W}{2}\right) + \cos(\delta_r)\left(\dot{y}_c - \dot{\theta} \frac{L}{2}\right) & = 0 \label{eq:nonslip_r}
+    -\sin(\delta_f)\left(\dot{x}_c - \dot{\theta} \frac{W}{2}\right) + \cos(\delta_f)\left(\dot{y}_c + \dot{\theta} \frac{L}{2}\right) & = 0, \label{eq:nonslip_f} \\
+    -\sin(\delta_r)\left(\dot{x}_c + \dot{\theta} \frac{W}{2}\right) + \cos(\delta_r)\left(\dot{y}_c - \dot{\theta} \frac{L}{2}\right) & = 0. \label{eq:nonslip_r}
 \end{align}
 
-Possiamo ora riscrivere questi vincoli in forma matriciale come $A^\top(u)\dot{q} = 0$, dove $q = [\dot{x}_c, \dot{y}_c, \dot{\theta}]^T$ è il vettore di stato delle velocità del centro del robot nel sistema di riferimento locale. La matrice dei vincoli è data da:
+È ora possibile riscrivere questi vincoli in forma matriciale come $A^\top(u)\dot{q} = 0$, dove $\dot{q} = [\dot{x}_c, \dot{y}_c, \dot{\theta}]^T$ è il vettore delle velocità generalizzate nel sistema di riferimento globale. La matrice dei vincoli è data da
 \begin{equation}\label{eq:constraint_matrix}
     A^\top = \begin{bmatrix}
         -\sin(\delta_f) & \cos(\delta_f) & \frac{L}{2}\cos(\delta_f) + \frac{W}{2}\sin(\delta_f)  \\
         -\sin(\delta_r) & \cos(\delta_r) & -\frac{L}{2}\cos(\delta_r) - \frac{W}{2}\sin(\delta_r)
-    \end{bmatrix}
+    \end{bmatrix}.
 \end{equation}
 
 Il rango di questa matrice è sempre 2, ma la forma è $2 \times 3$, il che significa che il sistema ha un grado di libertà. Una soluzione per questo sistema può essere trovata cercando il nucleo di \cref{eq:constraint_matrix} il quale rappresenta l'insieme di tutte le velocità \textbf{istantanee} ammissibili che soddisfano i vincoli di non slittamento:
 
 \begin{equation}
     \label{eq:kerA}
-    \ker(A^\top)=\begin{bmatrix}\frac{L \cos{\left(\delta_{f}{} \right)} \cos{\left(\delta_{r}{} \right)}}{\sin{\left(\delta_{f}{} - \delta_{r}{} \right)}} + \frac{W \sin{\left(\delta_{f}{} + \delta_{r}{} \right)}}{2 \sin{\left(\delta_{f}{} - \delta_{r}{} \right)}}\\\frac{L \sin{\left(\delta_{f}{} + \delta_{r}{} \right)}}{2 \sin{\left(\delta_{f}{} - \delta_{r}{} \right)}} + \frac{W \sin{\left(\delta_{f}{} \right)} \sin{\left(\delta_{r}{} \right)}}{\sin{\left(\delta_{f}{} - \delta_{r}{} \right)}}\\1\end{bmatrix}
+    \ker(A^\top)=\begin{bmatrix}\frac{L \cos{\left(\delta_{f}{} \right)} \cos{\left(\delta_{r}{} \right)}}{\sin{\left(\delta_{f}{} - \delta_{r}{} \right)}} + \frac{W \sin{\left(\delta_{f}{} + \delta_{r}{} \right)}}{2 \sin{\left(\delta_{f}{} - \delta_{r}{} \right)}}\\\frac{L \sin{\left(\delta_{f}{} + \delta_{r}{} \right)}}{2 \sin{\left(\delta_{f}{} - \delta_{r}{} \right)}} + \frac{W \sin{\left(\delta_{f}{} \right)} \sin{\left(\delta_{r}{} \right)}}{\sin{\left(\delta_{f}{} - \delta_{r}{} \right)}}\\1\end{bmatrix}.
 \end{equation}
 
 A questo punto si può ottenere un modello cinematico che descrive le velocità del veicolo moltiplicando le prime due righe di \cref{eq:kerA} per una velocità scalare $v_1$ e la terza riga per una velocità scalare $v_2$, che però non ha un significato fisico diretto.
 
-\subsubsection{Vincoli di Rotolamento Puro}
-Oltre al vincolo di non slittamento, possiamo aggiungere ulteriori vincoli richiedendo che le ruote rotolino senza strisciare. Questo significa che la velocità lineare nel punto di contatto di ciascuna ruota deve essere uguale alla velocità tangenziale dovuta alla rotazione della ruota stessa:
+\subsubsection{Vincoli di puro rotolamento}
+Oltre al vincolo di non slittamento, è possibile aggiungere ulteriori vincoli richiedendo che le ruote rotolino senza strisciare. Questo significa che la velocità lineare nel punto di contatto di ciascuna ruota deve essere uguale alla velocità tangenziale dovuta alla rotazione della ruota stessa:
 \begin{equation}\label{eq:rolling_constraint}
-    v_i = r \omega_i \quad , \quad i \in \{f,r\}
+    v_i = r \omega_i \quad , \quad i \in \{f,r\}.
 \end{equation}
 
-Questa velocità deve essere uguale alla proiezione della velocità della ruota lungo la direzione della ruota stessa. Definiamo quindi il versore tangente alla ruota come:
+Questa velocità deve essere uguale alla proiezione della velocità della ruota lungo la direzione della ruota stessa. Si definisce quindi il versore tangente alla ruota come
 \begin{equation}\label{eq:tangent_versor}
     u_i = \begin{bmatrix}
         \cos(\delta_i) \\
         \sin(\delta_i)
-    \end{bmatrix} \quad , \quad i \in \{f,r\}
+    \end{bmatrix} \quad , \quad i \in \{f,r\}.
 \end{equation}
 
-Il vincolo di rotolamento puro diventa quindi:
+Il vincolo di puro rotolamento diventa quindi
 \begin{equation}\label{eq:rolling_general}
-    v_i^b \cdot u_i = r \omega_i \quad , \quad i \in \{f,r\}
+    v_i^b \cdot u_i = r \omega_i \quad , \quad i \in \{f,r\}.
 \end{equation}
 
-Esplicitando per entrambe le ruote, otteniamo:
+Esplicitando per entrambe le ruote, si ha
 \begin{align}
-    \left(\dot{y}_c + \dot{\theta} \frac{L}{2}\right) \sin(\delta_f) + \left(\dot{x}_c - \dot{\theta} \frac{W}{2}\right) \cos(\delta_f) & = r \omega_f \label{eq:rolling_f} \\
-    \left(\dot{y}_c - \dot{\theta} \frac{L}{2}\right) \sin(\delta_r) + \left(\dot{x}_c + \dot{\theta} \frac{W}{2}\right) \cos(\delta_r) & = r \omega_r \label{eq:rolling_r}
+    \left(\dot{y}_c + \dot{\theta} \frac{L}{2}\right) \sin(\delta_f) + \left(\dot{x}_c - \dot{\theta} \frac{W}{2}\right) \cos(\delta_f) & = r \omega_f, \label{eq:rolling_f} \\
+    \left(\dot{y}_c - \dot{\theta} \frac{L}{2}\right) \sin(\delta_r) + \left(\dot{x}_c + \dot{\theta} \frac{W}{2}\right) \cos(\delta_r) & = r \omega_r. \label{eq:rolling_r}
 \end{align}
 
-\subsubsection{Matrice Estesa dei Vincoli}
-Considerando sia i vincoli di non slittamento che quelli di rotolamento puro insieme, possiamo formare una matrice estesa dei vincoli $A_{ext}^\top$ tale che:
+\subsubsection{Matrice estesa dei vincoli}
+Considerando sia i vincoli di non slittamento che quelli di puro rotolamento, è possibile costruire una matrice estesa dei vincoli $A_{ext}^\top$ tale che
 \begin{equation}\label{eq:extended_constraints}
     A_{ext}^\top \dot{q} = \begin{bmatrix}
         0          \\
         0          \\
         r \omega_f \\
         r \omega_r
-    \end{bmatrix}
+    \end{bmatrix},
 \end{equation}
 
-dove la matrice estesa è:
+dove la matrice estesa è
 \begin{equation}\label{eq:Aext}
     A_{ext}^\top = \begin{bmatrix}
         -\sin(\delta_f) & \cos(\delta_f) & \frac{L}{2}\cos(\delta_f) + \frac{W}{2}\sin(\delta_f)  \\
         -\sin(\delta_r) & \cos(\delta_r) & -\frac{L}{2}\cos(\delta_r) - \frac{W}{2}\sin(\delta_r) \\
         \cos(\delta_f)  & \sin(\delta_f) & \frac{L}{2}\sin(\delta_f) - \frac{W}{2}\cos(\delta_f)  \\
         \cos(\delta_r)  & \sin(\delta_r) & -\frac{L}{2}\sin(\delta_r) + \frac{W}{2}\cos(\delta_r)
-    \end{bmatrix}
+    \end{bmatrix}.
 \end{equation}
 
-Questo è un sistema sovradeterminato di equazioni (4 equazioni in 3 incognite), che in generale non ammette una soluzione esatta. Tuttavia, possiamo trovare una soluzione ai minimi quadrati utilizzando la pseudoinversa di Moore-Penrose. La pseudoinversa è definita come:
+Questo è un sistema di equazioni sovradeterminato (4 equazioni in 3 incognite), che in generale non ammette una soluzione esatta. Tuttavia, se ne può trovare una soluzione ai minimi quadrati utilizzando la pseudoinversa di Moore-Penrose. La pseudoinversa è definita come
 \begin{equation}\label{eq:pseudoinverse}
-    A_{ext}^\dagger = \left(A_{ext}^\top A_{ext}\right)^{-1} A_{ext}^\top
+    A_{ext}^\dagger = \left(A_{ext}^\top A_{ext}\right)^{-1} A_{ext}^\top.
 \end{equation}
 
-Calcolando esplicitamente questa pseudoinversa, otteniamo:
+Calcolando esplicitamente questa pseudoinversa si ha
 \begin{equation}\label{eq:Aext_pinv}
     A_{ext}^\dagger = \begin{bmatrix}
         -\frac{\sin(\delta_f)}{2} & -\frac{\sin(\delta_r)}{2} & \frac{\cos(\delta_f)}{2} & \frac{\cos(\delta_r)}{2} \\
         \frac{\cos(\delta_f)}{2}  & \frac{\cos(\delta_r)}{2}  & \frac{\sin(\delta_f)}{2} & \frac{\sin(\delta_r)}{2} \\
         \frac{a_{13}}{L^2 + W^2}  & \frac{a_{23}}{L^2 + W^2}  & \frac{a_{33}}{L^2 + W^2} & \frac{a_{43}}{L^2 + W^2}
-    \end{bmatrix}
+    \end{bmatrix},
 \end{equation}
-dove abbiamo definito per compattezza:
+dove per compattezza
 \begin{align}
-    a_{13} & =L\cos(\delta_f)+W\sin(\delta_f) \label{eq:a13}                 \\
-    a_{23} & = -L\cos(\delta_r)-W\sin(\delta_r) \label{eq:a23}               \\
-    a_{33} & = L\sin(\delta_f) - W\cos(\delta_f) \label{eq:a33}              \\
-    a_{43} & = -L\sin(\delta_r) + W\cos(\delta_r)             \label{eq:a43}
+    a_{13} & =L\cos(\delta_f)+W\sin(\delta_f), \label{eq:a13}                 \\
+    a_{23} & = -L\cos(\delta_r)-W\sin(\delta_r), \label{eq:a23}               \\
+    a_{33} & = L\sin(\delta_f) - W\cos(\delta_f), \label{eq:a33}              \\
+    a_{43} & = -L\sin(\delta_r) + W\cos(\delta_r).             \label{eq:a43}
 \end{align}
 
-Moltiplicando la pseudoinversa per il termine noto dell'\cref{eq:extended_constraints} e fattorizzando in termini delle velocità angolari delle ruote, otteniamo il modello cinematico diretto nel sistema di riferimento locale:
+Moltiplicando la pseudoinversa per il termine noto dell'\cref{eq:extended_constraints} e fattorizzando in termini delle velocità angolari delle ruote, si ottiene il modello cinematico diretto nel sistema di riferimento locale:
 \begin{equation}\label{eq:forward_kinematics_body}
     \begin{bmatrix}
         \dot{x}_c \\
@@ -324,24 +324,23 @@ Moltiplicando la pseudoinversa per il termine noto dell'\cref{eq:extended_constr
     \end{bmatrix} \begin{bmatrix}
         \omega_f \\
         \omega_r
-    \end{bmatrix}
+    \end{bmatrix}.
 \end{equation}
 
-Questa rappresentazione evidenzia diverse proprietà interessanti:
+Questa rappresentazione evidenzia diverse proprietà interessanti.
 \begin{itemize}
     \item Le velocità lineari $\dot{x}_c$ e $\dot{y}_c$ sono date da una media pesata dei contributi delle due ruote, dove i pesi dipendono dagli angoli di sterzo.
     \item La velocità angolare $\dot{\theta}$ dipende dal momento angolare generato dalle ruote, normalizzato da un'approssimazione del momento d'inerzia del robot ($L^2 + W^2$).
     \item Il modello è non singolare per nessuna configurazione degli angoli di sterzo, permettendo di gestire correttamente tutte le manovre desiderate, incluse le traslazioni laterali e le rotazioni sul posto.
-    \item Permette di descrivere le velocità istantanee nel sistema di riferimento globale semplicemente premoltiplicando la matrice di rotazione $R(-\theta)$.
     \item Non impone in modo rigido una relazione tra le velocità delle ruote motrici e gli angoli di sterzo, permettendo quindi lo slittamento ma minimizzandolo.
 \end{itemize}
 
 \begin{note}
-    Sulla non singolarità, si può vedere che questo è anche dato dal fatto che la matrice $A_{ext}^\top A_{ext}$ è sempre invertibile per ogni configurazione degli angoli di sterzo, il che garantisce l'esistenza della pseudoinversa.
+    Sulla non singolarità, si può vedere che questa è anche data dal fatto che la matrice $A_{ext}^\top A_{ext}$ è sempre invertibile per ogni configurazione degli angoli di sterzo, il che garantisce l'esistenza della pseudoinversa.
 \end{note}
 
-Per quanto riguarda la mobilità che questo modello consente, si può osservare che se si impone $\delta_f = \delta_r = \gamma$ con $\omega_f = \omega_r = \hat{\omega}$ si ottiene che:
-\begin{equation*}
+Per quanto riguarda la mobilità che questo modello consente, si può osservare che se si impone $\delta_f = \delta_r = \gamma$ con $\omega_f = \omega_r = \hat{\omega}$ si ottiene che
+\begin{equation}
     \begin{bmatrix}
         \dot{x}^b \\
         \dot{y}^b \\
@@ -351,12 +350,12 @@ Per quanto riguarda la mobilità che questo modello consente, si può osservare 
         \frac{r \cos{\left(\gamma \right)}}{2}                               & \frac{r \cos{\left(\gamma \right)}}{2}                                                             \\
         \frac{r \sin{\left(\gamma \right)}}{2}                               & \frac{r \sin{\left(\gamma \right)}}{2}                                                             \\
         \frac{r \left(L \sin(\gamma) - W \cos(\gamma)\right)}{L^{2} + W^{2}} & \frac{r \left(- L \sin{\left(\gamma \right)} + W \cos{\left(\gamma \right)}\right)}{L^{2} + W^{2}}\end{bmatrix}
-    \begin{bmatrix}\hat{\omega}\\\hat{\omega}\end{bmatrix} = \left[\begin{matrix}r \hat{\omega} \cos{\left(\gamma \right)}\\r \hat{\omega} \sin{\left(\gamma \right)}\\0\end{matrix}\right]
-\end{equation*}
-Che corrisponde ad una traslazione pura nella direzione definita dall'angolo di sterzo $\gamma$. Questo implica che, per $\gamma=\pm \pi/2$, si può effettuare una manovra di \textit{parcheggio parallelo} senza problemi di singolarità; mentre per $\gamma = 0$ o $\pi$ si ottiene una traslazione avanti o indietro.
+    \begin{bmatrix}\hat{\omega}\\\hat{\omega}\end{bmatrix} = \left[\begin{matrix}r \hat{\omega} \cos{\left(\gamma \right)}\\r \hat{\omega} \sin{\left(\gamma \right)}\\0\end{matrix}\right],
+\end{equation}
+che corrisponde ad una traslazione pura nella direzione definita dall'angolo di sterzo $\gamma$. Questo implica che, per $\gamma=\pm \pi/2$, si può effettuare una manovra di \textit{parcheggio parallelo} senza problemi di singolarità, mentre per $\gamma = 0$ o $\pi$ si ottiene una traslazione avanti o indietro.
 
-Invece, per ottenere una rotazione sul posto, si può imporre $\delta_f = \alpha+\pi/2$ e $\delta_r = \delta_f + \pi$, con $\omega_f = \omega_r = \hat{\omega}$, ottenendo:
-\begin{equation*}
+Invece, per ottenere una rotazione sul posto, si può imporre $\delta_f = \alpha+\pi/2$ e $\delta_r = \delta_f + \pi$, con $\omega_f = \omega_r = \hat{\omega}$, ottenendo
+\begin{equation}
     \begin{bmatrix}
         \dot{x}^b \\
         \dot{y}^b \\
@@ -365,9 +364,10 @@ Invece, per ottenere una rotazione sul posto, si può imporre $\delta_f = \alpha
     \begin{bmatrix}- \frac{r \sin{\left(\alpha \right)}}{2} & \frac{r \sin{\left(\alpha \right)}}{2}\\\frac{r \cos{\left(\alpha \right)}}{2} & - \frac{r \cos{\left(\alpha \right)}}{2}\\\frac{r \left(L \cos{\left(\alpha \right)} + W \sin{\left(\alpha \right)}\right)}{L^{2} + W^{2}} & \frac{r \left(L \cos{\left(\alpha \right)} + W \sin{\left(\alpha \right)}\right)}{L^{2} + W^{2}}\end{bmatrix}
     \begin{bmatrix}\hat{\omega}\\\hat{\omega}\end{bmatrix} =
     \begin{bmatrix}0 \\0\\\frac{2 r \left(L \cos{\left(\alpha \right)} + W \sin{\left(\alpha \right)}\right)}{L^{2} + W^{2}} \hat{\omega}
-    \end{bmatrix}
-\end{equation*}
-Che corrisponde ad una rotazione pura attorno al centro del veicolo.
+    \end{bmatrix},
+\end{equation}
+che corrisponde ad una rotazione pura attorno al centro del veicolo.
+
 \section{Cinematica Inversa}
 L'obiettivo è ora quello di derivare le espressioni per calcolare gli input di controllo necessari per ottenere una data velocità del veicolo, ovvero, dato un vettore di velocità desiderate $\dot{q}_d = [\dot{x}_d, \dot{y}_d, \dot{\theta}_d]^T$, vogliamo calcolare i valori degli angoli di sterzo $\delta_f$, $\delta_r$ e delle velocità angolari delle ruote motrici $\omega_f$, $\omega_r$ che permettono di ottenere tali velocità.
 

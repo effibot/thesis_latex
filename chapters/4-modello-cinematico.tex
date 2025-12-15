@@ -43,7 +43,7 @@ Tali ipotesi sono comuni nella letteratura sui robot mobili e permettono di semp
 
 Tuttavia, quando questa semplificazione viene applicata, è importante tenere conto delle possibili differenze di comportamento tra le ruote sullo stesso asse, specialmente durante manovre di traslazione laterale (anche dette \textit{crab steering}) o delle rotazioni sul posto. In questi casi, i modelli spesso diventano singolari e richiedono di essere adattati per gestire correttamente tali situazioni.
 
-Per questo motivo, sebbene lo studio iniziale del problema sia stato condotto sul modello descritto in~\cite{tourajizadeh2020fourwheel}, si è deciso di verificare la validità di un modello più generale che invece è ottenuto tramite la trattazione classica delle equazioni di vincolo per i robot mobili~\cite{deluca1998feedback}.
+Per questo motivo, sebbene lo studio iniziale del problema sia stato condotto sul modello descritto in~\cite{tourajizadeh2020fourwheel}, si è deciso di verificare la validità di un modello più generico che invece è ottenuto tramite la trattazione classica delle equazioni di vincolo per i robot mobili~\cite{deluca1998feedback}.
 
 \subsection{Modello a biciclo sterzante}
 Al modello a biciclo descritto in~\cite{tourajizadeh2020fourwheel} può essere aggiunta la seguente ipotesi.
@@ -368,18 +368,14 @@ Invece, per ottenere una rotazione sul posto, si può imporre $\delta_f = \alpha
 \end{equation}
 che corrisponde ad una rotazione pura attorno al centro del veicolo.
 
-\section{Cinematica Inversa}
-L'obiettivo è ora quello di derivare le espressioni per calcolare gli input di controllo necessari per ottenere una data velocità del veicolo, ovvero, dato un vettore di velocità desiderate $\dot{q}_d = [\dot{x}_d, \dot{y}_d, \dot{\theta}_d]^T$, vogliamo calcolare i valori degli angoli di sterzo $\delta_f$, $\delta_r$ e delle velocità angolari delle ruote motrici $\omega_f$, $\omega_r$ che permettono di ottenere tali velocità.
+\section{Cinematica inversa}
+L'obiettivo è ora quello di derivare le espressioni per calcolare gli ingressi di controllo necessari per ottenere una data velocità generalizzata del veicolo, ovvero, dato un vettore di velocità generalizzate desiderate $\dot{q}_d = [\dot{x}_d, \dot{y}_d, \dot{\theta}_d]^T$, si vogliono calcolare i valori degli angoli di sterzo $\delta_f$, $\delta_r$ e delle velocità angolari delle ruote motrici $\omega_f$, $\omega_r$ che permettono di ottenere tali velocità.
 
-\begin{note}
-    Si può osservare che non è importante se le velocità desiderate sono espresse nel sistema di riferimento globale o locale al robot, poiché la matrice di rotazione $R(\theta)$ è invertibile e può essere utilizzata per convertire le velocità tra i due sistemi di riferimento senza perdita di informazione.
-\end{note}
-
-Possiamo osservare che è possibile derivare delle soluzioni analitiche per entrambi i modelli cinematici descritti, sfruttando delle considerazioni di tipo geometrico basate sul concetto di centro di rotazione istantaneo (ICR), ovvero, il punto attorno al quale il veicolo sta ruotando in un dato istante di tempo.
+Si osservi che è possibile derivare delle soluzioni analitiche per entrambi i modelli cinematici descritti, sfruttando delle considerazioni di tipo geometrico basate sul concetto di centro di rotazione istantaneo (ICR), ovvero, il punto attorno al quale il veicolo sta ruotando in un dato istante di tempo.
 
 L'ICR può essere determinato considerando l'intersezione degli assi di rotazione delle ruote motrici, che sono perpendicolari alla direzione di avanzamento di ciascuna ruota. Per la ruota frontale, l'asse di rotazione è dato dalla retta passante per il punto di montaggio della ruota e con angolo $\delta_f + \pi/2$ rispetto all'asse longitudinale del veicolo. Analogamente, per la ruota posteriore, l'asse di rotazione è dato dalla retta passante per il punto di montaggio della ruota e con angolo $\delta_r + \pi/2$.
 
-Per semplicità mettiamoci nel sistema di riferimento locale al robot. Possiamo quindi scrivere:
+Per semplicità, ci si ponga ora nel sistema di riferimento locale al robot. È possibile scrivere che
 \begin{equation}
     \begin{bmatrix}
         x_{ICR} \\
@@ -392,9 +388,9 @@ Per semplicità mettiamoci nel sistema di riferimento locale al robot. Possiamo 
     p_r^b + s_r \begin{bmatrix}
         \cos(\delta_r + \pi/2) \\
         \sin(\delta_r + \pi/2)
-    \end{bmatrix}
+    \end{bmatrix},
 \end{equation}
-Dove $s_f$ e $s_r$ sono delle variabili scalari che rappresentano la distanza lungo l'asse di rotazione di ciascuna ruota fino all'ICR. Ora, ricordandoci che $\cos(k+\pi/2) = -\sin(k)$ e $\sin(k+\pi/2) = \cos(k)$, possiamo riscrivere le equazioni come:
+dove $s_f$ e $s_r$ sono delle variabili scalari che rappresentano la distanza lungo l'asse di rotazione di ciascuna ruota fino all'ICR. Ora, ricordando che $\cos(k+\pi/2) = -\sin(k)$ e $\sin(k+\pi/2) = \cos(k)$, si possono riscrivere le equazioni come
 \begin{equation}
     \begin{bmatrix}
         x_{ICR} \\
@@ -407,47 +403,47 @@ Dove $s_f$ e $s_r$ sono delle variabili scalari che rappresentano la distanza lu
     p_r^b + s_r \begin{bmatrix}
         -\sin(\delta_r) \\
         \cos(\delta_r)
-    \end{bmatrix}
+    \end{bmatrix}.
 \end{equation}
-Risolvendo il sistema di equazioni rispetto a $s_f$ e $s_r$, otteniamo:
+Risolvendo il sistema di equazioni rispetto a $s_f$ e $s_r$, si hanno
 \begin{align}
-    s_f & =  \frac{(p_{f_x}-p_{r_x})\cos(\delta_r)+(p_{f_y}-p_{r_y})\sin(\delta_r)}{\sin(\delta_f-\delta_r)}\label{eq:sf}   \\
-    s_r & = \frac{(p_{f_x} - p_{r_x})\cos(\delta_f)+(p_{f_y}-p_{r_y})\sin(\delta_f)}{\sin(\delta_f-\delta_r)} \label{eq:sr}
+    s_f & =  \frac{(p_{f_x}-p_{r_x})\cos(\delta_r)+(p_{f_y}-p_{r_y})\sin(\delta_r)}{\sin(\delta_f-\delta_r)},\label{eq:sf}   \\
+    s_r & = \frac{(p_{f_x} - p_{r_x})\cos(\delta_f)+(p_{f_y}-p_{r_y})\sin(\delta_f)}{\sin(\delta_f-\delta_r)}.\label{eq:sr}
 \end{align}
-Si può osservare che, poiché in un moto generale il veicolo si muove ruotando attorno all'ICR, il punto di contatto di ciascuna ruota con il suolo deve appartenere ad una circonferenza centrata nell'ICR con raggio pari alla distanza tra tale punto di contatto e l'ICR stesso. Questo implica che denotando con $R_f$ ed $R_r$ i raggi delle circonferenze per la ruota anteriore e posteriore, si ha che:
+Si può osservare che, poiché in un moto generico il veicolo si muove ruotando attorno all'ICR, il punto di contatto di ciascuna ruota con il suolo deve appartenere ad una circonferenza centrata nell'ICR con raggio pari alla distanza tra tale punto di contatto e l'ICR stesso. Questo implica che, denotando con $R_f$ ed $R_r$ i raggi delle circonferenze per la ruota anteriore e posteriore, si ha che
 \begin{align}
-    R_f & = \sqrt{(x_{ICR}-p_{f_x})^2 + (y_{ICR}-p_{f_y})^2} = |s_f| \label{eq:Rf} \\
-    R_r & = \sqrt{(x_{ICR}-p_{r_x})^2 + (y_{ICR}-p_{r_y})^2} = |s_r| \label{eq:Rr}
+    R_f & = \sqrt{(x_{ICR}-p_{f_x})^2 + (y_{ICR}-p_{f_y})^2} = |s_f|, \label{eq:Rf} \\
+    R_r & = \sqrt{(x_{ICR}-p_{r_x})^2 + (y_{ICR}-p_{r_y})^2} = |s_r|. \label{eq:Rr}
 \end{align}
 Nei casi considerati, si hanno le seguenti configurazioni:
 \begin{itemize}
-    \item \textbf{Modello a Biciclo Sterzante:}
+    \item \textbf{Modello a biciclo sterzante:}
           \begin{align}
-              R_f     & =\sqrt{\frac{(l_{f} + l_{r})^{2} \cos^{2}{(\delta_{r} )}}{\sin^{2}{(\delta_{f} - \delta_{r} )}}} \label{eq:Rf_bicycle}                                            \\
-              R_r     & = \sqrt{\frac{(l_{f} + l_{r})^{2} \cos^{2}{(\delta_{f} )}}{\sin^{2}{(\delta_{f} - \delta_{r} )}}} \label{eq:Rr_bicycle}                                           \\
-              x_{icr} & =- \frac{l_{f} \sin{(\delta_{r} )} \cos{(\delta_{f} )} + l_{r} \sin{(\delta_{f} )} \cos{(\delta_{r} )}}{\sin{(\delta_{f} - \delta_{r} )}} \label{eq:xicr_bicycle} \\
-              y_{icr} & = \frac{(l_{f} + l_{r}) \cos{(\delta_{f} )} \cos{(\delta_{r} )}}{\sin{(\delta_{f} - \delta_{r} )}} \label{eq:yicr_bicycle}
+              R_f     & =\sqrt{\frac{(l_{f} + l_{r})^{2} \cos^{2}{(\delta_{r} )}}{\sin^{2}{(\delta_{f} - \delta_{r} )}}}, \label{eq:Rf_bicycle}                                            \\
+              R_r     & = \sqrt{\frac{(l_{f} + l_{r})^{2} \cos^{2}{(\delta_{f} )}}{\sin^{2}{(\delta_{f} - \delta_{r} )}}}, \label{eq:Rr_bicycle}                                           \\
+              x_{icr} & =- \frac{l_{f} \sin{(\delta_{r} )} \cos{(\delta_{f} )} + l_{r} \sin{(\delta_{f} )} \cos{(\delta_{r} )}}{\sin{(\delta_{f} - \delta_{r} )}}, \label{eq:xicr_bicycle} \\
+              y_{icr} & = \frac{(l_{f} + l_{r}) \cos{(\delta_{f} )} \cos{(\delta_{r} )}}{\sin{(\delta_{f} - \delta_{r} )}}. \label{eq:yicr_bicycle}
           \end{align}
-    \item \textbf{Modello a Doppia Ruota Sterzante:}
+    \item \textbf{Modello a doppia ruota sterzante:}
           \begin{align}
-              R_f     & = \sqrt{\frac{(L \cos{(\delta_{r} )} + W \sin{(\delta_{r} )})^{2}}{\sin^{2}{(\delta_{f} - \delta_{r} )}}} \label{eq:Rf_double}
+              R_f     & = \sqrt{\frac{(L \cos{(\delta_{r} )} + W \sin{(\delta_{r} )})^{2}}{\sin^{2}{(\delta_{f} - \delta_{r} )}}}, \label{eq:Rf_double}
               \\
-              R_r     & =\sqrt{\frac{(L \cos{(\delta_{f} )} + W \sin{(\delta_{f} )})^{2}}{\sin^{2}{(\delta_{f} - \delta_{r} )}}} \label{eq:Rr_double}                          \\
-              x_{icr} & = - \frac{L \sin{(\delta_{f} + \delta_{r} )} + 2 W \sin{(\delta_{f} )} \sin{(\delta_{r} )}}{2 \sin{(\delta_{f} - \delta_{r} )}} \label{eq:xicr_double}
+              R_r     & =\sqrt{\frac{(L \cos{(\delta_{f} )} + W \sin{(\delta_{f} )})^{2}}{\sin^{2}{(\delta_{f} - \delta_{r} )}}}, \label{eq:Rr_double}                          \\
+              x_{icr} & = - \frac{L \sin{(\delta_{f} + \delta_{r} )} + 2 W \sin{(\delta_{f} )} \sin{(\delta_{r} )}}{2 \sin{(\delta_{f} - \delta_{r} )}}, \label{eq:xicr_double}
               \\
-              y_{icr} & = \frac{2 L \cos{(\delta_{f} )} \cos{(\delta_{r} )} + W \sin{(\delta_{f} + \delta_{r} )}}{2 \sin{(\delta_{f} - \delta_{r} )}} \label{eq:yicr_double}
+              y_{icr} & = \frac{2 L \cos{(\delta_{f} )} \cos{(\delta_{r} )} + W \sin{(\delta_{f} + \delta_{r} )}}{2 \sin{(\delta_{f} - \delta_{r} )}}. \label{eq:yicr_double}
           \end{align}
 \end{itemize}
-Ora, osservando che la velocità angolare delle ruote è legata alla velocità angolare del robot tramite la relazione:
+Ora, osservando che la velocità angolare delle ruote è legata alla velocità angolare del robot tramite la relazione
 \begin{equation}\label{eq:omega_relation}
-    \dot{\theta} R_i = r \omega_i \quad , \quad i \in \{f,r\}
+    \dot{\theta} R_i = r \omega_i \quad , \quad i \in \{f,r\},
 \end{equation}
-Si può dedurre di compatibilità tra le velocità desiderate del robot affinché il moto sia fisicamente realizzabile senza slittamento, ovvero, senza che le ruote si allontanino dalla stessa traiettoria circolare definita dall'ICR. Queste condizioni sono date da:
+si può dedurre la \textit{condizione di compatibilità} tra le velocità desiderate del robot affinché il moto sia fisicamente realizzabile senza slittamento, ovvero, senza che le ruote si allontanino dalla stessa traiettoria circolare definita dall'ICR. Questa condizione è data da
 \begin{equation}\label{eq:compatibility_condition}
-    R_r \omega_f = R_f \omega_r
+    R_r \omega_f = R_f \omega_r.
 \end{equation}
 \begin{note}
-    È importante notare che, per costruzione, quando gli angoli di sterzo sono tali per cui le direzioni di avanzamento delle ruote sono parallele, le distanze $R_f$ e $R_r$ tendono all'infinito (portando anche l'ICR all'infinito), rendendo impossibile soddisfare la condizione di compatibilità definita da \cref{eq:compatibility_condition}. Pertanto, in quelle situazioni, l'\cref{eq:compatibility_condition} diventa:
+    È importante notare che, per costruzione, quando gli angoli di sterzo sono tali per cui le direzioni di avanzamento delle ruote sono parallele, le distanze $R_f$ e $R_r$ tendono all'infinito (portando anche l'ICR all'infinito), rendendo impossibile soddisfare la condizione di compatibilità definita dalla \cref{eq:compatibility_condition}. Pertanto, in tali situazioni, l'\cref{eq:compatibility_condition} diventa
     \begin{equation}\label{eq:comp_cond_inf}
         \omega_f = \omega_r
     \end{equation}

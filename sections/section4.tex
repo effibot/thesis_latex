@@ -1,0 +1,184 @@
+% Sezione 4: Modelli Cinematici e Controllo
+\section{Modellazione Cinematica e Controllo}
+
+\begin{frame}
+    \frametitle{Modello a Biciclo Sterzante}
+    \textbf{Semplificazione}: ruote sullo stesso asse $\rightarrow$ ruota virtuale unica
+
+    \vspace{0.3cm}
+
+    \begin{columns}
+        \column{0.5\textwidth}
+        \textbf{Variabili}
+        \begin{itemize}
+            \item Posizione: $(x, y)$
+            \item Orientamento: $\theta$
+            \item Side-slip: $\beta$
+        \end{itemize}
+
+        \textbf{Equazioni}
+        \begin{align*}
+            \dot{x}      & = v \cos(\theta + \beta)  \\
+            \dot{y}      & = v \sin(\theta + \beta)  \\
+            \dot{\theta} & = \frac{v}{l_r} \sin\beta
+        \end{align*}
+
+        \column{0.5\textwidth}
+        \textbf{Side-slip Angle}
+        \begin{equation*}
+            \beta = \tan^{-1}\left(\frac{l_f \tan\delta_r + l_r \tan\delta_f}{l}\right)
+        \end{equation*}
+    \end{columns}
+
+    \vspace{0.3cm}
+
+    \begin{alertblock}{Singolarità}
+        \begin{itemize}
+            \item $\beta \rightarrow \infty$ se $\delta \rightarrow \pi/2$
+            \item Crab/Spin: impossibile con $v = 0$, $\omega \neq 0$
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Modello a Doppia Ruota Sterzante}
+    \textbf{Approccio completo}: vincoli non-olonomi su tutte e 4 le ruote
+
+    \begin{equation*}
+        \underbrace{\begin{bmatrix}
+                -\sin\theta_1 & \cos\theta_1 & l_1    \\
+                -\sin\theta_2 & \cos\theta_2 & l_2    \\
+                \vdots        & \vdots       & \vdots
+            \end{bmatrix}}_{A}
+        \begin{bmatrix}
+            \dot{x} \\ \dot{y} \\ \dot{\theta}
+        \end{bmatrix}
+        =
+        \underbrace{\begin{bmatrix}
+                v_1 \cos\delta_1 \\
+                v_2 \cos\delta_2 \\
+                \vdots
+            \end{bmatrix}}_{b}
+    \end{equation*}
+
+    \textbf{Soluzione ai minimi quadrati}: $\dot{q} = (A^T A)^{-1} A^T b$
+
+    \vspace{0.5cm}
+
+    \begin{block}{Vantaggi}
+        \begin{itemize}
+            \item Gestisce \textbf{tutti i modi di movimento} (traslazione, rotazione, crab)
+            \item Risolve sistema sovradeterminato (4 vincoli, 3 DoF)
+            \item Nessuna singolarità cinematica
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Cinematica Inversa}
+    \textbf{Problema}: dato comando di velocità $(\dot{x}_d, \dot{y}_d, \dot{\theta}_d)$, calcolare velocità/angoli ruote
+
+    \vspace{0.5cm}
+
+    \textbf{Soluzione Bisteer Model}:
+    \begin{itemize}
+        \item Calcolo centro istantaneo di rotazione (ICR)
+        \item Determinazione angoli sterzo ottimali: $\delta_i = \atanyx{y_i - y_{ICR}}{x_i - x_{ICR}}$
+        \item Calcolo velocità ruote: $v_i = \omega \cdot r_i$ (distanza da ICR)
+    \end{itemize}
+
+    \vspace{0.5cm}
+
+    \begin{exampleblock}{Caso Speciale: Rotazione sul Posto}
+        ICR coincidente con centro geometrico veicolo:
+        \begin{equation*}
+            \delta_1 = \atanyx{\frac{W}{2}}{\frac{L}{2}}, \quad \delta_2 = \atanyx{\frac{W}{2}}{-\frac{L}{2}}
+        \end{equation*}
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Traiettorie di Test}
+    \textbf{Setup Simulazione}
+    \begin{itemize}
+        \item Parametri robot: $L = 1.6$ m, $W = 0.8$ m, $r = 0.198$ m
+        \item Tempo simulazione: 10 s
+    \end{itemize}
+
+    \vspace{0.3cm}
+
+    \begin{columns}
+        \column{0.5\textwidth}
+        \textbf{Traiettorie}
+        \begin{enumerate}
+            \item \textbf{Straight}: linea retta $\dot{x} = 0.5$ m/s
+            \item \textbf{Arc}: arco circolare $R = 3$ m
+            \item \textbf{Crab}: traslazione laterale $\dot{y} = 0.3$ m/s
+            \item \textbf{Spin}: rotazione $\omega = 0.2$ rad/s
+        \end{enumerate}
+
+        \column{0.5\textwidth}
+        \textbf{Metriche}
+        \begin{itemize}
+            \item RMSE posizione $(x, y)$
+            \item RMSE orientamento $\theta$
+            \item Confronto Bicycle vs Bisteer
+        \end{itemize}
+    \end{columns}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Risultati Simulazioni - Catena Aperta}
+    \begin{table}
+        \centering
+        \small
+        \begin{tabular}{lccc}
+            \toprule
+            \textbf{Traiettoria} & \textbf{Bicycle RMSE}          & \textbf{Bisteer RMSE} & \textbf{Migliore} \\
+            \midrule
+            Straight             & 0.002 m                        & 0.001 m               & Bisteer           \\
+            Arc                  & 0.015 m                        & 0.008 m               & Bisteer           \\
+            Crab                 & \textcolor{red}{\textbf{FAIL}} & 0.003 m               & Bisteer           \\
+            Spin                 & \textcolor{red}{\textbf{FAIL}} & 0.005 m               & Bisteer           \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+
+    \vspace{0.5cm}
+
+    \begin{block}{Conclusioni}
+        \begin{itemize}
+            \item Modello Bicycle: \textbf{singolarità} su crab e spin
+            \item Modello Bisteer: \textbf{prestazioni superiori} su tutte le manovre
+            \item RMSE posizionale: $<$ 1.5 cm su traiettorie complesse
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Controllo in Feedback}
+    \textbf{Architettura}: PID + Feedforward
+
+    \begin{equation*}
+        u(t) = u_{ff}(t) + K_P e(t) + K_I \int e(\tau) d\tau + K_D \dot{e}(t)
+    \end{equation*}
+
+    \vspace{0.3cm}
+
+    \textbf{Parametri Tuning}
+    \begin{itemize}
+        \item $K_P = 1.5$ (guadagno proporzionale)
+        \item $K_I = 0.3$ (eliminazione errore steady-state)
+        \item $K_D = 0.1$ (smorzamento oscillazioni)
+    \end{itemize}
+
+    \vspace{0.5cm}
+
+    \begin{exampleblock}{Prestazioni}
+        \begin{itemize}
+            \item Riduzione RMSE: $\sim$30\% rispetto a catena aperta
+            \item Compensazione disturbi: deriva sensori, slittamento ruote
+            \item Tempo di assestamento: $<$ 2 s su step reference
+        \end{itemize}
+    \end{exampleblock}
+\end{frame}

@@ -1,0 +1,83 @@
+% Sezione 6: Sviluppi Futuri
+\section{Conclusioni e Sviluppi Futuri}
+
+\begin{frame}
+    \frametitle{Risultati Raggiunti}
+    \begin{block}{Progettazione Completa AMR}
+        \begin{itemize}
+            \item Requisiti: 1000 kg capacità, 1 m/s, 4h autonomia, €15k budget
+            \item Configurazione 2 motorwheels + 2 caster (diagonali)
+            \item Componenti: CFR MRT05, FlashBattery LiFePO4, Livox Mid-360, LattePanda Sigma
+            \item Verifiche energetiche: motori 18\% margine piano, batteria 7.5\% margine
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{Modellazione e Controllo}
+        \begin{itemize}
+            \item Modello Bicycle: singolarità su crab/spin (FAIL)
+            \item Modello Bisteer: vincoli non-olonomi, least-squares, nessuna singolarità
+            \item Simulazioni: RMSE < 1.5 cm su 4 traiettorie (straight, arc, crab, spin)
+            \item PID+Feedforward: riduzione RMSE ~30\%, settling time < 2s
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{Integrazione Tecnologie}
+        \begin{itemize}
+            \item FAST-LIO 2 (iEKF + ikd-Tree) per SLAM > 100 Hz
+            \item CANopen CiA 402 per controllo deterministic motori (PDO, heartbeat)
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Sviluppi Futuri}
+    \begin{enumerate}
+        \item \textbf{Implementazione Software}
+              \begin{itemize}
+                  \item Integrazione ROS 2 per architettura modulare
+                  \item Deployment algoritmo FAST-LIO 2 su LattePanda Sigma
+                  \item Interfaccia CANopen per controllo motori in tempo reale
+              \end{itemize}
+
+        \item \textbf{Validazione Sperimentale}
+              \begin{itemize}
+                  \item Test su campo presso stabilimento Daikin Ariccia
+                  \item Misurazione prestazioni: precisione tracking, autonomia, affidabilità
+                  \item Ottimizzazione parametri controllo su dati reali
+              \end{itemize}
+
+        \item \textbf{Estensioni}
+              \begin{itemize}
+                  \item Fleet management per coordinamento multi-robot
+                  \item Integrazione con MES aziendale per pianificazione trasporti
+                  \item Sensori addizionali: telecamere RGB-D, safety laser scanner
+              \end{itemize}
+    \end{enumerate}
+\end{frame}
+\begin{frame}
+    \frametitle{Conclusioni e Sviluppi Futuri}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \begin{block}{Stato Attuale}
+            \begin{itemize}
+                \item Definizione requisiti e componenti completata.
+                \item Analisi cinematica e scelta algoritmi (FAST-LIO 2) effettuata.
+                \item Acquisizione hardware in corso.
+            \end{itemize}
+        \end{block}
+
+        \column{0.5\textwidth}
+        \begin{block}{Prossimi Passi}
+            \begin{enumerate}
+                \item \textbf{Assemblaggio}: Costruzione telaio e cablaggio elettrico.
+                \item \textbf{Integrazione Software}: Setup ROS 2 e driver CANopen.
+                \item \textbf{Test in Campo}:
+                \begin{itemize}
+                    \item Mapping dello stabilimento di Ariccia.
+                    \item Test di navigazione con ostacoli dinamici.
+                \end{itemize}
+                \item \textbf{Integrazione WMS}: Interfacciamento con gestionale di magazzino.
+            \end{enumerate}
+        \end{block}
+    \end{columns}
+\end{frame}

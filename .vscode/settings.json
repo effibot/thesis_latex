@@ -1,6 +1,5 @@
 {
     "latex-workshop.docker.enabled": false,
-
     "latex-workshop.docker.image.latex": "latex-thesis-env",
     "latex-workshop.latex.outDir": "%DIR%/build",
     "latex-workshop.texcount.command": "${workspaceFolder}/scripts/texcount.sh",
@@ -8,5 +7,48 @@
         "-merge",
         "-brief",
         "%DOC%"
+    ],
+    // Custom recipes for thesis and beamer
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "Thesis (main.tex)",
+            "tools": [
+                "latexmk-thesis"
+            ]
+        },
+        {
+            "name": "Beamer Presentation",
+            "tools": [
+                "latexmk-beamer"
+            ]
+        }
+    ],
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk-thesis",
+            "command": "latexmk",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "-outdir=%OUTDIR%",
+                "main.tex"
+            ],
+            "env": {}
+        },
+        {
+            "name": "latexmk-beamer",
+            "command": "latexmk",
+            "args": [
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-pdf",
+                "-outdir=%OUTDIR%",
+                "beamer_template.tex"
+            ],
+            "env": {}
+        }
     ]
 }

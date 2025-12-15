@@ -1,0 +1,140 @@
+% Sezione 2: Robot Mobili e Algoritmi di Navigazione
+\section{Stato dell'arte: robot mobili, navigazione e protocolli}
+
+% Slide 1: Classificazione
+\begin{frame}
+    \frametitle{Classificazione dei Robot Mobili}
+
+    \begin{block}{AMR vs AGV}
+        \begin{itemize}
+            \item \textbf{AGV}: Percorsi fissi, infrastruttura dedicata, bassa flessibilità.
+            \item \textbf{AMR}: Navigazione autonoma, adattabilità, nessuna infrastruttura.
+        \end{itemize}
+    \end{block}
+
+
+    \textbf{Tipologie di Locomozione}
+    \begin{itemize}
+        \item \textbf{Ruote}: Differential drive, omnidirezionali.
+        \item \textbf{Cingoli}: Terreni irregolari.
+        \item \textbf{Zampe}: Ambienti complessi.
+        \item \textbf{Volanti}: Droni/UAV.
+    \end{itemize}
+
+\end{frame}
+
+% Slide 2: Algoritmi di Navigazione
+\begin{frame}
+    \frametitle{Algoritmi di Navigazione}
+    \begin{columns}
+        \column{0.5\textwidth}
+        \textbf{Path Planning (Globale)}
+        \begin{itemize}
+            \item \textbf{A*}: Ricerca ottima su griglia.
+            \item \textbf{Dijkstra}: Ricerca esaustiva.
+            \item \textbf{RRT}: Esplorazione probabilistica.
+        \end{itemize}
+
+        \column{0.5\textwidth}
+        \textbf{Obstacle Avoidance (Locale)}
+        \begin{itemize}
+            \item \textbf{VFH}: Istogramma polare ostacoli.
+            \item \textbf{DWA}: Ottimizzazione velocità ($v, \omega$).
+            \item \textbf{Potential Fields}: Campi di forze.
+        \end{itemize}
+    \end{columns}
+    \begin{block}{Localizzazione}
+        Tecniche per stimare la posizione del robot nell'ambiente.
+        \begin{itemize}
+            \item \textbf{Odometry}: Basata su encoder e IMU, soggetta a deriva.
+            \item \textbf{Beaconing}: Utilizzo di segnali esterni (es. RFID).
+            \item \textbf{SLAM}: Simultaneous Localization and Mapping.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+% Slide 3: SLAM e FAST-LIO 2
+\begin{frame}
+    \frametitle{SLAM: FAST-LIO 2}
+    \textbf{Problema}: Stimare posa e mappa simultaneamente in assenza di GPS.
+
+    \vspace{0.5cm}
+    \begin{block}{Perché FAST-LIO 2?}
+        Algoritmo LiDAR-Inertial Odometry (LIO) allo stato dell'arte.
+        \begin{itemize}
+            \item \textbf{Robustezza}: Funziona in ambienti spogli (corridoi lunghi) grazie alla \textit{registrazione diretta} (no feature extraction).
+            \item \textbf{Efficienza}: Struttura \textbf{ikd-Tree} per aggiornamento mappa veloce ($>100$ Hz).
+            \item \textbf{Accuratezza}: Fusione sensoriale (tightly-coupled) LiDAR + IMU.
+            \item \textbf{Testato}: Già validato sul sensore acquistato (Livox Mid-360).
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+% Slide 4: Architettura FAST-LIO 2
+\begin{frame}
+    \frametitle{Architettura FAST-LIO 2}
+    \begin{figure}[htbp]
+        \centering
+        \includegraphics[width=\textwidth]{2/fastlio2_block_diagram.png}
+        \caption{Schema semplificato: IMU $\to$ Predizione $\to$ Correzione (LiDAR) $\to$ Mappa.}
+    \end{figure}
+\end{frame}
+
+% Slide 5: Protocolli Industriali - bus CAN
+\begin{frame}
+    \frametitle{Protocolli di Comunicazione: CAN Bus}
+    \textbf{Controller Area Network (CAN)}: bus seriale multi-master per autoveicoli.
+    \begin{block}{Caratteristiche Principali}
+        \begin{itemize}
+            \item \textbf{Architettura Multi-Master}: Tutti i nodi possono trasmettere.
+            \item \textbf{Arbitraggio Non-Destruttivo}: Priorità basata su ID messaggio.
+            \item \textbf{Rilevamento Errori}: CRC, bit stuffing, monitoraggio ACK.
+            \item \textbf{Velocità}: Fino a 1 Mbps su brevi distanze.
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{Applicazioni Industriali}
+        Utilizzato in automotive, automazione industriale, robotica mobile.
+    \end{block}
+\end{frame}
+% Slide 5: Protocolli Industriali - CANopen
+\begin{frame}
+    \frametitle{Protocolli di Comunicazione: CANopen}
+    Protocollo applicativo basato su bus CAN per atomotive e automazione industriale.
+    \begin{block}{Struttura Dati}
+        \begin{itemize}
+            \item \textbf{OD (Object Dictionary)}: Mappa parametri (Index/Subindex).
+            \item \textbf{PDO}: Dati real-time (es. velocità, encoder).
+            \item \textbf{SDO}: Configurazione (confermato).
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{Gestione Rete}
+        \begin{itemize}
+            \item \textbf{NMT}: Stati (Operational, Stopped).
+            \item \textbf{Heartbeat}: Monitoraggio nodi.
+            \item \textbf{Emergency}: Segnalazione guasti.
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+% Slide 6: Profilo CiA 402
+\begin{frame}
+    \frametitle{Estensioni CANopen: CiA 402}
+    
+    Estensione del protocollo per il controllo di azionamenti elettrici.
+
+    \begin{itemize}
+        \item \textbf{Macchina a Stati}: Gestione sicurezza e abilitazione potenza.
+        \item \textbf{Modalità Operative}:
+              \begin{itemize}
+                  \item \textit{Profile Velocity}: Controllo velocità.
+                  \item \textit{Profile Position}: Controllo posizione.
+                  \item \textit{Profile Torque}: Controllo coppia.
+              \end{itemize}
+    \end{itemize}
+
+    \begin{alertblock}{Vantaggi}
+        Determinismo, affidabilità e interoperabilità tra produttori diversi.
+    \end{alertblock}
+\end{frame}

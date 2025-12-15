@@ -1,0 +1,61 @@
+% Tor Vergata - Engineering Beamer template.
+% Roberto Masocco <robmasocco[at]gmail.com>
+% Alessandro Tenaglia <alessandro.tenaglia42[at]gmail.com>
+% First version: February 5, 2022
+% Last update: November 16, 2024
+
+% Preferred aspect ratio is 16:9 but feel free to change it here
+\documentclass[aspectratio=169]{beamer}
+
+% Customized document information by setting these string options
+% To leave a field empty, use "{}"
+% If you want to hide navigation symbols, go to line 144 of the style file
+\usepackage[
+    title={Progettazione e Realizzazione di un Veicolo da Trasporto Teleoperato in CANopen},
+    subtitle={},
+    event={Tesi di Laurea Magistrale},
+    author={Andrea Efficace},
+    longauthor={Andrea Efficace},
+    email={andrea.efficace@students.uniroma2.eu},
+    institute={Università di Roma Tor Vergata},
+    longinstitute={Università degli Studi di Roma Tor Vergata},
+    department={Macroarea di Ingegneria},
+    researchgroup={Corso di Laurea Magistrale in Ingegneria dell'Automazione},
+    date={Anno Accademico 2024/2025}
+]{utvengbeamer}
+
+\usepackage{booktabs}
+\DeclareMathOperator{\atantwo}{atan2}
+\newcommand{\atanyx}[2]{\atantwo\left(#1,#2\right)}
+
+\begin{document}
+
+% --- Title page ---
+\frame{\titlepage}
+
+% --- Table of contents ---
+\begin{frame}
+    \frametitle{Roadmap}
+    \tableofcontents
+\end{frame}
+
+% Include sections here, like this
+% --- Section 1 ---
+\input{sections/section1}
+
+% --- Section 2 ---
+\input{sections/section2}
+
+% --- Section 3 ---
+\input{sections/section3}
+
+% --- Section 4 ---
+\input{sections/section4}
+
+% --- Section 5 ---
+\input{sections/section5}
+
+% --- Section 6 ---
+\input{sections/section6}
+
+\end{document}

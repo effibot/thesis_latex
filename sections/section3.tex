@@ -1,0 +1,142 @@
+% Sezione 3: Requisiti e Selezione Componenti
+\section{Requisiti e Componenti}
+
+% Slide 1: Selezione Payload e Requisiti
+\begin{frame}
+    \frametitle{Selezione Payload}
+    \begin{block}{Payload: Compressore a Vite}
+        \begin{itemize}
+            \item \textbf{Oggetto}: Compressore Daikin SM100.
+            \item \textbf{Peso}: 70 kg.
+            \item \textbf{Dimensioni}: $0.9 \times 0.4 \times 0.6$ m.
+            \item \textbf{Logistica}: Trasporto da produzione a assemblaggio chiller.
+        \end{itemize}
+    \end{block}
+\end{frame}
+% Slide 2: Requisiti Veicolo
+\begin{frame}
+    \frametitle{Requisiti Veicolo}
+    \begin{alertblock}{Requisiti Veicolo}
+        \begin{itemize}
+            \item \textbf{Capacità Carico}: 1000 kg (scalabilità futura).
+            \item \textbf{Velocità Max}: 1 m/s (sicurezza).
+            \item \textbf{Autonomia}: 4 ore operative.
+            \item \textbf{Ambiente}: Indoor/Outdoor (asfalto, cemento).
+            \item \textbf{Manovrabilità}: Omnidirezionale (parcheggio parallelo).
+        \end{itemize}
+    \end{alertblock}
+\end{frame}
+
+% Slide 2: Dimensionamento Potenza
+\begin{frame}
+    \frametitle{Dimensionamento Potenza}
+    Calcolo forza di trazione necessaria ($m=1000$ kg):
+    \begin{itemize}
+        \item \textbf{Piano}: $F_{piano} = \mu \cdot m \cdot g \approx 98$ N ($\mu=0.01$).
+        \item \textbf{Pendenza (10\%)}: $F_{salita} = m \cdot g \cdot (\sin\theta + \mu\cos\theta) \approx 1078$ N.
+    \end{itemize}
+
+    \vspace{0.5cm}
+    \begin{block}{Potenza Richiesta}
+        $$ P_{req} = F_{salita} \cdot v_{max} \approx 1078 \text{ N} \cdot 1 \text{ m/s} \approx \text{\textbf{1.1 kW}} $$
+    \end{block}
+\end{frame}
+
+% Slide 3: Selezione Batteria
+\begin{frame}
+    \frametitle{Selezione Batteria}
+    \begin{columns}
+        \column{0.6\textwidth}
+        \textbf{FlashBattery LiFePO4} (Litio-Ferro-Fosfato)
+        \begin{itemize}
+            \item \textbf{Tensione}: 51.2 V nominali.
+            \item \textbf{Capacità}: 80 Ah.
+            \item \textbf{Energia Totale}: $51.2 \text{ V} \times 80 \text{ Ah} \approx \textbf{4.1 kWh}$.
+        \end{itemize}
+        \vspace{0.3cm}
+        \textbf{Verifica Autonomia}:
+        $$T_{op} = \frac{E_{batt} \cdot \eta_{sys}}{P_{avg}} \approx \frac{4.1 \text{ kWh} \cdot 0.9}{0.8 \text{ kW}} > 4 \text{ h}$$
+        \textit{(Considerando consumo medio inferiore al picco)}
+
+        \column{0.4\textwidth}
+        \centering
+        \includegraphics[width=0.55\textwidth]{batteria/front_view.jpeg} % Placeholder
+    \end{columns}
+\end{frame}
+
+% Slide 4: Selezione Motori
+\begin{frame}
+    \frametitle{Selezione Motori: CFR MRT05}
+    Configurazione: \textbf{2 Ruote Motrici Sterzanti} (Motorwheels) + 2 Caster.
+
+    \begin{columns}
+        \column{0.4\textwidth}
+        \begin{itemize}
+            \item \textbf{Trazione}:
+                  \begin{itemize}
+                      \item Potenza: 500 W (S2-60min).
+                      \item Coppia Nominale: 37 Nm.
+                      \item Coppia Picco: 180 Nm.
+                  \end{itemize}
+            \item \textbf{Sterzo}:
+                  \begin{itemize}
+                      \item Potenza: 300 W.
+                      \item Coppia: 35 Nm.
+                  \end{itemize}
+        \end{itemize}
+
+        \column{0.5\textwidth}
+        \begin{block}{Verifica Coppia}
+            Coppia alla ruota richiesta in salita ($r=0.15$ m):
+            $$C_{req} = F_{salita} \cdot r / 2 \approx 1078 \cdot 0.15 / 2 \approx 81 \text{ Nm}$$
+            $$81 \text{ Nm} < 180 \text{ Nm (Picco)} \implies \textbf{OK}$$
+        \end{block}
+    \end{columns}
+\end{frame}
+\begin{frame}
+    \frametitle{Selezione Motori: CFR MRT05}
+    \begin{columns}
+        \column{0.4\textwidth}
+        \centering
+        \includegraphics[width=0.8\textwidth]{img/motore/side_view_1.jpeg}
+        \column{0.5\textwidth}
+        \centering
+        \includegraphics[width=0.6\textwidth]{img/motore/side_view_2.jpeg}
+    \end{columns}
+
+\end{frame}
+% Slide 5: Architettura Hardware
+\begin{frame}
+    \frametitle{Architettura Hardware e Sensori}
+    \begin{itemize}
+        \item \textbf{Computer di Bordo}: LattePanda Sigma (x86, 32GB RAM) per SLAM e High-Level Control.
+        \item \textbf{Sensori}:
+              \begin{itemize}
+                  \item LiDAR: \textbf{Livox Mid-360} (3D, FOV 360x59).
+                  \item IMU: Integrata nel LiDAR.
+              \end{itemize}
+        \item \textbf{Azionamenti}: Driver Microphase MiniTraction Power.
+        \item \textbf{Comunicazioni}: Adattatore Waveshare USB-CAN-A
+    \end{itemize}
+\end{frame}
+\begin{frame}
+    \frametitle{Architettura Hardware e Sensori}
+    \begin{columns}
+        \column{0.3\textwidth}
+        \centering
+        \includegraphics[width=0.8\textwidth]{img/3/lattepanda_sigma2.png}
+
+        \column{0.3\textwidth}
+        \centering
+        \includegraphics[width=0.6\textwidth]{img/3/livox_mid360.png}
+    \end{columns}
+    \begin{columns}
+        \column{0.3\textwidth}
+        \centering
+        \includegraphics[width=0.8\textwidth]{img/3/mini-traction-power.png}
+
+        \column{0.3\textwidth}
+        \centering
+        \includegraphics[width=0.6\textwidth]{img/3/usb_can_a.jpg}
+    \end{columns}
+\end{frame}

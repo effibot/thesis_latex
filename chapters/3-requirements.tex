@@ -26,6 +26,10 @@ Data la difficoltà di dover gestire delle strutture così ingombranti in un amb
 
 In \cref{fig:daikin_compressore} possiamo vedere un render del modello di compressori più grande e pesante attualmente in produzione. La scelta di questo payload ha permesso di definire requisiti più gestibili in termini di capacità di carico e dimensioni del veicolo, ottenendo comunque un valido dimostratore tecnologico. Si è comunque mantenuta l'idea di dimensionare i motori e la struttura del veicolo in modo da poter essere scalabile in futuro, qualora si volesse aumentare la capacità di carico per movimentare componenti più grandi come le SV.
 
+\begin{note}
+    Il dimensionamento a 1000 kg totali (robot + payload) rappresenta un sovradimensionamento intenzionale. Considerando il compressore più pesante ($\sim730$ kg) si ha margine di peso di $270$kg da allocare per telaio, ruote, componentistica varia e cablaggi.
+\end{note}
+
 
 \section{Requisiti del veicolo}
 In base alla scelta del payload e all'ambiente operativo, sono stati definiti i seguenti requisiti funzionali e prestazionali per il veicolo a guida autonoma.
@@ -194,19 +198,24 @@ Verifichiamo ora che i motori selezionati soddisfino i requisiti di coppia e pot
 \end{itemize}
 
 \textbf{Verifica in piano:}
-la coppia totale disponibile con 2 motoruote è
+con 2 motoruote, la coppia richiesta su ciascuna ruota è
 \begin{equation}
-    \tau_{disponibile} = 2 \times \tau_{nominale} = 2 \times 37 = 74 \, \text{Nm} \geq \tau_{richiesta} = 62.73 \, \text{Nm}. \quad \checkmark
+    \tau_{ruota} = \frac{\tau_{tot}}{2} = \frac{62.73}{2} \approx 31.4 \, \text{Nm}.
 \end{equation}
 
-La forza di trazione massima erogabile in condizioni nominali è
+La coppia nominale disponibile per singola ruota è $37$ Nm, quindi
 \begin{equation}
-    F_{trazione} = \frac{\tau_{disponibile}}{r} = \frac{74}{0.099} \approx 747 \, \text{N} \geq F_{richiesta} = 627.3 \, \text{N}. \quad \checkmark
+    \tau_{nominale} = 37 \, \text{Nm} \geq \tau_{ruota} = 31.4 \, \text{Nm}. \quad \checkmark
 \end{equation}
 
-Il margine di sicurezza in piano risulta
+Il margine di sicurezza per singola ruota risulta
 \begin{equation}
-    \text{Margine}_{\tau} = \frac{74 - 62.73}{62.73} \times 100 \approx 18\%.
+    \text{Margine}_{\tau} = \frac{37 - 31.4}{31.4} \times 100 \approx 18\%.
+\end{equation}
+
+In termini di coppia totale disponibile dal sistema:
+\begin{equation}
+    \tau_{tot,disponibile} = 2 \times 37 = 74 \, \text{Nm} \geq \tau_{tot,richiesta} = 62.73 \, \text{Nm}. \quad \checkmark
 \end{equation}
 
 \textbf{Verifica su rampa 10\%:}
@@ -215,14 +224,24 @@ nel caso peggiore (salita 10\% con accelerazione $a = 0.33 \, m/s^2$), la forza 
     F_{richiesta} = m \cdot g \cdot \sin(\theta) + \mu_r \cdot m \cdot g \cdot \cos(\theta) + m \cdot a = 976 + 293 + 333 = 1602 \, \text{N},
 \end{equation}
 
-la coppia corrispondente è
+la coppia totale corrispondente è
 \begin{equation}
-    \tau_{richiesta} = F_{richiesta} \cdot r = 1602 \times 0.099 \approx 159 \, \text{Nm}.
+    \tau_{tot,richiesta} = F_{richiesta} \cdot r = 1602 \times 0.099 \approx 159 \, \text{Nm}.
 \end{equation}
 
-Questa condizione supera la coppia nominale ma rientra ampiamente nella coppia di picco disponibile:
+La coppia richiesta per singola ruota è quindi
 \begin{equation}
-    \tau_{picco} = 2 \times 180 = 360 \, \text{Nm} \gg \tau_{richiesta} = 159 \, \text{Nm}. \quad \checkmark
+    \tau_{ruota} = \frac{159}{2} \approx 79.5 \, \text{Nm}.
+\end{equation}
+
+Questa condizione supera la coppia nominale ($37$ Nm) ma rientra ampiamente nella coppia di picco disponibile per singola ruota ($180$ Nm):
+\begin{equation}
+    \tau_{picco,ruota} = 180 \, \text{Nm} \gg \tau_{ruota} = 79.5 \, \text{Nm}. \quad \checkmark
+\end{equation}
+
+In termini di coppia totale del sistema:
+\begin{equation}
+    \tau_{tot,picco} = 2 \times 180 = 360 \, \text{Nm} \gg \tau_{tot,richiesta} = 159 \, \text{Nm}. \quad \checkmark
 \end{equation}
 
 La durata della rampa è
@@ -843,6 +862,7 @@ Nelle figure a seguire sono riportati alcuni disegni tecnici estratti dal proget
             \hline
             \textbf{Parametro}      & \textbf{Valore} & \textbf{Unità} \\
             \hline
+            Massa totale            & 70              & kg             \\
             Lunghezza totale        & 1800            & mm             \\
             Larghezza totale        & 1000            & mm             \\
             Altezza totale          & 280             & mm             \\

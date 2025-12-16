@@ -24,6 +24,8 @@
     \vspace{0.2cm}
     \begin{alertblock}{Scelta Progettuale}
         Dimensionamento sovrastimato a \textbf{1000 kg} (robot + payload) per scalabilità futura e margine di sicurezza.
+
+        \textbf{Peso effettivo robot}: $\sim$200-230 kg (telaio 70 kg + batteria 80 kg + motoruote 50 kg + componentistica 20-30 kg).
     \end{alertblock}
 \end{frame}
 % Slide 2: Requisiti Veicolo
@@ -104,7 +106,7 @@
     Configurazione: \textbf{2 Ruote Motrici Sterzanti} (Motorwheels) + 2 Caster (diagonali).
 
     \begin{columns}
-        \column{0.45\textwidth}
+        \column{0.42\textwidth}
         \textbf{Specifiche per ruota:}
         \begin{itemize}
             \item \textbf{Trazione}:
@@ -123,18 +125,22 @@
             \item \textbf{Encoder}: SIN/COS (FTS1)
         \end{itemize}
 
-        \column{0.5\textwidth}
-        \begin{block}{Verifica Coppia}
-            Raggio ruota: $r = 0.099$ m
+        \column{0.54\textwidth}
+        {\small
+            \begin{block}{Verifica Coppia}
+                Raggio ruota: $r = 0.099$ m
 
-            \textbf{Piano:}
-            $$\tau_{req} = \frac{F_{tot} \cdot r}{2} = \frac{627 \cdot 0.099}{2} \approx 31 \text{ Nm}$$
-            $$\tau_{disp} = 2 \times 37 = 74 \text{ Nm} \Rightarrow \textbf{Margine 18\%}$$
+                \textbf{Piano:}
+                $$\tau_{tot} = F_{tot} \cdot r \approx 62 \text{ Nm}$$
+                $$\tau_{ruota} = \tau_{tot}/2 \approx 31 \text{ Nm}$$
+                $$\tau_{nom} = 37 \text{ Nm} \Rightarrow \textbf{Margine 18\%}$$
 
-            \textbf{Salita 10\%:}
-            $$\tau_{req} = \frac{1600 \cdot 0.099}{2} \approx 79 \text{ Nm}$$
-            $$\tau_{picco} = 2 \times 180 = 360 \text{ Nm} \Rightarrow \textbf{OK}$$
-        \end{block}
+                \textbf{Salita 10\%:}
+                $$\tau_{tot} \approx 159 \text{ Nm}$$
+                $$\tau_{ruota} \approx 79.5 \text{ Nm}$$
+                $$\tau_{picco} = 180 \text{ Nm} \Rightarrow \textbf{OK}$$
+            \end{block}
+        }
     \end{columns}
 \end{frame}
 \begin{frame}
@@ -233,6 +239,7 @@
         \column{0.5\textwidth}
         \textbf{Caratteristiche:}
         \begin{itemize}
+            \item Massa: $\sim$70 kg
             \item Profili acciaio $30 \times 30 \times 2.6$ mm
             \item Rinforzi $20 \times 20 \times 2$ mm
             \item Dimensioni: $1.8 \times 1.0$ m
@@ -245,7 +252,6 @@
         \begin{itemize}
             \item CAD: SolidWorks
             \item Analisi FEM: FASTRAN
-            \item Verifica deformazioni sotto carico
         \end{itemize}
 
         \column{0.5\textwidth}

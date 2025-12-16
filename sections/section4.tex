@@ -173,28 +173,39 @@
 
 \begin{frame}
     \frametitle{Modello a Doppia Ruota Sterzante}
-    \textbf{Soluzione finale} nel body frame:
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \textbf{Soluzione finale} nel body frame:
 
-    \begin{equation}
-        \begin{bmatrix}
-            \dot{x}_c \\ \dot{y}_c \\ \dot{\theta}
-        \end{bmatrix}
-        = \frac{r}{2}
-        \begin{bmatrix}
-            \cos(\delta_f) & \cos(\delta_r) \\
-            \sin(\delta_f) & \sin(\delta_r) \\
-            a_{13}         & a_{23}
-        \end{bmatrix}
-        \begin{bmatrix}
-            \omega_f \\ \omega_r
-        \end{bmatrix}
-    \end{equation}
+            \begin{equation}
+                \begin{bmatrix}
+                    \dot{x}_c^b \\ \dot{y}_c^b \\ \dot{\theta}
+                \end{bmatrix}
+                = \frac{r}{2}
+                \begin{bmatrix}
+                    \cos(\delta_f) & \cos(\delta_r) \\
+                    \sin(\delta_f) & \sin(\delta_r) \\
+                    a_{13}         & a_{23}
+                \end{bmatrix}
+                \begin{bmatrix}
+                    \omega_f \\ \omega_r
+                \end{bmatrix}
+            \end{equation}
 
-    dove i coefficienti $a_{13}$, $a_{23}$ dipendono da $\delta_f$, $\delta_r$, $L$, $W$:
-    \begin{align}
-        a_{13} & = \frac{2(L\sin(\delta_f) - W\cos(\delta_f))}{L^2 + W^2} \\
-        a_{23} & = \frac{2(W\cos(\delta_r) - L\sin(\delta_r))}{L^2 + W^2}
-    \end{align}
+            dove i coefficienti $a_{13}$, $a_{23}$ dipendono da $\delta_f$, $\delta_r$, $L$, $W$:
+            \begin{align}
+                a_{13} & = \frac{2(L\sin(\delta_f) - W\cos(\delta_f))}{L^2 + W^2} \\
+                a_{23} & = \frac{2(W\cos(\delta_r) - L\sin(\delta_r))}{L^2 + W^2}
+            \end{align}
+        \end{column}
+        \begin{column}{0.4\textwidth}
+            \begin{figure}[htbp]
+                \centering
+                \includegraphics[width=0.8\textwidth]{2wd_steering.png}
+                \caption{Ruote motrici in verde, passive in viola.}
+            \end{figure}
+        \end{column}
+    \end{columns}
 \end{frame}
 \begin{frame}
     \frametitle{Modello a Doppia Ruota Sterzante: Osservazioni}
@@ -319,7 +330,7 @@
     \frametitle{Cinematica Inversa: Doppia Ruota Sterzante}
     \textbf{Problema}: dato $(\dot{x}_d, \dot{y}_d, \dot{\theta}_d)$, calcolare $(\delta_f, \delta_r, \omega_f, \omega_r)$
 
-    \textbf{Soluzione diretta dai vincoli di non-slittamento}:
+    $\Rightarrow$\textbf{Soluzione diretta dai vincoli di non-slittamento e puro rotolaento}:
 
     \textbf{Angoli di sterzo} (dalle eq. non-slip):
     \begin{align}
@@ -332,7 +343,6 @@
         \omega_f & = \frac{(\dot{y}_d + \dot{\theta}_d \frac{L}{2}) \sin(\delta_f) + (\dot{x}_d - \dot{\theta}_d \frac{W}{2}) \cos(\delta_f)}{r} \\
         \omega_r & = \frac{(\dot{y}_d - \dot{\theta}_d \frac{L}{2}) \sin(\delta_r) + (\dot{x}_d + \dot{\theta}_d \frac{W}{2}) \cos(\delta_r)}{r}
     \end{align}
-
     \textbf{Caso speciale $\dot{\theta}_d = 0$}: $\delta_f = \delta_r = \atanyx{\dot{y}_d}{\dot{x}_d}$, $\omega_f = \omega_r = \frac{v_d}{r}$
 \end{frame}
 

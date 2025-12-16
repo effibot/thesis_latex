@@ -1,6 +1,32 @@
 % Sezione 4: Modelli Cinematici e Controllo
 \section{Modellazione Cinematica e Controllo}
-
+\begin{frame}{Notazione Usata}
+    Proposti due modelli cinematici:
+    \begin{itemize}
+        \item \textbf{Biciclo Sterzante}: Preso da \cite{tourajizadeh2020fourwheel}
+    \end{itemize}
+    \begin{columns}
+        \begin{column}{0.48\textwidth}
+            \begin{itemize}
+                \item \textbf{Stato}: $q=\begin{bmatrix}
+                    x&y&\theta
+                \end{bmatrix}^\top$,
+                \item \textbf{Dimensioni}: $L,W$,
+                \item \textbf{Posizioni delle Ruote}:
+                \begin{equation*}
+                    p_f^b=\begin{bmatrix}
+                        L/2&W/2
+                    \end{bmatrix}^\top \quad p_r^b=-\begin{bmatrix}
+                        L/2&W/2
+                    \end{bmatrix}^\top
+                \end{equation*}
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.48\textwidth}
+            
+        \end{column}
+    \end{columns}
+\end{frame}
 \begin{frame}
     \frametitle{Modello a Biciclo Sterzante}
     \textbf{Semplificazione}: ruote sullo stesso asse $\rightarrow$ ruota virtuale unica per asse
@@ -28,7 +54,7 @@
     \frametitle{Modello a Biciclo Sterzante: Osservazioni}
     \begin{block}{Vantaggi}
         \begin{itemize}
-            \item Testato in letteratura\footnote{Tourajizadeh et al., ``Modeling and Optimal Control of 4 Wheel Steering Vehicle Using LQR'', 2020; De Luca et al., ``Feedback Control of a Nonholonomic Car-like Robot'', 1998}.
+            \item Testato in letteratura\footnote{Tourajizadeh et al., ``Modeling and Optimal Control of 4 Wheel Steering Vehicle Using LQR'', 2020;}.
             \item Modello dinamico studiato (controllabile con LQR).
         \end{itemize}
     \end{block}

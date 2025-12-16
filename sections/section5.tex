@@ -5,13 +5,13 @@
 
     \textbf{Vincolo Hardware}: Waveshare USB-CAN-A usa \textcolor{red}{protocollo seriale proprietario}
     \begin{itemize}
-        \item Non compatibile con SocketCAN Linux (e stack \texttt{ros2\_canopen}).
-        \item Aperto e documentato tramite demo ufficiale.
+        \item Non compatibile con e.g. SocketCAN Linux, implementazioni CANopen.
+        \item Documentato.
     \end{itemize}
 
     \vspace{0.3cm}
 
-    \textbf{Requisito Software}: Integrazione con ROS2 per controllo robot
+    \textbf{Requisito Software}: Integrazione con ROS~2 per controllo robot
     \begin{itemize}
         \item Per sviluppo algoritmi di navigazione e controllo (es \textit{FastLIO2}, \textit{Nav2}, \textit{teleop}).
         \item Necessità comunicazione real-time con inverter motori.
@@ -32,7 +32,7 @@
         \textbf{Bridge}: Architettura a livelli per integrazione trasparente
         \begin{enumerate}
             \item \textbf{ROS2/APP Layer}: Controllo, SLAM, navigazione.
-            \item \textbf{SocketCAN}: Interfaccia CAN nativa kernel Linux.
+            \item \textbf{SocketCAN}: Interfaccia CAN nativa in kernel Linux.
             \item \textbf{Bridge Software}: Traduzione bidirezionale tra SocketCAN e Frame Protocol (libreria \texttt{waveshare\_cpp}).
             \item \textbf{Waveshare USB-CAN-A}: Adattatore USB-CAN.
             \item \textbf{CAN Bus}: Comunicazione con dispositivi CANopen.

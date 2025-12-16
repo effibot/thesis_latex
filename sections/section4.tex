@@ -4,7 +4,7 @@
     Confrontati due modelli cinematici:
     \begin{itemize}
         \item \textbf{Biciclo Sterzante}: Preso dalla letteratura\footnote{Tourajizadeh et al., ``Modeling and Optimal Control of 4 Wheel Steering Vehicle Using LQR'', 2020;}. Approssima un veicolo con quattro ruote sterzanti.
-        \item \textbf{Doppia Ruota Sterzante (Bisteer)}: proposta basata su vincoli non-olonomi, senza approssimazioni geometriche.
+        \item \textbf{Doppia Ruota Sterzante}: proposta basata su vincoli non-olonomi, senza approssimazioni geometriche.
     \end{itemize}
     \begin{columns}
 
@@ -39,7 +39,6 @@
 \end{frame}
 \begin{frame}
     \frametitle{Ancora sulla notazione}
-    \textbf{Riferimenti di Frame}:
     \begin{itemize}
         \item \textbf{Vel. Centro Robot (body frame)}: $\dot{x}_c^b, \dot{y}_c^b$
         \item \textbf{Assunzione}: simmetria geometrica
@@ -64,7 +63,7 @@
         \begin{column}{0.5\textwidth}
 
             \textbf{Equazioni Cinematiche}
-            \begin{equation}
+            \begin{equation}\label{eq:bicycle}
                 \begin{cases}
                     \dot{x}      = v \cos(\theta+\beta) \\
                     \dot{y}      = v \sin(\theta+\beta) \\
@@ -74,8 +73,8 @@
 
             dove:
             \begin{align}
-                v     & =  \frac{r(\omega_f \cos\delta_f + \omega_r \cos\delta_r)}{2\cos(\beta)}                                    \\
-                \beta & =  \tan^{-1}\left(\frac{l_f \tan(\delta_r) + l_r \tan(\delta_f)}{l_f + l_r}\right) \quad \text{(side-slip)}
+                v     & =  \frac{r(\omega_f \cos\delta_f + \omega_r \cos\delta_r)}{2\cos(\beta)}                                                    \\
+                \beta & =  \tan^{-1}\left(\frac{l_f \tan(\delta_r) + l_r \tan(\delta_f)}{l_f + l_r}\right) \quad \text{(side-slip)} \label{eq:beta}
             \end{align}
 
             \vspace{0.2cm}
@@ -215,7 +214,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Centro Istantaneo di Rotazione (ICR)}
+    \frametitle{Cinematica Inversa: Biciclo -- Centro Inst. di Rotazione (ICR)}
     \textbf{Concetto}: punto attorno al quale il veicolo sta ruotando in un dato istante
 
     \vspace{0.3cm}
@@ -226,26 +225,29 @@
         \begin{bmatrix}
             x_{ICR} \\ y_{ICR}
         \end{bmatrix}
-        = \mathbf{p}_i^b + s_i \begin{bmatrix}
-            -\sin(\delta_i) \\ \cos(\delta_i)
+        = \mathbf{p}_f^b + s_f \begin{bmatrix}
+            -\sin(\delta_f) \\ \cos(\delta_f)
+        \end{bmatrix}= \mathbf{p}_r^b + s_r \begin{bmatrix}
+            -\sin(\delta_r) \\ \cos(\delta_r)
         \end{bmatrix}
-        \quad i \in \{f, r\}
     \end{equation}
 
-    \textbf{Distanza da ICR}: $R_i = |s_i|$ (raggio di curvatura per ruota $i$)
-
-    \vspace{0.2cm}
+    Risolvendo per $s_f$, $s_r$ si trovano i raggi di curvatura delle ruote:
+    \begin{align}
+        R_f = \sqrt{\left(x_{ICR} - \frac{L}{2}\right)^2 + \left(y_{ICR} - \frac{W}{2}\right)^2}, \qquad
+        R_r = \sqrt{\left(x_{ICR} + \frac{L}{2}\right)^2 + \left(y_{ICR} - \frac{W}{2}\right)^2}
+    \end{align}
 
     \textbf{Condizione di compatibilità} (moto senza slittamento):
     \begin{equation}
-        \dot{\theta} R_i = r\omega_i \quad \Rightarrow \quad R_r \omega_f = R_f \omega_r
+        \dot{\theta}= r\frac{\omega_f}{R_f}=r\frac{\omega_r}{R_r} \quad \Rightarrow \quad R_r \omega_f = R_f \omega_r
     \end{equation}
 
     \small{Caso $\delta_f= \delta_r$: ICR $\to \infty$, traslazione pura con $\omega_f = \omega_r$}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Cinematica Inversa: Modello a Biciclo}
+    \frametitle{Cinematica Inversa: Biciclo}
     \textbf{Problema}: dato $(\dot{x}_d, \dot{y}_d, \dot{\theta}_d)$, calcolare $(\delta_f, \delta_r, \omega_f, \omega_r)$
 
     \vspace{0.3cm}
@@ -256,13 +258,18 @@
         \beta_d & = \atanyx{\dot{y}_d}{\dot{x}_d} - \theta
     \end{align}
 
-    \textbf{Passo 2}: Risolvere sistema per angoli di sterzo (definendo $S = \tan(\beta_d)$, $D = \frac{l\dot{\theta}_d}{v_d \cos(\beta_d)}$)
-    \begin{align}
-        \delta_f & = \arctan\left(S + \frac{l_f}{l} D\right) \\
-        \delta_r & = \arctan\left(S - \frac{l_r}{l} D\right)
-    \end{align}
-
-    \textbf{Passo 3}: Calcolare $\omega_f$, $\omega_r$ da raggi ICR $R_f$, $R_r$ e condizione compatibilità
+    \textbf{Passo 2}: Definendo $S = \tan(\beta_d)$, $D = \frac{l\dot{\theta}_d}{v_d \cos(\beta_d)}$, da (\ref{eq:bicycle}) e (\ref{eq:beta}):
+    \begin{equation}
+        \begin{cases}
+            lS = l_f \tan(\delta_r) + l_r \tan(\delta_f) \\
+            D = \tan(\delta_f) - \tan(\delta_r)
+        \end{cases}\Rightarrow
+        \begin{aligned}
+            \delta_f & = \arctan\left(S + \frac{l_f}{l} D\right) \\
+            \delta_r & = \arctan\left(S - \frac{l_r}{l} D\right)
+        \end{aligned}
+    \end{equation}
+    \textbf{Passo 3}: Calcolare $\omega_f$, $\omega_r$ da raggi ICR $R_f$, $R_r$ e condizione di compatibilità
 \end{frame}
 
 \begin{frame}
@@ -309,10 +316,10 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Cinematica Inversa: Modello Bisteer}
-    \textbf{Soluzione diretta dai vincoli di non-slittamento}:
+    \frametitle{Cinematica Inversa: Doppia Ruota Sterzante}
+    \textbf{Problema}: dato $(\dot{x}_d, \dot{y}_d, \dot{\theta}_d)$, calcolare $(\delta_f, \delta_r, \omega_f, \omega_r)$
 
-    \vspace{0.3cm}
+    \textbf{Soluzione diretta dai vincoli di non-slittamento}:
 
     \textbf{Angoli di sterzo} (dalle eq. non-slip):
     \begin{align}
@@ -372,7 +379,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Risultati Feedforward: Traiettoria Arc -- Bicilo}
+    \frametitle{Risultati Feedforward: Traiettoria Arc -- Biciclo}
     \begin{figure}
         \centering
         \includegraphics[width=0.8\textwidth]{4/curved_east_to_north_feedforward_bicycle.png}
@@ -381,7 +388,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Risultati Feedforward: Traiettoria Arc -- Bisteer}
+    \frametitle{Risultati Feedforward: Traiettoria Arc -- Doppio Sterzo}
     \begin{figure}
         \centering
         \includegraphics[width=0.8\textwidth]{4/curved_east_to_north_feedforward_bisteer.png}
@@ -390,7 +397,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Risultati Feedforward:}
+    \frametitle{Risultati Feedforward}
     \begin{columns}
         \column{0.5\textwidth}
         \begin{table}
@@ -422,8 +429,8 @@
         \column{0.45\textwidth}
         \textbf{Osservazioni}:
         \begin{itemize}
-            \item Bicycle FALLISCE su Crab e Spin (singolarità)
-            \item Bisteer gestisce tutte le manovre
+            \item Biciclo FALLISCE su Crab e Spin (singolarità)
+            \item Doppio Sterzo gestisce tutte le manovre
             \item Errori elevati per assenza di feedback
         \end{itemize}
     \end{columns}
@@ -483,7 +490,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Risultati PID+FF: Traiettoria Arc -- Bisteer}
+    \frametitle{Risultati PID+FF: Traiettoria Arc -- Doppio Sterzo}
     \begin{figure}
         \centering
         \includegraphics[width=0.85\textwidth]{4/curved_east_to_north_pid_bisteer.png}
@@ -544,7 +551,7 @@
         \end{itemize}
 
         \column{0.5\textwidth}
-        \textbf{Modello Bisteer}
+        \textbf{Modello Doppio Sterzo}
         \begin{itemize}
             \item[+] \textbf{Nessuna singolarità}
             \item[+] Supporta tutte le manovre
@@ -555,5 +562,5 @@
 
     \vspace{0.5cm}
 
-    \textbf{Scelta finale}: \textcolor{green!60!black}{\textbf{Modello Bisteer}} per maggiore versatilità.
+    \textbf{Scelta finale}: \textcolor{green!60!black}{\textbf{Modello Doppio Sterzo}} per maggiore versatilità.
 \end{frame}

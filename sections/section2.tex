@@ -71,14 +71,14 @@
 \end{frame}
 
 % Slide 4: Architettura FAST-LIO 2
-\begin{frame}
-    \frametitle{Architettura FAST-LIO 2}
-    \begin{figure}[htbp]
-        \centering
-        \includegraphics[width=\textwidth]{2/fastlio2_block_diagram.png}
-        \caption{Schema semplificato: IMU $\to$ Predizione $\to$ Correzione (LiDAR) $\to$ Mappa.}
-    \end{figure}
-\end{frame}
+% \begin{frame}
+%     \frametitle{Architettura FAST-LIO 2}
+%     \begin{figure}[htbp]
+%         \centering
+%         \includegraphics[width=\textwidth]{2/fastlio2_block_diagram.png}
+%         \caption{Schema semplificato: IMU $\to$ Predizione $\to$ Correzione (LiDAR) $\to$ Mappa.}
+%     \end{figure}
+% \end{frame}
 
 % Slide 5: Protocolli Industriali - bus CAN
 \begin{frame}
@@ -134,29 +134,29 @@
 \end{frame}
 
 % Slide 6: Panoramica Altri Protocolli
-\begin{frame}
-    \frametitle{Altri Protocolli Industriali}
-    \textbf{Alternative valutate} (non adottate per il progetto):
+% \begin{frame}
+%     \frametitle{Altri Protocolli Industriali}
+%     \textbf{Alternative valutate} (non adottate per il progetto):
 
-    \vspace{0.3cm}
-    \begin{table}[htbp]
-        \centering
-        \small
-        \begin{tabular}{|l|p{6cm}|p{4cm}|}
-            \hline
-            \textbf{Protocollo} & \textbf{Caratteristiche}                             & \textbf{Limitazioni}                    \\
-            \hline
-            \textbf{EtherCAT}   & Ethernet industriale, latenze $<$ 1 ms, master-slave & Hardware dedicato, maggiore complessità \\
-            \hline
-            \textbf{PROFINET}   & Ethernet Siemens, alta integrazione IT               & Meno diffuso in robotica mobile         \\
-            \hline
-            \textbf{Modbus TCP} & Semplice, su TCP/IP                                  & Latenze non deterministiche             \\
-            \hline
-        \end{tabular}
-    \end{table}
+%     \vspace{0.3cm}
+%     \begin{table}[htbp]
+%         \centering
+%         \small
+%         \begin{tabular}{|l|p{6cm}|p{4cm}|}
+%             \hline
+%             \textbf{Protocollo} & \textbf{Caratteristiche}                             & \textbf{Limitazioni}                    \\
+%             \hline
+%             \textbf{EtherCAT}   & Ethernet industriale, latenze $<$ 1 ms, master-slave & Hardware dedicato, maggiore complessità \\
+%             \hline
+%             \textbf{PROFINET}   & Ethernet Siemens, alta integrazione IT               & Meno diffuso in robotica mobile         \\
+%             \hline
+%             \textbf{Modbus TCP} & Semplice, su TCP/IP                                  & Latenze non deterministiche             \\
+%             \hline
+%         \end{tabular}
+%     \end{table}
 
-    \vspace{0.3cm}
-    \begin{alertblock}{Motivazione Scelta CANopen}
-        Miglior compromesso tra prestazioni, standardizzazione (profili CiA 402), disponibilità componenti compatibili e costi contenuti.
-    \end{alertblock}
-\end{frame}
+%     \vspace{0.3cm}
+%     \begin{alertblock}{Motivazione Scelta CANopen}
+%         Miglior compromesso tra prestazioni, standardizzazione (profili CiA 402), disponibilità componenti compatibili e costi contenuti.
+%     \end{alertblock}
+% \end{frame}

@@ -1,60 +1,99 @@
 % Sezione 4: Modelli Cinematici e Controllo
 \section{Modellazione Cinematica e Controllo}
-\begin{frame}{Notazione Usata}
-    Proposti due modelli cinematici:
+\begin{frame}{Modelli e Notazione Usata}
+    Confrontati due modelli cinematici:
     \begin{itemize}
-        \item \textbf{Biciclo Sterzante}: Preso da \cite{tourajizadeh2020fourwheel}
+        \item \textbf{Biciclo Sterzante}: Preso dalla letteratura\footnote{Tourajizadeh et al., ``Modeling and Optimal Control of 4 Wheel Steering Vehicle Using LQR'', 2020;}. Approssima un veicolo con quattro ruote sterzanti.
+        \item \textbf{Doppia Ruota Sterzante (Bisteer)}: proposta basata su vincoli non-olonomi, senza approssimazioni geometriche.
     \end{itemize}
     \begin{columns}
+
         \begin{column}{0.48\textwidth}
             \begin{itemize}
                 \item \textbf{Stato}: $q=\begin{bmatrix}
-                    x&y&\theta
-                \end{bmatrix}^\top$,
+                              x & y & \theta
+                          \end{bmatrix}^\top$,
                 \item \textbf{Dimensioni}: $L,W$,
                 \item \textbf{Posizioni delle Ruote}:
-                \begin{equation*}
-                    p_f^b=\begin{bmatrix}
-                        L/2&W/2
-                    \end{bmatrix}^\top \quad p_r^b=-\begin{bmatrix}
-                        L/2&W/2
-                    \end{bmatrix}^\top
-                \end{equation*}
+                      \begin{align*}
+                          \mathbf{p}_f^b=\begin{bmatrix}
+                                             L/2 & W/2
+                                         \end{bmatrix}^\top \\
+                          \mathbf{p}_r^b=-\begin{bmatrix}
+                                              L/2 & W/2
+                                          \end{bmatrix}^\top
+                      \end{align*}
             \end{itemize}
         \end{column}
         \begin{column}{0.48\textwidth}
-            
+            \begin{itemize}
+                \item \textbf{Input di Controllo}: $\mathbf{u}=\begin{bmatrix}
+                              \delta_f & \delta_r & \omega_f & \omega_r
+                          \end{bmatrix}^\top$,
+                \item \textbf{Velocità Angolare Ruote}: $\omega_i$,
+                \item \textbf{Angoli di Sterzo}: $\delta_i$,
+                \item \textbf{Raggio Ruote}: $r$.
+            \end{itemize}
         \end{column}
     \end{columns}
+\end{frame}
+\begin{frame}
+    \frametitle{Ancora sulla notazione}
+    \textbf{Riferimenti di Frame}:
+    \begin{itemize}
+        \item \textbf{Vel. Centro Robot (body frame)}: $\dot{x}_c^b, \dot{y}_c^b$
+        \item \textbf{Assunzione}: simmetria geometrica
+              \begin{itemize}
+                  \item Centro geometrico coincide con centro di massa
+                  \item Distanza tra centro e asse ruote: $l_f = l_r = L/2\Rightarrow l_f+l_r=L$
+              \end{itemize}
+        \item \textbf{Convenzioni}: angoli positivi in senso antiorario
+              \begin{itemize}
+                  \item \textbf{$\theta$} zero quando asse longitudinale parallelo a asse $x$ globale
+                  \item \textbf{Sterzi} zero quando ruote parallele all'asse longitudinale
+              \end{itemize}
+        \item \textbf{Velocità angolari positive}: rotazione in avanti (avanzamento)
+    \end{itemize}
 \end{frame}
 \begin{frame}
     \frametitle{Modello a Biciclo Sterzante}
     \textbf{Semplificazione}: ruote sullo stesso asse $\rightarrow$ ruota virtuale unica per asse
 
     \vspace{0.3cm}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
 
-    \textbf{Equazioni Cinematiche}
-    \begin{equation}
-        \begin{cases}
-            \dot{x}      = v \cos(\theta+\beta) \\
-            \dot{y}      = v \sin(\theta+\beta) \\
-            \dot{\theta} = \frac{v\cos(\beta)}{l_f+l_r}\left(\tan(\delta_f)-\tan(\delta_r)\right)
-        \end{cases}
-    \end{equation}
+            \textbf{Equazioni Cinematiche}
+            \begin{equation}
+                \begin{cases}
+                    \dot{x}      = v \cos(\theta+\beta) \\
+                    \dot{y}      = v \sin(\theta+\beta) \\
+                    \dot{\theta} = \frac{v\cos(\beta)}{l_f+l_r}\left(\tan(\delta_f)-\tan(\delta_r)\right)
+                \end{cases}
+            \end{equation}
 
-    dove:
-    \begin{align}
-        v     & =  \frac{r(\omega_f \cos\delta_f + \omega_r \cos\delta_r)}{2\cos(\beta)}                                    \\
-        \beta & =  \tan^{-1}\left(\frac{l_f \tan(\delta_r) + l_r \tan(\delta_f)}{l_f + l_r}\right) \quad \text{(side-slip)}
-    \end{align}
+            dove:
+            \begin{align}
+                v     & =  \frac{r(\omega_f \cos\delta_f + \omega_r \cos\delta_r)}{2\cos(\beta)}                                    \\
+                \beta & =  \tan^{-1}\left(\frac{l_f \tan(\delta_r) + l_r \tan(\delta_f)}{l_f + l_r}\right) \quad \text{(side-slip)}
+            \end{align}
 
-    \vspace{0.2cm}
+            \vspace{0.2cm}
+        \end{column}
+        \begin{column}{0.4\textwidth}
+            \begin{figure}
+                \centering
+                \includegraphics[width=0.9\textwidth]{img/biciclo.png}
+                \caption{Modello a Biciclo Sterzante}
+            \end{figure}
+        \end{column}
+    \end{columns}
 \end{frame}
 \begin{frame}
     \frametitle{Modello a Biciclo Sterzante: Osservazioni}
     \begin{block}{Vantaggi}
         \begin{itemize}
-            \item Testato in letteratura\footnote{Tourajizadeh et al., ``Modeling and Optimal Control of 4 Wheel Steering Vehicle Using LQR'', 2020;}.
+            \item Testato in letteratura.
             \item Modello dinamico studiato (controllabile con LQR).
         \end{itemize}
     \end{block}
@@ -66,75 +105,75 @@
     \end{alertblock}
 \end{frame}
 
+% \begin{frame}
+%     \frametitle{Modello a Doppia Ruota Sterzante: Vincoli Non-Olonomi}
+%     \textbf{Vincolo di non slittamento} per ruota $i \in \{f, r\}$:
+
+%     \vspace{0.2cm}
+
+%     Velocità punto contatto ruota nel body frame:
+%     \begin{equation}
+%         \mathbf{v}_i^b = \begin{bmatrix}
+%             \dot{x}_c^b \mp \dot{\theta}\frac{W}{2} \\
+%             \dot{y}_c^b \pm \dot{\theta}\frac{L}{2}
+%         \end{bmatrix}
+%     \end{equation}
+
+%     \textbf{Versori}: normale $\mathbf{n}_i = \begin{bmatrix}
+%             -\sin(\delta_i) \\
+%             \cos(\delta_i)
+%         \end{bmatrix}$, parallelo $\mathbf{u}_i = \begin{bmatrix}
+%             \cos(\delta_i) \\
+%             \sin(\delta_i)
+%         \end{bmatrix}$
+
+%     \textbf{Condizione di non slittamento}: $\mathbf{n}_i^T \mathbf{v}_i^b = 0$
+%     \begin{equation}
+%         -\sin(\delta_i)\left(\dot{x}_c^b \mp \dot{\theta}\frac{W}{2}\right) + \cos(\delta_i)\left(\dot{y}_c^b \pm \dot{\theta}\frac{L}{2}\right) = 0
+%     \end{equation}
+
+%     \vspace{0.1cm}
+
+%     \textbf{Vincolo di puro rotolamento}: $\mathbf{u}_i^T \mathbf{v}_i^b = r\omega_i$
+%     \begin{equation}
+%         \cos(\delta_i)\left(\dot{x}_c^b \mp \dot{\theta}\frac{W}{2}\right) + \sin(\delta_i)\left(\dot{y}_c^b \pm \dot{\theta}\frac{L}{2}\right) = r\omega_i
+%     \end{equation}
+
+%     \vspace{0.2cm}
+
+%     \small{$(f): L/2, W/2$; $(r): -L/2, -W/2$}
+% \end{frame}
+
+% \begin{frame}
+%     \frametitle{Cinematica Diretta: Matrice dei Vincoli Estesa}
+%     \textbf{Sistema sovradeterminato} (4 equazioni, 3 incognite):
+
+%     \begin{equation}
+%         \mathbf{A}_{ext}^T \dot{\mathbf{q}} = \mathbf{b}
+%     \end{equation}
+
+%     dove:
+%     \begin{equation}
+%         \mathbf{A}_{ext}^T = \begin{bmatrix}
+%             -\sin(\delta_f) & \cos(\delta_f) & \frac{W}{2}\sin(\delta_f) - \frac{L}{2}\cos(\delta_f)  \\
+%             -\sin(\delta_r) & \cos(\delta_r) & -\frac{W}{2}\sin(\delta_r) + \frac{L}{2}\cos(\delta_r) \\
+%             \cos(\delta_f)  & \sin(\delta_f) & -\frac{W}{2}\cos(\delta_f) - \frac{L}{2}\sin(\delta_f) \\
+%             \cos(\delta_r)  & \sin(\delta_r) & \frac{W}{2}\cos(\delta_r) - \frac{L}{2}\sin(\delta_r)
+%         \end{bmatrix}
+%         , \quad
+%         \mathbf{b} = \begin{bmatrix}
+%             0 \\ 0 \\ r\omega_f \\ r\omega_r
+%         \end{bmatrix}
+%     \end{equation}
+
+%     \textbf{Soluzione ai minimi quadrati} (pseudoinversa di Moore-Penrose):
+%     \begin{equation}
+%         \dot{\mathbf{q}} = \mathbf{A}_{ext}^\dagger \mathbf{b} = \left(\mathbf{A}_{ext}^T \mathbf{A}_{ext}\right)^{-1} \mathbf{A}_{ext}^T \mathbf{b}
+%     \end{equation}
+% \end{frame}
+
 \begin{frame}
-    \frametitle{Modello a Doppia Ruota Sterzante: Vincoli Non-Olonomi}
-    \textbf{Vincolo di non slittamento} per ruota $i \in \{f, r\}$:
-
-    \vspace{0.2cm}
-
-    Velocità punto contatto ruota nel body frame:
-    \begin{equation}
-        \mathbf{v}_i^b = \begin{bmatrix}
-            \dot{x}_c \mp \dot{\theta}\frac{W}{2} \\
-            \dot{y}_c \pm \dot{\theta}\frac{L}{2}
-        \end{bmatrix}
-    \end{equation}
-
-    \textbf{Versori}: normale $\mathbf{n}_i = \begin{bmatrix}
-            -\sin(\delta_i) \\
-            \cos(\delta_i)
-        \end{bmatrix}$, parallelo $\mathbf{u}_i = \begin{bmatrix}
-            \cos(\delta_i) \\
-            \sin(\delta_i)
-        \end{bmatrix}$
-
-    \textbf{Condizione di non slittamento}: $\mathbf{n}_i^T \mathbf{v}_i^b = 0$
-    \begin{equation}
-        -\sin(\delta_i)\left(\dot{x}_c \mp \dot{\theta}\frac{W}{2}\right) + \cos(\delta_i)\left(\dot{y}_c \pm \dot{\theta}\frac{L}{2}\right) = 0
-    \end{equation}
-
-    \vspace{0.1cm}
-
-    \textbf{Vincolo di puro rotolamento}: $\mathbf{u}_i^T \mathbf{v}_i^b = r\omega_i$
-    \begin{equation}
-        \cos(\delta_i)\left(\dot{x}_c \mp \dot{\theta}\frac{W}{2}\right) + \sin(\delta_i)\left(\dot{y}_c \pm \dot{\theta}\frac{L}{2}\right) = r\omega_i
-    \end{equation}
-
-    \vspace{0.2cm}
-
-    \small{$(f): L/2, W/2$; $(r): -L/2, -W/2$}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Cinematica Diretta: Matrice dei Vincoli Estesa}
-    \textbf{Sistema sovradeterminato} (4 equazioni, 3 incognite):
-
-    \begin{equation}
-        \mathbf{A}_{ext}^T \dot{\mathbf{q}} = \mathbf{b}
-    \end{equation}
-
-    dove:
-    \begin{equation}
-        \mathbf{A}_{ext}^T = \begin{bmatrix}
-            -\sin(\delta_f) & \cos(\delta_f) & \frac{W}{2}\sin(\delta_f) - \frac{L}{2}\cos(\delta_f)  \\
-            -\sin(\delta_r) & \cos(\delta_r) & -\frac{W}{2}\sin(\delta_r) + \frac{L}{2}\cos(\delta_r) \\
-            \cos(\delta_f)  & \sin(\delta_f) & -\frac{W}{2}\cos(\delta_f) - \frac{L}{2}\sin(\delta_f) \\
-            \cos(\delta_r)  & \sin(\delta_r) & \frac{W}{2}\cos(\delta_r) - \frac{L}{2}\sin(\delta_r)
-        \end{bmatrix}
-        , \quad
-        \mathbf{b} = \begin{bmatrix}
-            0 \\ 0 \\ r\omega_f \\ r\omega_r
-        \end{bmatrix}
-    \end{equation}
-
-    \textbf{Soluzione ai minimi quadrati} (pseudoinversa di Moore-Penrose):
-    \begin{equation}
-        \dot{\mathbf{q}} = \mathbf{A}_{ext}^\dagger \mathbf{b} = \left(\mathbf{A}_{ext}^T \mathbf{A}_{ext}\right)^{-1} \mathbf{A}_{ext}^T \mathbf{b}
-    \end{equation}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Cinematica Diretta: Forma Compatta}
+    \frametitle{Modello a Doppia Ruota Sterzante}
     \textbf{Soluzione finale} nel body frame:
 
     \begin{equation}
@@ -159,10 +198,10 @@
     \end{align}
 \end{frame}
 \begin{frame}
-    \frametitle{Modello a Doppia Ruota Sterzante}
+    \frametitle{Modello a Doppia Ruota Sterzante: Osservazioni}
     \begin{block}{Vantaggi}
         \begin{itemize}
-            \item \textbf{Nessuna singolarità cinematica} per qualsiasi $\delta_f, \delta_r$ (Pseudoinversa mai singolare)
+            \item \textbf{Nessuna singolarità cinematica} per qualsiasi $\delta_f, \delta_r$.
             \item Gestisce \textbf{crab} ($\dot{x}_c=0$, $\dot{y}_c\neq0$) e \textbf{spin} ($\dot{x}_c=\dot{y}_c=0$, $\dot{\theta}\neq0$)
         \end{itemize}
     \end{block}
@@ -213,8 +252,8 @@
 
     \textbf{Passo 1}: Calcolare velocità e side-slip desiderati
     \begin{align}
-        v_d     & = \sqrt{\dot{x}_d^2 + \dot{y}_d^2} \nonumber       \\
-        \beta_d & = \atanyx{\dot{y}_d}{\dot{x}_d} - \theta \nonumber
+        v_d     & = \sqrt{\dot{x}_d^2 + \dot{y}_d^2}       \\
+        \beta_d & = \atanyx{\dot{y}_d}{\dot{x}_d} - \theta
     \end{align}
 
     \textbf{Passo 2}: Risolvere sistema per angoli di sterzo (definendo $S = \tan(\beta_d)$, $D = \frac{l\dot{\theta}_d}{v_d \cos(\beta_d)}$)
@@ -333,25 +372,25 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Risultati Feedforward: Traiettoria Arc}
+    \frametitle{Risultati Feedforward: Traiettoria Arc -- Bicilo}
     \begin{figure}
         \centering
         \includegraphics[width=0.8\textwidth]{4/curved_east_to_north_feedforward_bicycle.png}
-        \caption{Modello Bicycle - Traiettoria circolare (Feedforward)}
+        % \caption{Modello Bicycle - Traiettoria circolare (Feedforward)}
     \end{figure}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Risultati Feedforward: Traiettoria Arc}
+    \frametitle{Risultati Feedforward: Traiettoria Arc -- Bisteer}
     \begin{figure}
         \centering
         \includegraphics[width=0.8\textwidth]{4/curved_east_to_north_feedforward_bisteer.png}
-        \caption{Modello Bisteer - Traiettoria circolare (Feedforward)}
+        % \caption{Modello Bisteer - Traiettoria circolare (Feedforward)}
     \end{figure}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Risultati Feedforward: Confronto e Analisi}
+    \frametitle{Risultati Feedforward:}
     \begin{columns}
         \column{0.5\textwidth}
         \begin{table}
@@ -401,9 +440,10 @@
     \frametitle{Dettagli Implementazione PID}
     \textbf{Legge di controllo}:
     \begin{align}
-        e^b           & = R^T(\theta) \begin{bmatrix} x_d - x \\ y_d - y \\ \theta_d - \theta \end{bmatrix} \quad \text{(errore in body frame)} \nonumber \\
-        u_i(t)        & = K_{p,i} e_i^b + K_{i,i} \int e_i^b \, dt + K_{d,i} \frac{d e_i^b}{dt}, \quad i \in \{x,y,\theta\} \nonumber                     \\
-        \dot{q}_{cmd} & = \dot{q}_d + u \quad \text{(velocità corrette in global frame)} \nonumber
+        e^b                           & = R^{-1}(\theta) \begin{bmatrix} x_d - x \\ y_d - y \\ \theta_d - \theta \end{bmatrix} \quad \text{(errore in body frame)} \\
+        \dot{q}_{i_{\text{PID}}}^b(t) & = K_{p,i} e_i^b + K_{i,i} \int e_i^b \, d\tau + K_{d,i} \frac{d e_i^b}{dt}, \quad i \in \{x,y,\theta\}                     \\
+        \dot{q}_{\text{cmd}}          & = \dot{q}^d+R(\theta)\dot{q}_{i_{\text{PID}}}^b                                                                            \\
+        \mathbf{u}                    & = \text{IK}(\dot{q}_{\text{cmd}})
     \end{align}
 \end{frame}
 
@@ -435,18 +475,18 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Risultati PID+FF: Traiettoria Arc -- Modello Biciclo}
+    \frametitle{Risultati PID+FF: Traiettoria Arc -- Biciclo}
     \begin{figure}
         \centering
-        \includegraphics[width=\textwidth]{4/curved_east_to_north_pid_bicycle.png}
+        \includegraphics[width=0.85\textwidth]{4/curved_east_to_north_pid_bicycle.png}
     \end{figure}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Risultati PID+FF: Traiettoria Arc -- Modello Doppio Sterzo}
+    \frametitle{Risultati PID+FF: Traiettoria Arc -- Bisteer}
     \begin{figure}
         \centering
-        \includegraphics[width=\textwidth]{4/curved_east_to_north_pid_bisteer.png}
+        \includegraphics[width=0.85\textwidth]{4/curved_east_to_north_pid_bisteer.png}
     \end{figure}
 \end{frame}
 
@@ -515,5 +555,5 @@
 
     \vspace{0.5cm}
 
-    \textbf{Scelta finale}: \textcolor{green!60!black}{\textbf{Modello Bisteer}} per maggiore versatilità e robustezza
+    \textbf{Scelta finale}: \textcolor{green!60!black}{\textbf{Modello Bisteer}} per maggiore versatilità.
 \end{frame}

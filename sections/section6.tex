@@ -4,21 +4,35 @@
 
 \begin{frame}
     \frametitle{Conclusioni}
+    Rispetto ai requisiti iniziali, il progetto proposto ha raggiunto i seguenti obiettivi:
+    \begin{itemize}
+        \item Dimensionamento dei componenti meccanici ed elettrici rispetto alle specifiche di carico e prestazioni richieste.
+        \item Selezione e acquisto dei materiali da diversi fornitori, acquisendo contatti per collaborazioni future.
+        \item Progettazione e realizzazione di un dimostratore, con predisposizione per diversi layout di configurazione.
+        \item Proposta di un'architettura di controllo per l'inseguimento di traiettorie.
+        \item Sviluppo di un'architettura software per la comunicazione con gli inverter delle motoruote mediante adattatore USB, trasparente ad implementazioni CANOpen.
+    \end{itemize}
 \end{frame}
 \begin{frame}
-    \frametitle{Stato Attuale}
+    \frametitle{Stato Attuale: Software}
+    \begin{itemize}
+        \item Libreria di comunicazione con adattatore USB-CAN-A ampiamente testata.
+        \item Architettura software definita e parzialmente implementata.
+              \begin{itemize}
+                  \item Mancanti: Nodi ROS2 per generazione traiettorie e invio comandi.
+              \end{itemize}
+        \item Nodi ROS2 per l'avvio e la gestione dell'architettura di comunicazione, con pubblicazione dello stato dei motori e ricezione comandi di velocità.
+        \item Simulazione in Python dell'architettura di controllo per l'inseguimento di traiettorie.
+    \end{itemize}
+\end{frame}
+\begin{frame}
+    \frametitle{Stato Attuale: Hardware}
     \begin{columns}
         \begin{column}{0.5\textwidth}
             \begin{itemize}
-                \item Libreria di comunicazione con adattatore USB-CAN-A ampiamente testata.
-                \item Architettura software definita e parzialmente implementata.
-                      \begin{itemize}
-                          \item Mancanti: Nodi ROS2 per generazione traiettorie e invio comandi.
-                      \end{itemize}
-                \item Acquisto di tutto l'hardware elencato completato, in attesa di messa in opera.
-                      \begin{itemize}
-                          \item I test di comunicazione con gli inverter sono stati effettuati su un banco di prova.
-                      \end{itemize}
+                \item Acquisto di tutto l'hardware elencato completato.
+                \item Proposto schema di cablaggio per l'integrazione dei sistemi su un banco di prova.
+                \item Realizzazione del banco di prova per la validazione dei sistemi e dell'architettura software.
             \end{itemize}
         \end{column}
         \begin{column}{0.5\textwidth}

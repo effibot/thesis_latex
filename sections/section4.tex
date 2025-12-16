@@ -13,25 +13,26 @@
                 \item \textbf{Stato}: $q=\begin{bmatrix}
                               x & y & \theta
                           \end{bmatrix}^\top$,
-                \item \textbf{Dimensioni}: $L,W$,
+                \item \textbf{Dimensioni}: $L,W$, $L>W$,
                 \item \textbf{Posizioni delle Ruote}:
+                      \vspace{-0.2cm}
                       \begin{align*}
-                          \mathbf{p}_f^b=\begin{bmatrix}
-                                             L/2 & W/2
-                                         \end{bmatrix}^\top \\
-                          \mathbf{p}_r^b=-\begin{bmatrix}
-                                              L/2 & W/2
-                                          \end{bmatrix}^\top
+                          \mathbf{p}_f^b & =\begin{bmatrix}
+                                                L/2 & W/2
+                                            \end{bmatrix}^\top  \\
+                          \mathbf{p}_r^b & =-\begin{bmatrix}
+                                                 L/2 & W/2
+                                             \end{bmatrix}^\top
                       \end{align*}
             \end{itemize}
         \end{column}
         \begin{column}{0.48\textwidth}
             \begin{itemize}
                 \item \textbf{Input di Controllo}: $\mathbf{u}=\begin{bmatrix}
-                              \delta_f & \delta_r & \omega_f & \omega_r
+                              \omega_f & \omega_r & \delta_f & \delta_r
                           \end{bmatrix}^\top$,
-                \item \textbf{Velocità Angolare Ruote}: $\omega_i$,
-                \item \textbf{Angoli di Sterzo}: $\delta_i$,
+                \item \textbf{Velocità Angolare Ruote}: $\omega_f$, $\omega_r$,
+                \item \textbf{Angoli di Sterzo}: $\delta_f$, $\delta_r$,
                 \item \textbf{Raggio Ruote}: $r$.
             \end{itemize}
         \end{column}
@@ -245,8 +246,8 @@
 
     Risolvendo per $s_f$, $s_r$ si trovano i raggi di curvatura delle ruote:
     \begin{align}
-        R_f = \sqrt{\left(x_{ICR} - \frac{L}{2}\right)^2 + \left(y_{ICR} - \frac{W}{2}\right)^2}, \qquad
-        R_r = \sqrt{\left(x_{ICR} + \frac{L}{2}\right)^2 + \left(y_{ICR} - \frac{W}{2}\right)^2}
+        R_f = \sqrt{\left(x_{ICR} - \frac{L}{2}\right)^2 + \left(y_{ICR} \right)^2}, \qquad
+        R_r = \sqrt{\left(x_{ICR} + \frac{L}{2}\right)^2 + \left(y_{ICR} \right)^2}
     \end{align}
 
     \textbf{Condizione di compatibilità} (moto senza slittamento):
@@ -350,7 +351,7 @@
     \frametitle{Setup Simulazioni}
     \textbf{Parametri Robot e Attuatori}
     \begin{itemize}
-        \item Dimensioni: $L = 2$ m, $W = 1$ m, $r = 0.198$ m
+        \item Dimensioni: $L = 2$ m, $W = 1$ m, $d = 0.198\Rightarrow r= 0.099$ m
         \item Dinamica attuatori: modello 1$^\circ$ ordine $P(s) = \frac{K}{\tau s + 1}$
               \begin{itemize}
                   \item Trazione: $K_{\omega} = 1$, $\tau_\omega = 1$ s, $\omega_{max} = 10$ rad/s
@@ -540,10 +541,10 @@
         \column{0.45\textwidth}
         \textbf{Miglioramenti vs FF}:
         \begin{itemize}
-            \item Str: $418 \to 234$ mm ($-44\%$)
-            \item Arc: $695 \to 230$ mm ($-67\%$)
-            \item Crab: $334 \to 187$ mm ($-44\%$)
-            \item Spin: $26^\circ \to 16^\circ$ ($-38\%$)
+            \item Str: $418 \to 234$ mm
+            \item Arc: $695 \to 230$ mm
+            \item Crab: $334 \to 187$ mm
+            \item Spin: $26^\circ \to 16^\circ$
         \end{itemize}
     \end{columns}
 \end{frame}
